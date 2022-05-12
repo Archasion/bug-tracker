@@ -106,7 +106,7 @@ module.exports = class CommandManager {
 		const settings = await Guilds.findOne({ id: interaction.guildId });
 
 		// Manage the blacklist
-		const { blacklist } = await Dev.findOne({});
+		const blacklist = await Dev.findOne({});
 
 		if (!(await utils.isDeveloper(interaction.member))) {
 			for (const blacklistedId of blacklist.guilds) {
