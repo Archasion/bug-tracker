@@ -26,7 +26,7 @@ const guildSchema = new Schema({
 				suggestions: false
 			},
 			delete: [],
-			role: []
+			roles: []
 		}
 	},
 	roles: {
