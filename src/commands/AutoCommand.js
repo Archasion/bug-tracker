@@ -123,6 +123,7 @@ module.exports = class AutoCommand extends Command {
 	async execute(interaction) {
 		const subCommand = interaction.options.getSubcommand();
 		const settings = await Guilds.findOne({ id: interaction.guildId });
+		const bot = await interaction.guild.members.fetch(this.client.user.id);
 
 		// ANCHOR Automatic Thread Creation
 		if (subCommand === "thread") {
@@ -309,7 +310,7 @@ module.exports = class AutoCommand extends Command {
 						return;
 					}
 
-					if (!interaction.guild.members.me.permissions.has("ManageRoles")) {
+					if (!bot.permissions.has("ManageRoles")) {
 						interaction.reply({
 							content: "I need the `ManageRoles` permission",
 							ephemeral: true
