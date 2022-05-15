@@ -24,7 +24,7 @@ module.exports = class BotInfoCommand extends Command {
 	 * @returns {Promise<void|any>}
 	 */
 	async execute(interaction) {
-		const permissions = interaction.guild.me.permissions.toArray().join("` `") || "None";
+		const permissions = interaction.guild.members.me.permissions.toArray().join("` `") || "None";
 		const { client } = this;
 
 		interaction.deferReply({ ephemeral: true });
@@ -58,7 +58,9 @@ module.exports = class BotInfoCommand extends Command {
 				},
 				{
 					name: "Joined",
-					value: `<t:${parseInt(interaction.guild.me.joinedTimestamp / 1000)}:R>`,
+					value: `<t:${parseInt(
+						interaction.guild.members.me.joinedTimestamp / 1000
+					)}:R>`,
 					inline: true
 				},
 				{
@@ -97,7 +99,9 @@ module.exports = class BotInfoCommand extends Command {
 					inline: true
 				},
 				{
-					name: `Permissions (${interaction.guild.me.permissions.toArray().length})`,
+					name: `Permissions (${
+						interaction.guild.members.me.permissions.toArray().length
+					})`,
 					value: `\`${permissions}\``,
 					inline: false
 				}

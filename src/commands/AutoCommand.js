@@ -309,7 +309,7 @@ module.exports = class AutoCommand extends Command {
 						return;
 					}
 
-					if (!interaction.guild.me.permissions.has("ManageRoles")) {
+					if (!interaction.guild.members.me.permissions.has("ManageRoles")) {
 						interaction.reply({
 							content: "I need the `ManageRoles` permission",
 							ephemeral: true

@@ -13,7 +13,7 @@ module.exports = class DiscordUtils {
 	 */
 	async insufficientPermissions(interaction, permissions, channel = interaction.channel) {
 		const missingPermissions = permissions.filter(
-			permission => !interaction.guild.me.permissionsIn(channel).has(permission)
+			permission => !interaction.guild.members.me.permissionsIn(channel).has(permission)
 		);
 
 		// prettier-ignore
