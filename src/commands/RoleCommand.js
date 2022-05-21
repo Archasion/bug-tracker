@@ -108,7 +108,7 @@ module.exports = class RoleCommand extends Command {
 
 			case "view":
 				const settings = await Guilds.findOne({ id: interaction.guildId });
-				const roleId = settings[dbVariable];
+				const roleId = settings.roles[type];
 
 				if (!roleId) {
 					interaction.reply({
