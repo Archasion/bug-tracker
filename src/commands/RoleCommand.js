@@ -69,7 +69,7 @@ module.exports = class RoleCommand extends Command {
 		const role = interaction.options.getRole("role");
 		const type = interaction.options.getString("type");
 
-		const dbVariable = `${type}_role`;
+		const dbVariable = `roles.${type}`;
 
 		switch (action) {
 			case "set":
