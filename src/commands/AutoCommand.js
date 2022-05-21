@@ -47,6 +47,33 @@ module.exports = class AutoCommand extends Command {
 					]
 				},
 				{
+					name: "dm",
+					description:
+						"Send members a DM confirmation when they submit a report or the status of their reports gets changed",
+					type: Command.option_types.SUB_COMMAND,
+					options: [
+						{
+							name: "type",
+							description:
+								"The type of messages to create discussion threads for",
+							type: Command.option_types.STRING,
+							required: true,
+							choices: [
+								{
+									name: "Report/Suggestion Status Change",
+									value: "status"
+								}
+							]
+						},
+						{
+							name: "enabled",
+							description: "Whether or not this task is enabled",
+							type: Command.option_types.BOOLEAN,
+							required: true
+						}
+					]
+				},
+				{
 					name: "role",
 					description: "Automatically assign role(s) to new members",
 					type: Command.option_types.SUB_COMMAND,
@@ -177,6 +204,30 @@ module.exports = class AutoCommand extends Command {
 				content: `The ${type.slice(0, -1)} discussion thread creation has been ${enabled ? "enabled" : "disabled"}.`,
 				ephemeral: true
 			});
+			return;
+		}
+
+		// ANCHOR DM Confirmation
+		if (subCommand === "dm") {
+			const enabled = interaction.options.getBoolean("enabled");
+			const type = interaction.options.getString("type");
+
+			if (settings.auto.dm[type] === enabled) {
+				interaction.reply({
+					content: `This option is already ${enabled ? "enabled" : "disabled"}.`,
+					ephemeral: true
+				});
+				return;
+			}
+
+			await Guilds.updateOne({ id: interaction.guildId }, { [`auto.dm.${type}`]: enabled });
+
+			// prettier-ignore
+			interaction.reply({
+				content: `Members will ${enabled ? "now" : "no longer"} be messaged whenever their report/suggestion status changes`,
+				ephemeral: true
+			});
+			return;
 		}
 
 		// SECTION Automatic Message Deletion
@@ -291,6 +342,8 @@ module.exports = class AutoCommand extends Command {
 						ephemeral: true
 					});
 			}
+
+			return;
 		}
 		// !SECTION
 
@@ -394,6 +447,8 @@ module.exports = class AutoCommand extends Command {
 						ephemeral: true
 					});
 			}
+
+			return;
 		}
 		// !SECTION
 	}

@@ -1,7 +1,7 @@
 const Command = require("../modules/commands/command");
 const Guilds = require("../mongodb/models/guilds");
 
-const { Attachment, ButtonBuilder, ButtonStyle } = require("discord.js");
+const { Attachment, ButtonBuilder, ButtonStyle, EmbedBuilder, ActionRowBuilder } = require("discord.js");
 
 const priorityImage = {
 	NONE: new Attachment("images/none-priority.png", "NONE.png"),
@@ -297,6 +297,36 @@ module.exports = class StatusCommand extends Command {
 				content: `The status of ${type.slice(0, -1)} **#${id}** has been revoked.`,
 				ephemeral: true
 			});
+		}
+
+		if (settings.auto.dm.status === true) {
+			const reportAuthor = await interaction.guild.members.fetch(report.author);
+			try {
+				// prettier-ignore
+				const statusChangeConfirmation = new EmbedBuilder()
+					.setColor(config.colors.status[status])
+					.setDescription(`Your **${type.slice(0, -1)}** with the ID of **#${report.number}** has been **${status}** by ${interaction.member} (\`${interaction.member.id}\`)`)
+					.setTimestamp();
+
+				if (reason && status !== "active") {
+					statusChangeConfirmation.setFields([{ name: "Reason", value: reason }]);
+				}
+
+				// prettier-ignore
+				const jumpToReport = new ButtonBuilder({})
+					.setURL(`https://discordapp.com/channels/${interaction.guildId}/${message.channelId}/${report.messageId}`)
+					.setLabel("Jump to Message")
+					.setStyle(ButtonStyle.Link);
+
+				const buttonContainer = new ActionRowBuilder().addComponents([jumpToReport]);
+
+				reportAuthor.send({
+					embeds: [statusChangeConfirmation],
+					components: [buttonContainer]
+				});
+			} catch {
+				log.warn("Couldn't message report/suggestion author.");
+			}
 		}
 	}
 };

@@ -21,6 +21,9 @@ const guildSchema = new Schema({
 	auto: {
 		type: Object,
 		default: {
+			dm: {
+				status: false
+			},
 			threads: {
 				bugs: false,
 				suggestions: false

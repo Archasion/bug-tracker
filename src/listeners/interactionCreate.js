@@ -635,6 +635,31 @@ module.exports = class InteractionCreateEventListener extends EventListener {
 					content: `The ${type.slice(0, -1)} **#${report.number}** has been ${status}.`,
 					ephemeral: true
 				});
+
+				// prettier-ignore
+				if (settings.auto.dm.status === true) {
+					const reportAuthor = await interaction.guild.members.fetch(report.author);
+					try {
+						const statusChangeConfirmation = new EmbedBuilder()
+							.setColor(config.colors.status[status])
+							.setDescription(`Your **${type.slice(0, -1)}** with the ID of **#${report.number}** has been **${status}** by ${interaction.member} (\`${interaction.member.id}\`)`)
+							.setTimestamp();
+
+						const jumpToReport = new ButtonBuilder({})
+							.setURL(`https://discordapp.com/channels/${interaction.guild.id}/${interaction.channelId}/${report.messageId}`)
+							.setLabel("Jump to Message")
+							.setStyle(ButtonStyle.Link);
+
+						const buttonContainer = new ActionRowBuilder().addComponents([jumpToReport]);
+
+						reportAuthor.send({
+							embeds: [statusChangeConfirmation],
+							components: [buttonContainer]
+						});
+					} catch {
+						log.warn("Couldn't message report/suggestion author.");
+					}
+				}
 			}
 
 			// ANCHOR Archive
