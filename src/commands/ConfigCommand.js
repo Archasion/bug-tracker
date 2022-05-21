@@ -67,6 +67,21 @@ module.exports = class ConfigCommand extends Command {
 					inline: true
 				},
 				{
+					name: "Auto Threads (Bugs)",
+					value: `${auto.threads.bugs ? "Enabled" : "Disabled"}`,
+					inline: true
+				},
+				{
+					name: "Auto Threads (Suggestions)",
+					value: `${auto.threads.suggestions ? "Enabled" : "Disabled"}`,
+					inline: true
+				},
+				{
+					name: "DM on Status Change",
+					value: `${auto.dm.status ? "Enabled" : "Disabled"}`,
+					inline: true
+				},
+				{
 					name: "Auto Role",
 					value: `${
 						auto.roles.length > 0 ? `<@&${auto.roles.join("> <@&")}>` : "None"
