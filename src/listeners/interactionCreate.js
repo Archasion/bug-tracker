@@ -602,7 +602,9 @@ module.exports = class InteractionCreateEventListener extends EventListener {
 				}
 
 				embed.color = config.colors.status[status];
-				embed.author = { name: `Status: ${status.toUpperCase()}` };
+				embed.author = {
+					name: `Status: ${status.toUpperCase()} (By ${interaction.user.tag})`
+				};
 
 				const disabledButton = new ButtonBuilder({})
 					.setCustomId(customId)

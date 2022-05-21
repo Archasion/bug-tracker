@@ -164,7 +164,7 @@ module.exports = class StatusCommand extends Command {
 		}
 
 		const embed = message.embeds[0].data;
-		embed.author = { name: `Status: ${status.toUpperCase()}` };
+		embed.author = { name: `Status: ${status.toUpperCase()} (By ${interaction.user.tag})` };
 
 		const approveButton = new ButtonBuilder({})
 			.setCustomId("approve-report")
