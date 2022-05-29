@@ -49,24 +49,43 @@ module.exports = class HelpCommand extends Command {
 			return false;
 		});
 
+		const commandList = new EmbedBuilder()
+			.setColor(config.colors.default)
+			.setTitle("Command Guide")
+			.setFields([
+				{
+					name: "Public Commands",
+					value: "N/A"
+				},
+				{
+					name: "Moderator Commands",
+					value: "N/A"
+				},
+				{
+					name: "Administrator Commands",
+					value: "N/A"
+				},
+				{
+					name: "Owner Commands",
+					value: "N/A"
+				},
+				{
+					name: "Developer Commands",
+					value: "N/A"
+				}
+			]);
+
 		// Create a list of commands the user has access to
-		const listOfCommands = commands.map(command => {
-			const description =
-				command.description.length > 50
-					? command.description.substring(0, 50) + "..."
-					: command.description;
-			return `**\`/${command.name}\` ·** ${description}`;
-		});
+		// prettier-ignore
+		commands.map(command => commandList.data.fields[command.permission_level].value += `**\`/${command.name}\` ·** ${command.description}\n`);
+
+		commandList.data.fields = commandList.data.fields.filter(field => field.value !== "N/A");
+
+		commandList.data.fields.forEach(field => (field.value = field.value.replace("N/A", "")));
 
 		// Respond with the list of commands
 		await interaction.reply({
-			embeds: [
-				new EmbedBuilder()
-					.setColor(config.colors.default)
-					.setTitle("Help")
-					.setDescription("The commands you have access to are listed below.")
-					.setFields([{ name: "Commands", value: listOfCommands.join("\n") }])
-			],
+			embeds: [commandList],
 			ephemeral: true
 		});
 	}

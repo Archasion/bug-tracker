@@ -26,6 +26,7 @@ rules:
   operator-linebreak: off
   no-useless-return: off
   no-await-in-loop: off
+  no-return-assign: off
   comma-dangle: off
   default-case: off
   dot-notation: off
