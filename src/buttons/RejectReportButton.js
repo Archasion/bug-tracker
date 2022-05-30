@@ -1,0 +1,118 @@
+const Button = require("../modules/buttons/button");
+const Guilds = require("../mongodb/models/guilds");
+
+const { ButtonBuilder, ButtonStyle, EmbedBuilder, ActionRowBuilder, Attachment } = require("discord.js");
+
+const rejectedImage = new Attachment("images/status-rejected.png", "rejected.png");
+
+module.exports = class RejectReportButton extends Button {
+	constructor(client) {
+		super(client, {
+			custom_id: "reject-report",
+			permission_level: 1
+		});
+	}
+
+	/**
+	 * @param {Interaction} interaction
+	 * @returns {Promise<void|any>}
+	 */
+	async execute(interaction) {
+		const settings = await Guilds.findOne({ id: interaction.guildId });
+
+		const generalPermissions = [
+			"SendMessages",
+			"ViewChannel",
+			"ReadMessageHistory",
+			"EmbedLinks"
+		];
+
+		// prettier-ignore
+		if (await utils.insufficientPermissions(interaction, generalPermissions)) return;
+
+		const embed = interaction.message.embeds[0].data;
+
+		let type;
+		const file = [];
+
+		embed.color = config.colors.status.rejected;
+		embed.author = {
+			name: `Status: REJECTED (By ${interaction.user.tag})`
+		};
+
+		switch (embed.title) {
+			case "Bug Report":
+				type = "bugs";
+
+				if (embed.fields[3]) embed.fields.splice(3, 1);
+
+				embed.thumbnail.url = "attachment://rejected.png";
+				file.push(rejectedImage);
+				break;
+
+			case "Player Report":
+				if (embed.fields[2]) embed.fields.splice(2, 1);
+				type = "reports";
+				break;
+
+			default:
+				if (embed.fields[1]) embed.fields.splice(1, 1);
+				type = "suggestions";
+				break;
+		}
+
+		const report = settings[type].find(item => item.messageId === interaction.message.id);
+
+		const disabledButton = new ButtonBuilder({})
+			.setCustomId(interaction.customId)
+			.setLabel("Reject")
+			.setStyle(ButtonStyle.Danger)
+			.setDisabled(true);
+
+		const enabledButton = new ButtonBuilder({})
+			.setCustomId("approve-report")
+			.setLabel("Approve")
+			.setStyle(ButtonStyle.Success);
+
+		interaction.message.components[0].components[1] = disabledButton;
+		interaction.message.components[0].components[0] = enabledButton;
+
+		interaction.message.edit({
+			content: interaction.message.content,
+			embeds: [embed],
+			files: file,
+			components: interaction.message.components
+		});
+
+		interaction.reply({
+			content: `The ${type.slice(0, -1)} **#${report.number}** has been rejected.`,
+			ephemeral: true
+		});
+
+		if (settings.auto.dm.status === true) {
+			const reportAuthor = await interaction.guild.members.fetch(report.author);
+
+			try {
+				// prettier-ignore
+				const statusChangeConfirmation = new EmbedBuilder()
+					.setColor(config.colors.status.rejected)
+					.setDescription(`Your **${type.slice(0, -1)}** with the ID of **#${report.number}** has been **rejected** by ${interaction.member} (\`${interaction.member.id}\`)`)
+					.setTimestamp();
+
+				const jumpToReport = new ButtonBuilder({})
+					.setURL(interaction.message.url)
+					.setLabel("Jump to Message")
+					.setStyle(ButtonStyle.Link);
+
+				const buttonRow = new ActionRowBuilder().addComponents([jumpToReport]);
+
+				reportAuthor.send({
+					embeds: [statusChangeConfirmation],
+					components: [buttonRow]
+				});
+			} catch {
+				log.warn("Couldn't message report author.");
+			}
+		}
+	}
+};

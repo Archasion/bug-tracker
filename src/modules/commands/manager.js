@@ -155,7 +155,7 @@ module.exports = class CommandManager {
 					}
 
 					interaction.reply({
-						content: "You must have the `ModerateMembers` role to use this command.",
+						content: "You must have the `ModerateMembers` permission to use this command.",
 						ephemeral: true
 					});
 					return;
@@ -175,7 +175,7 @@ module.exports = class CommandManager {
 					}
 
 					interaction.reply({
-						content: "You must have the `Administrator` role to use this command.",
+						content: "You must have the `Administrator` permission to use this command.",
 						ephemeral: true
 					});
 					return;

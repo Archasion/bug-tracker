@@ -18,7 +18,7 @@ module.exports = class Command {
 	 * @param {Object} data - Command data
 	 * @param {string} data.name - The name of the command (3-32)
 	 * @param {string} data.description - The description of the command (1-100)
-	 * @param {number} [data.permission_level] - Restrict the command to certain trust levels
+	 * @param {number} [data.permission_level] - Restrict the command to certain permission levels
 	 * @param {string[]} [data.permissions] - Array of permissions needed for a user to use this command
 	 * @param {number} [data.cooldown] - The wait period (in seconds) to run the command again
 	 * @param {CommandOption[]} [data.options] - The command's options
@@ -50,7 +50,7 @@ module.exports = class Command {
 		this.description = data.description;
 
 		/**
-		 * Restrict the command to certain trust levels
+		 * Restrict the command to certain permission levels
 		 * @type {number}
 		 */
 		this.permission_level = data.permission_level;

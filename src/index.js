@@ -28,6 +28,7 @@ process.on("unhandledRejection", error => {
 
 const ListenerLoader = require("./modules/listeners/loader");
 const CommandManager = require("./modules/commands/manager");
+const ButtonManager = require("./modules/buttons/manager");
 const DiscordUtils = require("./utils/discord");
 const Cryptr = require("cryptr");
 
@@ -68,6 +69,7 @@ class Bot extends Client {
 			log.info("Connecting to Discord API...");
 
 			this.commands = new CommandManager(this);
+			this.buttons = new ButtonManager(this);
 
 			const listeners = new ListenerLoader(this);
 			listeners.load();

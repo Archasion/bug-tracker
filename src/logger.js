@@ -13,6 +13,11 @@ module.exports = new Logger({
 			type: "info"
 		},
 
+		buttons: {
+			format: "&f&!7{timestamp}&r &3[INFO] &1(BUTTONS)&r {text}",
+			type: "info"
+		},
+
 		console: { format: "&f&!7{timestamp} [INFO] {text}" },
 		debug: { format: "&f&!7{timestamp}&r &1[DEBUG] &9{text}" },
 		error: { format: "&f&!7{timestamp}&r &4[ERROR] &c{text}" },

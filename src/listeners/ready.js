@@ -17,6 +17,8 @@ module.exports = class ReadyEventListener extends EventListener {
 		this.client.commands.load();
 		this.client.commands.publish();
 
+		this.client.buttons.load();
+
 		this.client.guilds.cache.forEach(guild => {
 			Guilds.findOne({ id: guild.id }, (err, settings) => {
 				if (err) {
