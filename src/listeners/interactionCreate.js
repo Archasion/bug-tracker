@@ -1,13 +1,20 @@
 const EventListener = require("../modules/listeners/listener");
 const Guilds = require("../mongodb/models/guilds");
 
-const { EmbedBuilder, Attachment, ButtonBuilder, ActionRowBuilder, ButtonStyle } = require("discord.js");
+const {
+	EmbedBuilder,
+	Attachment,
+	ButtonBuilder,
+	ActionRowBuilder,
+	ButtonStyle,
+	InteractionType
+} = require("discord.js");
 
 const priorityImage = {
-	NONE: new Attachment("images/none-priority.png", "NONE.png"),
-	LOW: new Attachment("images/low-priority.png", "LOW.png"),
-	MEDIUM: new Attachment("images/medium-priority.png", "MEDIUM.png"),
-	HIGH: new Attachment("images/high-priority.png", "HIGH.png")
+	NONE: new Attachment({ url: "images/none-priority.png", filename: "NONE.png" }),
+	LOW: new Attachment({ url: "images/low-priority.png", filename: "LOW.png" }),
+	MEDIUM: new Attachment({ url: "images/medium-priority.png", filename: "MEDIUM.png" }),
+	HIGH: new Attachment({ url: "images/high-priority.png", filename: "HIGH.png" })
 };
 
 module.exports = class InteractionCreateEventListener extends EventListener {
@@ -24,21 +31,17 @@ module.exports = class InteractionCreateEventListener extends EventListener {
 		log.debug(interaction);
 
 		// ANCHOR Slash Commands
-		if (interaction.isChatInputCommand()) {
+		if (interaction.type === InteractionType.ApplicationCommand) {
 			this.client.commands.handle(interaction);
 		}
 
-		// ANCHOR Select Menus
-		else if (interaction.isSelectMenu()) {
-		}
-
 		// ANCHOR Buttons
-		else if (interaction.isButton()) {
+		else if (interaction.type === InteractionType.MessageComponent) {
 			this.client.buttons.handle(interaction);
 		}
 
 		// SECTION Modals
-		else if (interaction.isModalSubmit()) {
+		else if (interaction.type === InteractionType.ModalSubmit) {
 			const approveButton = new ButtonBuilder({})
 
 				.setCustomId("approve-report")

@@ -4,16 +4,16 @@ const Guilds = require("../mongodb/models/guilds");
 const { Attachment, ButtonBuilder, ButtonStyle, EmbedBuilder, ActionRowBuilder } = require("discord.js");
 
 const priorityImage = {
-	NONE: new Attachment("images/none-priority.png", "NONE.png"),
-	LOW: new Attachment("images/low-priority.png", "LOW.png"),
-	MEDIUM: new Attachment("images/medium-priority.png", "MEDIUM.png"),
-	HIGH: new Attachment("images/high-priority.png", "HIGH.png")
+	NONE: new Attachment({ url: "images/none-priority.png", filename: "NONE.png" }),
+	LOW: new Attachment({ url: "images/low-priority.png", filename: "LOW.png" }),
+	MEDIUM: new Attachment({ url: "images/medium-priority.png", filename: "MEDIUM.png" }),
+	HIGH: new Attachment({ url: "images/high-priority.png", filename: "HIGH.png" })
 };
 
 const statusImage = {
-	approved: new Attachment("images/status-approved.png", "approved.png"),
-	rejected: new Attachment("images/status-rejected.png", "rejected.png"),
-	fixed: new Attachment("images/status-fixed.png", "fixed.png")
+	approved: new Attachment({ url: "images/status-approved.png", filename: "approved.png" }),
+	rejected: new Attachment({ url: "images/status-rejected.png", filename: "rejected.png" }),
+	fixed: new Attachment({ url: "images/status-fixed.png", filename: "fixed.png" })
 };
 
 module.exports = class StatusCommand extends Command {

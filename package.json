@@ -19,7 +19,7 @@
   "license": "GPL-3.0",
   "dependencies": {
     "cryptr": "^6.0.2",
-    "discord.js": "^14.0.0-dev.1650672498-3617093",
+    "discord.js": "^14.0.0-dev.1656158629-c4653f9",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "js-yaml": "^4.1.0",
