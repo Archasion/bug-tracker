@@ -31,7 +31,7 @@ module.exports = class SuggestCommand extends Command {
 		);
 
 		if (!submissionChannel) {
-			interaction.editReply({
+			interaction.reply({
 				content: "There is no channel set for **suggestions**.\nPlease set one using `/channel set suggestions <channel>`",
 				ephemeral: true
 			});

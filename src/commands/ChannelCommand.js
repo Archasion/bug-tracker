@@ -17,58 +17,115 @@ module.exports = class ChannelCommand extends Command {
 			permission_level: 2,
 			options: [
 				{
-					name: "action",
-					description: "What action to perform",
-					type: Command.option_types.STRING,
-					required: true,
-					choices: [
+					name: "set",
+					description: "Set a channel configuration.",
+					type: Command.option_types.SUB_COMMAND,
+					options: [
 						{
-							name: "Set",
-							value: "set"
+							name: "type",
+							description: "The type of channel to perform the action on",
+							type: Command.option_types.STRING,
+							required: true,
+							choices: [
+								{
+									name: "Bug Reports",
+									value: "bugs"
+								},
+								{
+									name: "Player Reports",
+									value: "reports"
+								},
+								{
+									name: "Suggestions",
+									value: "suggestions"
+								},
+								{
+									name: "Archive",
+									value: "archive"
+								},
+								{
+									name: "Bot Updates",
+									value: "bot_updates"
+								}
+							]
 						},
 						{
-							name: "Reset",
-							value: "reset"
-						},
-						{
-							name: "View",
-							value: "view"
+							name: "channel",
+							description: "The channel to perform the action on",
+							type: Command.option_types.CHANNEL,
+							required: true
 						}
 					]
 				},
 				{
-					name: "type",
-					description: "The type of channel to perform the action on",
-					type: Command.option_types.STRING,
-					required: true,
-					choices: [
+					name: "reset",
+					description: "Reset a channel configuration.",
+					type: Command.option_types.SUB_COMMAND,
+					options: [
 						{
-							name: "Bug Reports",
-							value: "bugs"
-						},
-						{
-							name: "Player Reports",
-							value: "reports"
-						},
-						{
-							name: "Suggestions",
-							value: "suggestions"
-						},
-						{
-							name: "Archive",
-							value: "archive"
-						},
-						{
-							name: "Bot Updates",
-							value: "bot_updates"
+							name: "type",
+							description: "The type of channel to perform the action on",
+							type: Command.option_types.STRING,
+							required: true,
+							choices: [
+								{
+									name: "Bug Reports",
+									value: "bugs"
+								},
+								{
+									name: "Player Reports",
+									value: "reports"
+								},
+								{
+									name: "Suggestions",
+									value: "suggestions"
+								},
+								{
+									name: "Archive",
+									value: "archive"
+								},
+								{
+									name: "Bot Updates",
+									value: "bot_updates"
+								}
+							]
 						}
 					]
 				},
 				{
-					name: "channel",
-					description: "The channel to perform the action on",
-					type: Command.option_types.CHANNEL,
-					required: false
+					name: "view",
+					description: "View a channel configuration.",
+					type: Command.option_types.SUB_COMMAND,
+					options: [
+						{
+							name: "type",
+							description: "The type of channel to perform the action on",
+							type: Command.option_types.STRING,
+							required: true,
+							choices: [
+								{
+									name: "Bug Reports",
+									value: "bugs"
+								},
+								{
+									name: "Player Reports",
+									value: "reports"
+								},
+								{
+									name: "Suggestions",
+									value: "suggestions"
+								},
+								{
+									name: "Archive",
+									value: "archive"
+								},
+								{
+									name: "Bot Updates",
+									value: "bot_updates"
+								}
+							]
+						}
+					]
 				}
 			]
 		});
@@ -79,19 +136,12 @@ module.exports = class ChannelCommand extends Command {
 	 * @returns {Promise<void|any>}
 	 */
 	async execute(interaction) {
-		const channel = interaction.options.getChannel("channel");
-		const action = interaction.options.getString("action");
+		const action = interaction.options.getSubcommand();
 		const type = interaction.options.getString("type");
 
 		switch (action) {
 			case "set":
-				if (!channel) {
-					interaction.editReply({
-						content: "You must specify a channel to set.",
-						ephemeral: true
-					});
-					return;
-				}
+				const channel = interaction.options.getChannel("channel");
 
 				// prettier-ignore
 				// Only allow Text or Announcement (News) channels

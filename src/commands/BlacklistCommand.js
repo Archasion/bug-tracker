@@ -15,46 +15,70 @@ module.exports = class BlacklistCommand extends Command {
 			permissions: [],
 			options: [
 				{
-					name: "action",
-					description: "The action to perform",
-					type: Command.option_types.STRING,
-					required: true,
-					choices: [
+					name: "add",
+					description: "Add to blacklist.",
+					type: Command.option_types.SUB_COMMAND,
+					options: [
 						{
-							name: "Add",
-							value: "add"
+							name: "type",
+							description: "The item to blacklist",
+							type: Command.option_types.STRING,
+							required: true,
+							choices: [
+								{
+									name: "Guild",
+									value: "guilds"
+								},
+								{
+									name: "Role",
+									value: "roles"
+								},
+								{
+									name: "User",
+									value: "users"
+								}
+							]
 						},
 						{
-							name: "Remove",
-							value: "remove"
+							name: "id",
+							description: "The id of the item to blacklist",
+							type: Command.option_types.STRING,
+							required: true
 						}
 					]
 				},
 				{
-					name: "type",
-					description: "The item to blacklist",
-					type: Command.option_types.STRING,
-					required: true,
-					choices: [
+					name: "remove",
+					description: "Remove from blacklist.",
+					type: Command.option_types.SUB_COMMAND,
+					options: [
 						{
-							name: "Guild",
-							value: "guilds"
+							name: "type",
+							description: "The item to blacklist",
+							type: Command.option_types.STRING,
+							required: true,
+							choices: [
+								{
+									name: "Guild",
+									value: "guilds"
+								},
+								{
+									name: "Role",
+									value: "roles"
+								},
+								{
+									name: "User",
+									value: "users"
+								}
+							]
 						},
 						{
-							name: "Role",
-							value: "roles"
-						},
-						{
-							name: "User",
-							value: "users"
+							name: "id",
+							description: "The id of the item to blacklist",
+							type: Command.option_types.STRING,
+							required: true
 						}
 					]
-				},
-				{
-					name: "id",
-					description: "The id of the item to blacklist",
-					type: Command.option_types.STRING,
-					required: true
 				}
 			]
 		});
@@ -65,7 +89,7 @@ module.exports = class BlacklistCommand extends Command {
 	 * @returns {Promise<void|any>}
 	 */
 	async execute(interaction) {
-		const action = interaction.options.getString("action");
+		const action = interaction.options.getSubcommand();
 		const type = interaction.options.getString("type");
 		const id = interaction.options.getString("id");
 

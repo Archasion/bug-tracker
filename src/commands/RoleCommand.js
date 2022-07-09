@@ -15,46 +15,79 @@ module.exports = class RoleCommand extends Command {
 			permission_level: 2,
 			options: [
 				{
-					name: "action",
-					description: "What action to perform",
-					type: Command.option_types.STRING,
-					required: true,
-					choices: [
+					name: "set",
+					description: "Set a role configuration.",
+					type: Command.option_types.SUB_COMMAND,
+					options: [
 						{
-							name: "Set",
-							value: "set"
+							name: "type",
+							description: "The type of role to perform the action on",
+							type: Command.option_types.STRING,
+							required: true,
+							choices: [
+								{
+									name: "Moderator",
+									value: "moderator"
+								},
+								{
+									name: "Administrator",
+									value: "administrator"
+								}
+							]
 						},
 						{
-							name: "Reset",
-							value: "reset"
-						},
-						{
-							name: "View",
-							value: "view"
+							name: "role",
+							description: "The role to perform the action on",
+							type: Command.option_types.ROLE,
+							required: true
 						}
 					]
 				},
 				{
-					name: "type",
-					description: "The type of role to perform the action on",
-					type: Command.option_types.STRING,
-					required: true,
-					choices: [
+					name: "reset",
+					description: "Reset a role configuration.",
+					type: Command.option_types.SUB_COMMAND,
+					options: [
 						{
-							name: "Moderator",
-							value: "moderator"
-						},
-						{
-							name: "Administrator",
-							value: "administrator"
+							name: "type",
+							description: "The type of role to perform the action on",
+							type: Command.option_types.STRING,
+							required: true,
+							choices: [
+								{
+									name: "Moderator",
+									value: "moderator"
+								},
+								{
+									name: "Administrator",
+									value: "administrator"
+								}
+							]
 						}
 					]
 				},
 				{
-					name: "role",
-					description: "The role to perform the action on",
-					type: Command.option_types.ROLE,
-					required: false
+					name: "view",
+					description: "View a role configuration.",
+					type: Command.option_types.SUB_COMMAND,
+					options: [
+						{
+							name: "type",
+							description: "The type of role to perform the action on",
+							type: Command.option_types.STRING,
+							required: true,
+							choices: [
+								{
+									name: "Moderator",
+									value: "moderator"
+								},
+								{
+									name: "Administrator",
+									value: "administrator"
+								}
+							]
+						}
+					]
 				}
 			]
 		});

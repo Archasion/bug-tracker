@@ -17,28 +17,41 @@ module.exports = class ViewCommand extends Command {
 			permissions: [],
 			options: [
 				{
-					name: "id",
-					description: "The ID of the report/suggestion",
-					type: Command.option_types.STRING,
-					required: true
+					name: "bug_report",
+					description: "View a bug",
+					type: Command.option_types.SUB_COMMAND,
+					options: [
+						{
+							name: "id",
+							description: "The ID of the bug report",
+							type: Command.option_types.STRING,
+							required: true
+						}
+					]
 				},
 				{
-					name: "type",
-					description: "The type of the report/suggestion",
-					type: Command.option_types.STRING,
-					required: true,
-					choices: [
+					name: "player_report",
+					description: "View a player report",
+					type: Command.option_types.SUB_COMMAND,
+					options: [
 						{
-							name: "Bug Report",
-							value: "bugs"
-						},
+							name: "id",
+							description: "The ID of the player report",
+							type: Command.option_types.STRING,
+							required: true
+						}
+					]
+				},
+				{
+					name: "suggestion",
+					description: "View a suggestion",
+					type: Command.option_types.SUB_COMMAND,
+					options: [
 						{
-							name: "Player Report",
-							value: "reports"
-						},
-						{
-							name: "Suggestion",
-							value: "suggestions"
+							name: "id",
+							description: "The ID of the suggestion",
+							type: Command.option_types.STRING,
+							required: true
 						}
 					]
 				}
@@ -51,8 +64,20 @@ module.exports = class ViewCommand extends Command {
 	 * @returns {Promise<void|any>}
 	 */
 	async execute(interaction) {
-		const type = interaction.options.getString("type");
+		let type = interaction.options.getSubcommand();
 		const id = interaction.options.getString("id");
+
+		switch (type) {
+			case "bug":
+				type = "bugs";
+				break;
+			case "player_report":
+				type = "reports";
+				break;
+			case "suggestion":
+				type = "suggestions";
+				break;
+		}
 
 		const settings = await Guilds.findOne({ id: interaction.guildId });
 

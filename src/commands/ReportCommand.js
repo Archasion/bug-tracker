@@ -18,40 +18,36 @@ module.exports = class ReportCommand extends Command {
 			has_modal: true,
 			options: [
 				{
-					name: "type",
-					description: "What you would like to report",
-					type: Command.option_types.STRING,
-					required: true,
-					choices: [
+					name: "bug",
+					description: "Report a bug.",
+					type: Command.option_types.SUB_COMMAND,
+					options: [
 						{
-							name: "Bug",
-							value: "bug"
-						},
-						{
-							name: "Player",
-							value: "player"
+							name: "priority",
+							description: "How important is the report?",
+							type: Command.option_types.STRING,
+							required: false,
+							choices: [
+								{
+									name: "High",
+									value: "-high"
+								},
+								{
+									name: "Medium",
+									value: "-medium"
+								},
+								{
+									name: "Low",
+									value: "-low"
+								}
+							]
 						}
 					]
 				},
 				{
-					name: "priority",
-					description: "How important is the report?",
-					type: Command.option_types.STRING,
-					required: false,
-					choices: [
-						{
-							name: "High",
-							value: "-high"
-						},
-						{
-							name: "Medium",
-							value: "-medium"
-						},
-						{
-							name: "Low",
-							value: "-low"
-						}
-					]
+					name: "player",
+					description: "Report a player.",
+					type: Command.option_types.SUB_COMMAND
 				}
 			]
 		});
@@ -62,10 +58,8 @@ module.exports = class ReportCommand extends Command {
 	 * @returns {Promise<void|any>}
 	 */
 	async execute(interaction) {
-		const type = interaction.options.getString("type");
-		const priority = interaction.options.getString("priority") ?? "-none";
-
 		const settings = await Guilds.findOne({ id: interaction.guildId });
+		const type = interaction.options.getSubcommand();
 
 		let form;
 		let submissionChannel;
@@ -73,6 +67,8 @@ module.exports = class ReportCommand extends Command {
 		const actionRows = [];
 
 		if (type === "bug") {
+			const priority = interaction.options.getString("priority") ?? "-none";
+
 			const summary = new TextInputBuilder()
 
 				.setCustomId("summary")
@@ -149,7 +145,7 @@ module.exports = class ReportCommand extends Command {
 		}
 
 		if (!submissionChannel) {
-			interaction.editReply({
+			interaction.reply({
 				content: `There is no channel set for **${type}** reports.\nPlease set one using \`/channel set ${type} reports <channel>\``,
 				ephemeral: true
 			});
