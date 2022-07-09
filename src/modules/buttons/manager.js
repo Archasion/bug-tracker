@@ -68,14 +68,14 @@ module.exports = class ButtonManager {
 
 				if (!(await utils.isModerator(interaction.member))) {
 					if (moderatorRole) {
-						interaction.reply({
+						interaction.editReply({
 							content: `You must have the <@&${moderatorRole}> role to use this button.`,
 							ephemeral: true
 						});
 						return;
 					}
 
-					interaction.reply({
+					interaction.editReply({
 						content: "You must have the `ModerateMembers` permission to use this button.",
 						ephemeral: true
 					});
@@ -88,14 +88,14 @@ module.exports = class ButtonManager {
 
 				if (!(await utils.isAdministrator(interaction.member))) {
 					if (administratorRole) {
-						interaction.reply({
+						interaction.editReply({
 							content: `You must have the <@&${administratorRole}> role to use this button.`,
 							ephemeral: true
 						});
 						return;
 					}
 
-					interaction.reply({
+					interaction.editReply({
 						content: "You must have the `Administrator` permission to use this button.",
 						ephemeral: true
 					});
@@ -105,7 +105,7 @@ module.exports = class ButtonManager {
 				break;
 			case 3:
 				if (!(await utils.isOwner(interaction.member))) {
-					interaction.reply({
+					interaction.editReply({
 						content: "You must be the owner of this server to use this button.",
 						ephemeral: true
 					});
@@ -115,7 +115,7 @@ module.exports = class ButtonManager {
 				break;
 			case 4:
 				if (!(await utils.isDeveloper(interaction.member))) {
-					interaction.reply({
+					interaction.editReply({
 						content: "You must be the developer of the bot to use this button.",
 						ephemeral: true
 					});
@@ -128,6 +128,8 @@ module.exports = class ButtonManager {
 		// prettier-ignore
 		try {
 			log.buttons(`Executing "${button.custom_id}" (${interaction.user.tag} in "${interaction.guild.name}" - ${interaction.guildId})`);
+			await interaction.deferReply({ ephemeral: true });
+
 			await button.execute(interaction);
 		} catch (error) {
 			log.warn(`An error occurred whilst executing the ${button.custom_id} button`);

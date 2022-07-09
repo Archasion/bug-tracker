@@ -73,7 +73,7 @@ module.exports = class BlacklistCommand extends Command {
 
 		if (action === "remove") {
 			if (!blacklist[type].includes(id)) {
-				interaction.reply({
+				interaction.editReply({
 					content: `The ${type.slice(0, -1)} is not blacklisted`,
 					ephemeral: true
 				});
@@ -83,7 +83,7 @@ module.exports = class BlacklistCommand extends Command {
 			const item = `blacklist.${type}`;
 
 			await Dev.updateOne({}, { $pull: { [item]: id } }).then(() => {
-				interaction.reply({
+				interaction.editReply({
 					content: `The ${type.slice(0, -1)} has been removed from the blacklist`,
 					ephemeral: true
 				});
@@ -92,7 +92,7 @@ module.exports = class BlacklistCommand extends Command {
 
 		if (action === "add") {
 			if (blacklist[type].includes(id)) {
-				interaction.reply({
+				interaction.editReply({
 					content: `The ${type.slice(0, -1)} is already blacklisted`,
 					ephemeral: true
 				});
@@ -102,7 +102,7 @@ module.exports = class BlacklistCommand extends Command {
 			const item = `blacklist.${type}`;
 
 			await Dev.updateOne({}, { $push: { [item]: id } }).then(() => {
-				interaction.reply({
+				interaction.editReply({
 					content: `The ${type.slice(0, -1)} has been added to the blacklist`,
 					ephemeral: true
 				});

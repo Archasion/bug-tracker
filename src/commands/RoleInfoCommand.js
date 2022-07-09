@@ -76,7 +76,7 @@ module.exports = class RoleInfoCommand extends Command {
 				}
 			]);
 
-		interaction.reply({
+		interaction.editReply({
 			embeds: [info],
 			ephemeral: true
 		});

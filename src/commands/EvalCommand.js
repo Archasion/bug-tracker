@@ -41,7 +41,7 @@ module.exports = class EvalCommand extends Command {
 
 		// Prevent evaluation of environmental code
 		if (codeToEvaluate.match(/(env|DISCORD_TOKEN|DB_ENCRYPTION_KEY|NDA_FORM_KEY)/gi)) {
-			return interaction.reply({
+			return interaction.editReply({
 				content: "Cannot evaluate code that contains sensitive information.",
 				ephemeral: !publicResult
 			});
@@ -63,7 +63,7 @@ module.exports = class EvalCommand extends Command {
 				typeof evaluatedCode !== "number" &&
 				typeof evaluatedCode !== "boolean"
 			) {
-				return await interaction.reply({
+				return await interaction.editReply({
 					content: `The output could not be converted to text (output type: ${typeof evaluatedCode})`,
 					ephemeral: !publicResult
 				});
@@ -79,7 +79,7 @@ module.exports = class EvalCommand extends Command {
 		}
 
 		// Send the result
-		return interaction.reply({
+		return interaction.editReply({
 			embeds: [embed],
 			ephemeral: !publicResult
 		});

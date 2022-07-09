@@ -84,7 +84,7 @@ module.exports = class ApproveReportButton extends Button {
 			components: interaction.message.components
 		});
 
-		interaction.reply({
+		interaction.editReply({
 			content: `The ${type.slice(0, -1)} **#${report.number}** has been approved.`,
 			ephemeral: true
 		});

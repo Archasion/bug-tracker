@@ -12,6 +12,7 @@ module.exports = class AnnounceCommand extends Command {
 				threads: []
 			},
 			permission_level: 4,
+			has_modal: true,
 			permissions: [],
 			options: []
 		});

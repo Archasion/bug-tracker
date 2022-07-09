@@ -112,7 +112,7 @@ module.exports = class StatusCommand extends Command {
 		const report = settings[type].find(item => item.number === id);
 
 		if (!report) {
-			interaction.reply({
+			interaction.editReply({
 				content: `There is no ${type.slice(0, -1)} with the ID of \`#${id}\``,
 				ephemeral: true
 			});
@@ -132,7 +132,7 @@ module.exports = class StatusCommand extends Command {
 		if (await utils.insufficientPermissions(interaction, generalPermissions, submissionChannel)) return;
 
 		if (!submissionChannel) {
-			interaction.reply({
+			interaction.editReply({
 				content: `There is no submission channel set for ${type}`,
 				ephemeral: true
 			});
@@ -140,7 +140,7 @@ module.exports = class StatusCommand extends Command {
 		}
 
 		const message = await submissionChannel.messages.fetch(report.messageId).catch(() => {
-			interaction.reply({
+			interaction.editReply({
 				content: `The message for ${type} with the ID of \`#${id}\` is either archived or deleted`,
 				ephemeral: true
 			});
@@ -148,7 +148,7 @@ module.exports = class StatusCommand extends Command {
 		});
 
 		if (!message) {
-			interaction.reply({
+			interaction.editReply({
 				content: `The message must be in ${submissionChannel}`,
 				ephemeral: true
 			});
@@ -156,7 +156,7 @@ module.exports = class StatusCommand extends Command {
 		}
 
 		if (message.author.id !== this.client.user.id) {
-			interaction.reply({
+			interaction.editReply({
 				content: "The message author must be the bot",
 				ephemeral: true
 			});
@@ -181,7 +181,7 @@ module.exports = class StatusCommand extends Command {
 		// ANCHOR Change bug report status
 		if (type === "bugs") {
 			if (status === "implemented" || status === "considered") {
-				interaction.reply({
+				interaction.editReply({
 					content: "This status is not applicable to bugs",
 					ephemeral: true
 				});
@@ -216,7 +216,7 @@ module.exports = class StatusCommand extends Command {
 		// ANCHOR Change player report status
 		if (type === "reports") {
 			if (status === "implemented" || status === "considered" || status === "fixed") {
-				interaction.reply({
+				interaction.editReply({
 					content: "This status is not applicable to bugs",
 					ephemeral: true
 				});
@@ -246,7 +246,7 @@ module.exports = class StatusCommand extends Command {
 		// ANCHOR Change suggestion status
 		if (type === "suggestions") {
 			if (status === "fixed") {
-				interaction.reply({
+				interaction.editReply({
 					content: "This status is not applicable to bugs",
 					ephemeral: true
 				});
@@ -288,12 +288,12 @@ module.exports = class StatusCommand extends Command {
 
 		// prettier-ignore
 		if (status !== "active") {
-			interaction.reply({
+			interaction.editReply({
 				content: `The status of ${type.slice(0, -1)} **#${id}** has been changed to \`${status}\``,
 				ephemeral: true
 			});
 		} else {
-			interaction.reply({
+			interaction.editReply({
 				content: `The status of ${type.slice(0, -1)} **#${id}** has been revoked.`,
 				ephemeral: true
 			});

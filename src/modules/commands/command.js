@@ -74,6 +74,12 @@ module.exports = class Command {
 		this.ignored = data.ignored;
 
 		/**
+		 * Whether the command has a modal response
+		 * @type {number}
+		 */
+		this.has_modal = data.has_modal;
+
+		/**
 		 * The command options
 		 * @type {CommandOption[]}
 		 */

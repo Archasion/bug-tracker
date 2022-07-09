@@ -32,7 +32,7 @@ module.exports = class PublishCommandsCommand extends Command {
 		const { client } = this;
 
 		if (interaction.guildId === guildId) {
-			interaction.reply({
+			interaction.editReply({
 				content: "Slash commands have already been published into the server",
 				ephemeral: true
 			});
@@ -42,7 +42,7 @@ module.exports = class PublishCommandsCommand extends Command {
 		const guild = client.guilds.cache.get(guildId);
 
 		if (!guild) {
-			interaction.reply({
+			interaction.editReply({
 				content: "Invalid guild ID",
 				ephemeral: true
 			});
@@ -53,7 +53,7 @@ module.exports = class PublishCommandsCommand extends Command {
 			guild.ownerId !== interaction.user.id &&
 			!(await utils.isDeveloper(interaction.member))
 		) {
-			interaction.reply({
+			interaction.editReply({
 				content: "You must be the owner of the guild to use this command",
 				ephemeral: true
 			});
@@ -61,7 +61,7 @@ module.exports = class PublishCommandsCommand extends Command {
 		}
 
 		client.commands.publish(guild);
-		interaction.reply({
+		interaction.editReply({
 			content: `Tried publishing commands to **${guild.name}** (\`${guild.id}\`), if this did not work, please try to authorize \`application.commands\` through the URL below and use this command again. If the problem still persists, please contact the developer.\n\n**Authorization URL**\nhttps://discord.com/api/oauth2/authorize?client_id=710407168200802384&scope=applications.commands`,
 			ephemeral: true
 		});

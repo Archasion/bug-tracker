@@ -112,7 +112,7 @@ module.exports = class WipeCommand extends Command {
 		}
 
 		// prettier-ignore
-		interaction.reply({
+		interaction.editReply({
 			content: `Successfully wiped all${type !== "all" ? ` ${type}` : ""} data from the database!`,
 			ephemeral: true
 		});

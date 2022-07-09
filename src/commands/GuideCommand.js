@@ -94,7 +94,7 @@ module.exports = class GuideCommand extends Command {
 
 		guide.setImage(`attachment://${type}.png`);
 
-		interaction.reply({
+		interaction.editReply({
 			embeds: [guide],
 			files: [formImage[type]],
 			ephemeral: !publicMessage

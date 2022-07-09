@@ -92,7 +92,7 @@ module.exports = class CommandManager {
 		// prettier-ignore
 		if (missingPermissions) {
 			const perms = command.permissions.map(p => `\`${p}\``).join(", ");
-			return interaction.reply({
+			return interaction.editReply({
 				embeds: [
 					new EmbedBuilder()
 						.setColor(config.colors.error)
@@ -111,7 +111,7 @@ module.exports = class CommandManager {
 		if (!(await utils.isDeveloper(interaction.member))) {
 			for (const blacklistedId of blacklist.guilds) {
 				if (interaction.guildId === blacklistedId) {
-					interaction.reply({
+					interaction.editReply({
 						content: "This guild is blacklisted from using this bot",
 						ephemeral: true
 					});
@@ -121,7 +121,7 @@ module.exports = class CommandManager {
 
 			for (const blacklistedId of blacklist.roles) {
 				if (interaction.member.roles.cache.has(blacklistedId)) {
-					interaction.reply({
+					interaction.editReply({
 						content: "Your role is blacklisted from using this bot",
 						ephemeral: true
 					});
@@ -131,7 +131,7 @@ module.exports = class CommandManager {
 
 			for (const blacklistedId of blacklist.users) {
 				if (interaction.user.id === blacklistedId) {
-					interaction.reply({
+					interaction.editReply({
 						content: "You are blacklisted from using this bot",
 						ephemeral: true
 					});
@@ -147,14 +147,14 @@ module.exports = class CommandManager {
 
 				if (!(await utils.isModerator(interaction.member))) {
 					if (moderatorRole) {
-						interaction.reply({
+						interaction.editReply({
 							content: `You must have the <@&${moderatorRole}> role to use this command.`,
 							ephemeral: true
 						});
 						return;
 					}
 
-					interaction.reply({
+					interaction.editReply({
 						content: "You must have the `ModerateMembers` permission to use this command.",
 						ephemeral: true
 					});
@@ -167,14 +167,14 @@ module.exports = class CommandManager {
 
 				if (!(await utils.isAdministrator(interaction.member))) {
 					if (administratorRole) {
-						interaction.reply({
+						interaction.editReply({
 							content: `You must have the <@&${administratorRole}> role to use this command.`,
 							ephemeral: true
 						});
 						return;
 					}
 
-					interaction.reply({
+					interaction.editReply({
 						content: "You must have the `Administrator` permission to use this command.",
 						ephemeral: true
 					});
@@ -184,7 +184,7 @@ module.exports = class CommandManager {
 				break;
 			case 3:
 				if (!(await utils.isOwner(interaction.member))) {
-					interaction.reply({
+					interaction.editReply({
 						content: "You must be the owner of this server to use this command.",
 						ephemeral: true
 					});
@@ -194,7 +194,7 @@ module.exports = class CommandManager {
 				break;
 			case 4:
 				if (!(await utils.isDeveloper(interaction.member))) {
-					interaction.reply({
+					interaction.editReply({
 						content: "You must be the developer of the bot to use this command.",
 						ephemeral: true
 					});
@@ -219,7 +219,7 @@ module.exports = class CommandManager {
 				if (currentTime < expiration_time) {
 					const time_left = (expiration_time - currentTime) / 1000;
 					const cooldownTimeMinutes = Math.trunc(cooldownTime / 60000);
-					return interaction.reply({
+					return interaction.editReply({
 						content: `The command has already been used by someone less than ${cooldownTimeMinutes} minute${
 							cooldownTimeMinutes > 1 ? "s" : ""
 						} ago. Try again in ${time_left.toFixed(1)} seconds.`,
@@ -237,12 +237,14 @@ module.exports = class CommandManager {
 		// prettier-ignore
 		try {
 			log.commands(`Executing "${command.name}" (${interaction.user.tag} in "${interaction.guild.name}" - ${interaction.guildId})`);
+			if (!command.has_modal) await interaction.deferReply({ ephemeral: true });
+
 			await command.execute(interaction);
 		} catch (error) {
 			log.warn(`An error occurred whilst executing the ${command.name} command`);
 			log.error(error);
 
-			await interaction.reply({
+			await interaction.editReply({
 				embeds: [
 					new EmbedBuilder()
 						.setColor(config.colors.error)

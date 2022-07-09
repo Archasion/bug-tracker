@@ -27,7 +27,7 @@ module.exports = class ReportDiscussionThreadButton extends Button {
 		if (await utils.insufficientPermissions(interaction, generalPermissions)) return;
 
 		if (interaction.message.hasThread) {
-			interaction.reply({
+			interaction.editReply({
 				content: "This message already has a thread.",
 				ephemeral: true
 			});
@@ -60,7 +60,7 @@ module.exports = class ReportDiscussionThreadButton extends Button {
 		}
 
 		if (!threadName) {
-			interaction.reply({
+			interaction.editReply({
 				content: "I couldn't find the information required to make a discussion thread",
 				ephemeral: true
 			});
@@ -73,7 +73,7 @@ module.exports = class ReportDiscussionThreadButton extends Button {
 			reason: "Started a discussion thread for a report/suggestion"
 		});
 
-		interaction.reply({
+		interaction.editReply({
 			content: `Started a discussion thread for ${type} **${interaction.message.embeds[0].data.footer.text}**`,
 			ephemeral: true
 		});

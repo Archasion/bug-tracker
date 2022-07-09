@@ -15,6 +15,7 @@ module.exports = class ReportCommand extends Command {
 				threads: []
 			},
 			permission_level: 0,
+			has_modal: true,
 			options: [
 				{
 					name: "type",
@@ -148,7 +149,7 @@ module.exports = class ReportCommand extends Command {
 		}
 
 		if (!submissionChannel) {
-			interaction.reply({
+			interaction.editReply({
 				content: `There is no channel set for **${type}** reports.\nPlease set one using \`/channel set ${type} reports <channel>\``,
 				ephemeral: true
 			});

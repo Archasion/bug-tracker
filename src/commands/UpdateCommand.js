@@ -53,7 +53,7 @@ module.exports = class UpdateCommand extends Command {
 
 		const actionRow = new ActionRowBuilder().addComponents([githubButton, authoriseButton]);
 
-		interaction.reply({
+		interaction.editReply({
 			embeds: [update],
 			components: [actionRow],
 			ephemeral: true

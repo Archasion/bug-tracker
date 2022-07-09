@@ -93,7 +93,7 @@ module.exports = class ServerInfoCommand extends Command {
 				}
 			]);
 
-		interaction.reply({
+		interaction.editReply({
 			embeds: [info],
 			ephemeral: true
 		});

@@ -86,7 +86,7 @@ module.exports = class ChannelCommand extends Command {
 		switch (action) {
 			case "set":
 				if (!channel) {
-					interaction.reply({
+					interaction.editReply({
 						content: "You must specify a channel to set.",
 						ephemeral: true
 					});
@@ -96,7 +96,7 @@ module.exports = class ChannelCommand extends Command {
 				// prettier-ignore
 				// Only allow Text or Announcement (News) channels
 				if (channel.type !== ChannelType.GuildText && channel.type !== ChannelType.GuildNews) {
-					interaction.reply({
+					interaction.editReply({
 						content: "The channel you specified is not a text channel.",
 						ephemeral: true
 					});
@@ -123,7 +123,7 @@ module.exports = class ChannelCommand extends Command {
 					{ $set: { [`channels.${type}`]: channel.id } }
 				);
 
-				interaction.reply({
+				interaction.editReply({
 					content: `The **${type}** channel has been set to ${channel}.`,
 					ephemeral: true
 				});
@@ -136,7 +136,7 @@ module.exports = class ChannelCommand extends Command {
 					{ $set: { [`channels.${type}`]: null } }
 				);
 
-				interaction.reply({
+				interaction.editReply({
 					content: `The **${type}** channel has been reset.`,
 					ephemeral: true
 				});
@@ -149,7 +149,7 @@ module.exports = class ChannelCommand extends Command {
 
 				// prettier-ignore
 				if (!channelId) {
-					interaction.reply({
+					interaction.editReply({
 						content: `There is no channel set for **${type}** reports.\nYou can set one using \`/channel set ${type.replace(/_/g, " ")} <channel>\``,
 						ephemeral: true
 					});
@@ -157,7 +157,7 @@ module.exports = class ChannelCommand extends Command {
 				}
 
 				// prettier-ignore
-				interaction.reply({
+				interaction.editReply({
 					content: `The **${type.replace(/_/g, " ")}** channel is set to <#${channelId}>.`,
 					ephemeral: true
 				});

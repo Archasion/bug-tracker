@@ -20,7 +20,7 @@ module.exports = class ReportPlayerModal extends Modal {
 		const submissionChannel = interaction.guild.channels.cache.get(settings.channels.reports);
 
 		if (!submissionChannel) {
-			interaction.reply({
+			interaction.editReply({
 				content: "The player report submission channel cannot be found.",
 				ephemeral: true
 			});
@@ -107,7 +107,7 @@ module.exports = class ReportPlayerModal extends Modal {
 				);
 			});
 
-		interaction.reply({
+		interaction.editReply({
 			content: "Thank you for your report, we will look into it as soon as possible.",
 			ephemeral: true
 		});

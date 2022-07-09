@@ -22,7 +22,7 @@ module.exports = class SuggestionModal extends Modal {
 		);
 
 		if (!submissionChannel) {
-			interaction.reply({
+			interaction.editReply({
 				content: "The suggestion submission channel cannot be found.",
 				ephemeral: true
 			});
@@ -129,7 +129,7 @@ module.exports = class SuggestionModal extends Modal {
 				);
 			});
 
-		interaction.reply({
+		interaction.editReply({
 			content: "Thank you for your suggestion, we will look into it as soon as possible.",
 			ephemeral: true
 		});

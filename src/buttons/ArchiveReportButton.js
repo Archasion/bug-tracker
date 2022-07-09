@@ -18,7 +18,7 @@ module.exports = class ArchiveReportButton extends Button {
 		const archiveChannel = interaction.guild.channels.cache.get(settings.channels.archive);
 
 		if (!archiveChannel) {
-			interaction.reply({
+			interaction.editReply({
 				content: "There is no channel set for **archiving** reports/suggestions.\nYou can set one using `/channel set archive <channel>`",
 				ephemeral: true
 			});
@@ -54,7 +54,7 @@ module.exports = class ArchiveReportButton extends Button {
 			components: []
 		});
 
-		interaction.reply({
+		interaction.editReply({
 			content: `${embed.title || "Suggestion"} **${embed.footer.text}** has been archived.`,
 			ephemeral: true
 		});

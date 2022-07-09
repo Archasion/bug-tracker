@@ -84,7 +84,7 @@ module.exports = class HelpCommand extends Command {
 		commandList.data.fields.forEach(field => (field.value = field.value.replace("N/A", "")));
 
 		// Respond with the list of commands
-		await interaction.reply({
+		await interaction.editReply({
 			embeds: [commandList],
 			ephemeral: true
 		});

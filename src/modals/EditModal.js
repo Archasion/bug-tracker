@@ -23,7 +23,7 @@ module.exports = class EditModal extends Modal {
 		const channel = interaction.guild.channels.cache.get(settings.channels[type]);
 
 		if (!channel) {
-			interaction.reply({
+			interaction.editReply({
 				content: `Cannot find the ${type.slice(0, -1)} submission channel.`,
 				ephemeral: true
 			});
@@ -43,7 +43,7 @@ module.exports = class EditModal extends Modal {
 		const message = await channel.messages.fetch(customId.split("-")[2]);
 
 		if (!message) {
-			interaction.reply({
+			interaction.editReply({
 				content: "The message you are trying to edit does not exist anymore.",
 				ephemeral: true
 			});
@@ -62,7 +62,7 @@ module.exports = class EditModal extends Modal {
 			attachments: []
 		});
 
-		interaction.reply({
+		interaction.editReply({
 			content: "Edited",
 			ephemeral: true
 		});

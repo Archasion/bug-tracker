@@ -107,7 +107,7 @@ module.exports = class ConfigCommand extends Command {
 				}
 			]);
 
-		interaction.reply({
+		interaction.editReply({
 			embeds: [embed],
 			ephemeral: true
 		});

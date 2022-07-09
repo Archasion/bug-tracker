@@ -20,7 +20,7 @@ module.exports = class DiscordUtils {
 
 		// prettier-ignore
 		if (missingPermissions[0]) {
-			interaction.reply({
+			interaction.editReply({
 				content: `I need the following permissions in ${channel} (\`${channel.id}\`):\n\`${missingPermissions.join("` `")}\``,
 				ephemeral: true,
 			});

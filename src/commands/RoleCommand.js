@@ -74,7 +74,7 @@ module.exports = class RoleCommand extends Command {
 		switch (action) {
 			case "set":
 				if (!role) {
-					interaction.reply({
+					interaction.editReply({
 						content: "You must specify a role to set.",
 						ephemeral: true
 					});
@@ -86,7 +86,7 @@ module.exports = class RoleCommand extends Command {
 					{ $set: { [dbVariable]: role.id } }
 				);
 
-				interaction.reply({
+				interaction.editReply({
 					content: `The **${type}** role has been set to ${role}.`,
 					ephemeral: true
 				});
@@ -99,7 +99,7 @@ module.exports = class RoleCommand extends Command {
 					{ $set: { [dbVariable]: null } }
 				);
 
-				interaction.reply({
+				interaction.editReply({
 					content: `The **${type}** role has been reset.`,
 					ephemeral: true
 				});
@@ -111,14 +111,14 @@ module.exports = class RoleCommand extends Command {
 				const roleId = settings.roles[type];
 
 				if (!roleId) {
-					interaction.reply({
+					interaction.editReply({
 						content: `The **${type}** role has not been set.`,
 						ephemeral: true
 					});
 					return;
 				}
 
-				interaction.reply({
+				interaction.editReply({
 					content: `The **${type}** role is set to <@&${roleId}>.`,
 					ephemeral: true
 				});

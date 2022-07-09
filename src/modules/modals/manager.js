@@ -93,14 +93,14 @@ module.exports = class ModalManager {
 
 				if (!(await utils.isModerator(interaction.member))) {
 					if (moderatorRole) {
-						interaction.reply({
+						interaction.editReply({
 							content: `You must have the <@&${moderatorRole}> role to use this modal.`,
 							ephemeral: true
 						});
 						return;
 					}
 
-					interaction.reply({
+					interaction.editReply({
 						content: "You must have the `ModerateMembers` permission to use this modal.",
 						ephemeral: true
 					});
@@ -113,14 +113,14 @@ module.exports = class ModalManager {
 
 				if (!(await utils.isAdministrator(interaction.member))) {
 					if (administratorRole) {
-						interaction.reply({
+						interaction.editReply({
 							content: `You must have the <@&${administratorRole}> role to use this modal.`,
 							ephemeral: true
 						});
 						return;
 					}
 
-					interaction.reply({
+					interaction.editReply({
 						content: "You must have the `Administrator` permission to use this modal.",
 						ephemeral: true
 					});
@@ -130,7 +130,7 @@ module.exports = class ModalManager {
 				break;
 			case 3:
 				if (!(await utils.isOwner(interaction.member))) {
-					interaction.reply({
+					interaction.editReply({
 						content: "You must be the owner of this server to use this modal.",
 						ephemeral: true
 					});
@@ -140,7 +140,7 @@ module.exports = class ModalManager {
 				break;
 			case 4:
 				if (!(await utils.isDeveloper(interaction.member))) {
-					interaction.reply({
+					interaction.editReply({
 						content: "You must be the developer of the bot to use this modal.",
 						ephemeral: true
 					});
@@ -160,6 +160,7 @@ module.exports = class ModalManager {
 				}" (${interaction.user.tag} in "${interaction.guild.name}" - ${interaction.guildId})`
 			);
 
+			await interaction.deferReply({ ephemeral: true });
 			await modal.execute(interaction);
 		} catch (error) {
 			log.warn(`An error occurred whilst executing the ${modal.custom_id} modal`);

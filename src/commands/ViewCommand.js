@@ -63,7 +63,7 @@ module.exports = class ViewCommand extends Command {
 		}
 
 		if (!report) {
-			interaction.reply({
+			interaction.editReply({
 				content: `There are no **${type}** with the ID of \`${id}\``,
 				ephemeral: true
 			});
@@ -119,7 +119,7 @@ module.exports = class ViewCommand extends Command {
 				break;
 		}
 
-		interaction.reply({
+		interaction.editReply({
 			content: `${author} (\`${author.id}\`)`,
 			embeds: [embed],
 			ephemeral: true

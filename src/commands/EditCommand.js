@@ -14,6 +14,7 @@ module.exports = class EditCommand extends Command {
 				threads: []
 			},
 			permission_level: 0,
+			has_modal: true,
 			permissions: [],
 			options: [
 				{
@@ -59,7 +60,7 @@ module.exports = class EditCommand extends Command {
 		const report = settings[type].find(item => item.number === id);
 
 		if (!report) {
-			interaction.reply({
+			interaction.editReply({
 				content: `There is no ${type.slice(0, -1)} with the ID of \`#${id}\``,
 				ephemeral: true
 			});
@@ -67,7 +68,7 @@ module.exports = class EditCommand extends Command {
 		}
 
 		if (interaction.user.id !== report.author) {
-			interaction.reply({
+			interaction.editReply({
 				content: `You can only edit your own ${type}`,
 				ephemeral: true
 			});
@@ -77,7 +78,7 @@ module.exports = class EditCommand extends Command {
 		const submissionChannel = interaction.guild.channels.cache.get(settings.channels[type]);
 
 		if (!submissionChannel) {
-			interaction.reply({
+			interaction.editReply({
 				content: `There is no submission channel set for ${type}`,
 				ephemeral: true
 			});
@@ -95,7 +96,7 @@ module.exports = class EditCommand extends Command {
 		if (await utils.insufficientPermissions(interaction, generalPermissions, submissionChannel)) return;
 
 		const message = await submissionChannel.messages.fetch(report.messageId).catch(() => {
-			interaction.reply({
+			interaction.editReply({
 				content: `The message for ${type} with the ID of \`#${id}\` is either archived or deleted`,
 				ephemeral: true
 			});
@@ -103,7 +104,7 @@ module.exports = class EditCommand extends Command {
 		});
 
 		if (!message) {
-			interaction.reply({
+			interaction.editReply({
 				content: `The message must be in ${submissionChannel}`,
 				ephemeral: true
 			});
@@ -111,7 +112,7 @@ module.exports = class EditCommand extends Command {
 		}
 
 		if (message.author.id !== this.client.user.id) {
-			interaction.reply({
+			interaction.editReply({
 				content: "The message author must be the bot",
 				ephemeral: true
 			});
@@ -122,7 +123,7 @@ module.exports = class EditCommand extends Command {
 
 		if (embed.author) {
 			if (embed.author.name.includes("Status")) {
-				interaction.reply({
+				interaction.editReply({
 					content: `Cannot edit a ${type.slice(0, -1)} with a status`,
 					ephemeral: true
 				});

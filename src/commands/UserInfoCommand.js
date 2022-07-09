@@ -114,7 +114,7 @@ module.exports = class UserInfoCommand extends Command {
 
 		const actionRow = new ActionRowBuilder().addComponents([avatarButton]);
 
-		interaction.reply({
+		interaction.editReply({
 			content: `${member}`,
 			embeds: [info],
 			components: [actionRow],

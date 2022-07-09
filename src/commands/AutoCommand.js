@@ -160,7 +160,7 @@ module.exports = class AutoCommand extends Command {
 			const channelId = settings.channels[type];
 
 			if (!channelId) {
-				interaction.reply({
+				interaction.editReply({
 					content: `There is no channel set for **${type}**.`,
 					ephemeral: true
 				});
@@ -170,7 +170,7 @@ module.exports = class AutoCommand extends Command {
 			const channel = interaction.guild.channels.cache.get(channelId);
 
 			if (!channel) {
-				interaction.reply({
+				interaction.editReply({
 					content: `The channel for **${type}** is not valid.`,
 					ephemeral: true
 				});
@@ -189,7 +189,7 @@ module.exports = class AutoCommand extends Command {
 
 			// prettier-ignore
 			if (settings.auto.threads[type] === enabled) {
-				interaction.reply({
+				interaction.editReply({
 					content: `The ${type.slice(0, -1)} discussion thread creation is already ${enabled ? "enabled" : "disabled"}.`,
 					ephemeral: true
 				});
@@ -200,7 +200,7 @@ module.exports = class AutoCommand extends Command {
 			await Guilds.updateOne({ id: interaction.guildId }, { [`auto.threads.${type}`]: enabled });
 
 			// prettier-ignore
-			interaction.reply({
+			interaction.editReply({
 				content: `The ${type.slice(0, -1)} discussion thread creation has been ${enabled ? "enabled" : "disabled"}.`,
 				ephemeral: true
 			});
@@ -213,7 +213,7 @@ module.exports = class AutoCommand extends Command {
 			const type = interaction.options.getString("type");
 
 			if (settings.auto.dm[type] === enabled) {
-				interaction.reply({
+				interaction.editReply({
 					content: `This option is already ${enabled ? "enabled" : "disabled"}.`,
 					ephemeral: true
 				});
@@ -223,7 +223,7 @@ module.exports = class AutoCommand extends Command {
 			await Guilds.updateOne({ id: interaction.guildId }, { [`auto.dm.${type}`]: enabled });
 
 			// prettier-ignore
-			interaction.reply({
+			interaction.editReply({
 				content: `Members will ${enabled ? "now" : "no longer"} be messaged whenever their report/suggestion status changes`,
 				ephemeral: true
 			});
@@ -239,7 +239,7 @@ module.exports = class AutoCommand extends Command {
 				// ANCHOR Add
 				case "add":
 					if (!channel) {
-						interaction.reply({
+						interaction.editReply({
 							content: "You must specify a channel.",
 							ephemeral: true
 						});
@@ -259,7 +259,7 @@ module.exports = class AutoCommand extends Command {
 						channel.type !== ChannelType.GuildText &&
 						channel.type !== ChannelType.GuildNews
 					) {
-						interaction.reply({
+						interaction.editReply({
 							content: "The channel you specified is not a text channel.",
 							ephemeral: true
 						});
@@ -267,7 +267,7 @@ module.exports = class AutoCommand extends Command {
 					}
 
 					if (settings.auto.delete.includes(channel.id)) {
-						interaction.reply({
+						interaction.editReply({
 							content: `Messages in ${channel} are already set to be deleted.`,
 							ephemeral: true
 						});
@@ -279,7 +279,7 @@ module.exports = class AutoCommand extends Command {
 						{ $push: { "auto.delete": channel.id } }
 					);
 
-					interaction.reply({
+					interaction.editReply({
 						content: `Messages in ${channel} will now be deleted.`,
 						ephemeral: true
 					});
@@ -289,7 +289,7 @@ module.exports = class AutoCommand extends Command {
 				// ANCHOR Remove
 				case "remove":
 					if (!channel) {
-						interaction.reply({
+						interaction.editReply({
 							content: "You must specify a channel.",
 							ephemeral: true
 						});
@@ -297,7 +297,7 @@ module.exports = class AutoCommand extends Command {
 					}
 
 					if (!settings.auto.delete.includes(channel.id)) {
-						interaction.reply({
+						interaction.editReply({
 							content: `Messages in ${channel} are not set to be deleted.`,
 							ephemeral: true
 						});
@@ -309,7 +309,7 @@ module.exports = class AutoCommand extends Command {
 						{ $pull: { "auto.delete": channel.id } }
 					);
 
-					interaction.reply({
+					interaction.editReply({
 						content: `Messages in ${channel} will no longer be deleted.`,
 						ephemeral: true
 					});
@@ -319,7 +319,7 @@ module.exports = class AutoCommand extends Command {
 				// ANCHOR View
 				case "view":
 					if (settings.auto.delete.length === 0) {
-						interaction.reply({
+						interaction.editReply({
 							content: "There are no channels with automatic message deletion.",
 							ephemeral: true
 						});
@@ -337,7 +337,7 @@ module.exports = class AutoCommand extends Command {
 							}
 						]);
 
-					interaction.reply({
+					interaction.editReply({
 						embeds: [embed],
 						ephemeral: true
 					});
@@ -356,7 +356,7 @@ module.exports = class AutoCommand extends Command {
 				// ANCHOR Add
 				case "add":
 					if (!role) {
-						interaction.reply({
+						interaction.editReply({
 							content: "You must specify a role.",
 							ephemeral: true
 						});
@@ -364,7 +364,7 @@ module.exports = class AutoCommand extends Command {
 					}
 
 					if (!bot.permissions.has("ManageRoles")) {
-						interaction.reply({
+						interaction.editReply({
 							content: "I need the `ManageRoles` permission",
 							ephemeral: true
 						});
@@ -372,7 +372,7 @@ module.exports = class AutoCommand extends Command {
 					}
 
 					if (settings.auto.roles.includes(role.id)) {
-						interaction.reply({
+						interaction.editReply({
 							content: `The ${role} role is already set to be automatically assigned.`,
 							ephemeral: true
 						});
@@ -384,7 +384,7 @@ module.exports = class AutoCommand extends Command {
 						{ $push: { "auto.roles": role.id } }
 					);
 
-					interaction.reply({
+					interaction.editReply({
 						content: `The ${role} role will now be automatically assigned on join.`,
 						ephemeral: true
 					});
@@ -394,7 +394,7 @@ module.exports = class AutoCommand extends Command {
 				// ANCHOR Remove
 				case "remove":
 					if (!role) {
-						interaction.reply({
+						interaction.editReply({
 							content: "You must specify a role.",
 							ephemeral: true
 						});
@@ -402,7 +402,7 @@ module.exports = class AutoCommand extends Command {
 					}
 
 					if (!settings.auto.roles.includes(role.id)) {
-						interaction.reply({
+						interaction.editReply({
 							content: `The ${role} role is not set to be automatically assigned.`,
 							ephemeral: true
 						});
@@ -414,7 +414,7 @@ module.exports = class AutoCommand extends Command {
 						{ $pull: { "auto.roles": role.id } }
 					);
 
-					interaction.reply({
+					interaction.editReply({
 						content: `The ${role} role will no longer be automatically assigned on join.`,
 						ephemeral: true
 					});
@@ -424,7 +424,7 @@ module.exports = class AutoCommand extends Command {
 				// ANCHOR View
 				case "view":
 					if (settings.auto.roles.length === 0) {
-						interaction.reply({
+						interaction.editReply({
 							content: "There are no roles with automatic assignment on join.",
 							ephemeral: true
 						});
@@ -442,7 +442,7 @@ module.exports = class AutoCommand extends Command {
 							}
 						]);
 
-					interaction.reply({
+					interaction.editReply({
 						embeds: [embed],
 						ephemeral: true
 					});

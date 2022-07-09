@@ -15,6 +15,7 @@ module.exports = class SuggestCommand extends Command {
 				threads: []
 			},
 			permission_level: 0,
+			has_modal: true,
 			options: []
 		});
 	}
@@ -30,7 +31,7 @@ module.exports = class SuggestCommand extends Command {
 		);
 
 		if (!submissionChannel) {
-			interaction.reply({
+			interaction.editReply({
 				content: "There is no channel set for **suggestions**.\nPlease set one using `/channel set suggestions <channel>`",
 				ephemeral: true
 			});
