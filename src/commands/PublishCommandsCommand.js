@@ -62,7 +62,7 @@ module.exports = class PublishCommandsCommand extends Command {
 
 		client.commands.publish(guild);
 		interaction.reply({
-			content: `Tried publishing commands to "${guild.name}" (\`${guild.id}\`), if this did not work, please check if you have authorised \`application.commands\``,
+			content: `Tried publishing commands to **${guild.name}** (\`${guild.id}\`), if this did not work, please try to authorize \`application.commands\` through the URL below and use this command again. If the problem still persists, please contact the developer.\n\n**Authorization URL**\nhttps://discord.com/api/oauth2/authorize?client_id=710407168200802384&scope=applications.commands`,
 			ephemeral: true
 		});
 	}
