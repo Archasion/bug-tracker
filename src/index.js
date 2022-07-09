@@ -29,6 +29,7 @@ process.on("unhandledRejection", error => {
 const ListenerLoader = require("./modules/listeners/loader");
 const CommandManager = require("./modules/commands/manager");
 const ButtonManager = require("./modules/buttons/manager");
+const ModalManager = require("./modules/modals/manager");
 const DiscordUtils = require("./utils/discord");
 const Cryptr = require("cryptr");
 
@@ -70,6 +71,7 @@ class Bot extends Client {
 
 			this.commands = new CommandManager(this);
 			this.buttons = new ButtonManager(this);
+			this.modals = new ModalManager(this);
 
 			const listeners = new ListenerLoader(this);
 			listeners.load();
