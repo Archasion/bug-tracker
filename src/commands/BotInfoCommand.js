@@ -28,8 +28,6 @@ module.exports = class BotInfoCommand extends Command {
 		const permissions = bot.permissions.toArray().join("` `") || "None";
 		const { client } = this;
 
-		interaction.deferReply({ ephemeral: true });
-
 		let memberCount = 0;
 		client.guilds.cache.forEach(guild => {
 			memberCount += guild.memberCount;
