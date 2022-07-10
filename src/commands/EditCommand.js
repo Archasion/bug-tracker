@@ -25,7 +25,7 @@ module.exports = class EditCommand extends Command {
 						{
 							name: "id",
 							description: "The ID of the bug report",
-							type: Command.option_types.STRING,
+							type: Command.option_types.NUMBER,
 							required: true
 						}
 					]
@@ -38,7 +38,7 @@ module.exports = class EditCommand extends Command {
 						{
 							name: "id",
 							description: "The ID of the player report",
-							type: Command.option_types.STRING,
+							type: Command.option_types.NUMBER,
 							required: true
 						}
 					]
@@ -51,7 +51,7 @@ module.exports = class EditCommand extends Command {
 						{
 							name: "id",
 							description: "The ID of the suggestion",
-							type: Command.option_types.STRING,
+							type: Command.option_types.NUMBER,
 							required: true
 						}
 					]
