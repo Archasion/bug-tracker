@@ -60,6 +60,7 @@ module.exports = class ButtonManager {
 		}
 
 		const settings = await Guilds.findOne({ id: interaction.guildId });
+		await interaction.deferReply({ ephemeral: true });
 
 		// Manage the permission level
 		switch (button.permission_level) {
@@ -128,8 +129,6 @@ module.exports = class ButtonManager {
 		// prettier-ignore
 		try {
 			log.buttons(`Executing "${button.custom_id}" (${interaction.user.tag} in "${interaction.guild.name}" - ${interaction.guildId})`);
-			await interaction.deferReply({ ephemeral: true });
-
 			await button.execute(interaction);
 		} catch (error) {
 			log.warn(`An error occurred whilst executing the ${button.custom_id} button`);

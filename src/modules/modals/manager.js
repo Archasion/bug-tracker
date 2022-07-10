@@ -85,6 +85,7 @@ module.exports = class ModalManager {
 		}
 
 		const settings = await Guilds.findOne({ id: interaction.guildId });
+		await interaction.deferReply({ ephemeral: true });
 
 		// Manage the permission level
 		switch (modal.permission_level) {
@@ -160,7 +161,6 @@ module.exports = class ModalManager {
 				}" (${interaction.user.tag} in "${interaction.guild.name}" - ${interaction.guildId})`
 			);
 
-			await interaction.deferReply({ ephemeral: true });
 			await modal.execute(interaction);
 		} catch (error) {
 			log.warn(`An error occurred whilst executing the ${modal.custom_id} modal`);

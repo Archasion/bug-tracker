@@ -85,6 +85,8 @@ module.exports = class CommandManager {
 			return;
 		}
 
+		if (!command.has_modal) await interaction.deferReply({ ephemeral: true });
+
 		const missingPermissions =
 			command.permissions instanceof Array &&
 			!interaction.member.permissions.has(command.permissions);
@@ -237,8 +239,6 @@ module.exports = class CommandManager {
 		// prettier-ignore
 		try {
 			log.commands(`Executing "${command.name}" (${interaction.user.tag} in "${interaction.guild.name}" - ${interaction.guildId})`);
-			if (!command.has_modal) await interaction.deferReply({ ephemeral: true });
-
 			await command.execute(interaction);
 		} catch (error) {
 			log.warn(`An error occurred whilst executing the ${command.name} command`);
