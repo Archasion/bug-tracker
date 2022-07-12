@@ -19,7 +19,11 @@ module.exports = class MessageCreateEventListener extends EventListener {
 			message.reference // Message is a reply
 		) {
 			const reference = message.channel.messages.cache.get(message.reference.messageId);
-			if (reference.author.id !== this.client.user.id || reference.embeds.length === 0)
+
+			if (
+				message.mentions.repliedUser.id !== this.client.user.id ||
+				reference.embeds.length === 0
+			)
 				return;
 
 			const referenceEmbed = reference.embeds[0];
