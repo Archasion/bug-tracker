@@ -185,7 +185,7 @@ module.exports = class AutoCommand extends Command {
 			];
 
 			// prettier-ignore
-			if (await utils.insufficientPermissions(interaction, generalPermissions, channel)) return;
+			if (await ValidationUtils.insufficientPermissions(interaction, generalPermissions, channel)) return;
 
 			// prettier-ignore
 			if (settings.auto.threads[type] === enabled) {
@@ -253,7 +253,7 @@ module.exports = class AutoCommand extends Command {
 					];
 
 					// prettier-ignore
-					if (await utils.insufficientPermissions(interaction, generalPermissions, channel)) return;
+					if (await ValidationUtils.insufficientPermissions(interaction, generalPermissions, channel)) return;
 
 					if (
 						channel.type !== ChannelType.GuildText &&

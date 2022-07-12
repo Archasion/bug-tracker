@@ -160,7 +160,7 @@ module.exports = class ReportCommand extends Command {
 		];
 
 		// prettier-ignore
-		if (await utils.insufficientPermissions(interaction, generalPermissions, submissionChannel)) return;
+		if (await ValidationUtils.insufficientPermissions(interaction, generalPermissions, submissionChannel)) return;
 
 		if (type === "bug") {
 			const bugPermissions = [
@@ -171,7 +171,7 @@ module.exports = class ReportCommand extends Command {
 			];
 
 			// prettier-ignore
-			if (await utils.insufficientPermissions(interaction, bugPermissions, submissionChannel)) return;
+			if (await ValidationUtils.insufficientPermissions(interaction, bugPermissions, submissionChannel)) return;
 		}
 
 		components.forEach(component => {

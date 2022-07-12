@@ -58,7 +58,8 @@ module.exports = class GuideCommand extends Command {
 		let publicMessage = interaction.options.getBoolean("public") || false;
 		const type = interaction.options.getString("guide");
 
-		if (!(await utils.isModerator(interaction.member)) && publicMessage) publicMessage = false;
+		if (!(await ValidationUtils.isModerator(interaction.member)) && publicMessage)
+			publicMessage = false;
 
 		let guide;
 

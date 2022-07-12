@@ -38,7 +38,7 @@ module.exports = class EditModal extends Modal {
 		];
 
 		// prettier-ignore
-		if (await utils.insufficientPermissions(interaction, generalPermissions, channel)) return;
+		if (await ValidationUtils.insufficientPermissions(interaction, generalPermissions, channel)) return;
 
 		const message = await channel.messages.fetch(customId.split("-")[2]);
 

@@ -1,6 +1,6 @@
 const Guilds = require("../mongodb/models/guilds");
 
-module.exports = class DiscordUtils {
+module.exports = class ValidationUtils {
 	constructor(client) {
 		this.client = client;
 	}

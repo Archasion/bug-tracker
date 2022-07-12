@@ -30,7 +30,7 @@ const ListenerLoader = require("./modules/listeners/loader");
 const CommandManager = require("./modules/commands/manager");
 const ButtonManager = require("./modules/buttons/manager");
 const ModalManager = require("./modules/modals/manager");
-const DiscordUtils = require("./utils/discord");
+const ValidationUtils = require("./utils/discord");
 const Cryptr = require("cryptr");
 
 const { Client, GatewayIntentBits, Partials } = require("discord.js");
@@ -65,7 +65,7 @@ class Bot extends Client {
 
 		(async () => {
 			global.cryptr = new Cryptr(process.env.DB_ENCRYPTION_KEY);
-			global.utils = new DiscordUtils(this);
+			global.ValidationUtils = new ValidationUtils(this);
 
 			log.info("Connecting to Discord API...");
 

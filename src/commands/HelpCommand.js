@@ -24,10 +24,10 @@ module.exports = class HelpCommand extends Command {
 	 */
 	async execute(interaction) {
 		// Check the user's rank
-		const isModerator = await utils.isModerator(interaction.member);
-		const isAdministrator = await utils.isAdministrator(interaction.member);
-		const isOwner = await utils.isOwner(interaction.member);
-		const isDeveloper = await utils.isDeveloper(interaction.member.id);
+		const isModerator = await ValidationUtils.isModerator(interaction.member);
+		const isAdministrator = await ValidationUtils.isAdministrator(interaction.member);
+		const isOwner = await ValidationUtils.isOwner(interaction.member);
+		const isDeveloper = await ValidationUtils.isDeveloper(interaction.member.id);
 
 		const commands = this.manager.commands.filter(command => {
 			// Validate the user's permissions

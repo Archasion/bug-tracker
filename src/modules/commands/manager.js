@@ -110,7 +110,7 @@ module.exports = class CommandManager {
 		// Manage the blacklist
 		const { blacklist } = await Dev.findOne({});
 
-		if (!(await utils.isDeveloper(interaction.member.id))) {
+		if (!(await ValidationUtils.isDeveloper(interaction.member.id))) {
 			for (const blacklistedId of blacklist.guilds) {
 				if (interaction.guildId === blacklistedId) {
 					interaction.editReply({
@@ -147,7 +147,7 @@ module.exports = class CommandManager {
 			case 1:
 				const moderatorRole = settings.roles.moderator;
 
-				if (!(await utils.isModerator(interaction.member))) {
+				if (!(await ValidationUtils.isModerator(interaction.member))) {
 					if (moderatorRole) {
 						interaction.editReply({
 							content: `You must have the <@&${moderatorRole}> role to use this command.`,
@@ -167,7 +167,7 @@ module.exports = class CommandManager {
 			case 2:
 				const administratorRole = settings.roles.administrator;
 
-				if (!(await utils.isAdministrator(interaction.member))) {
+				if (!(await ValidationUtils.isAdministrator(interaction.member))) {
 					if (administratorRole) {
 						interaction.editReply({
 							content: `You must have the <@&${administratorRole}> role to use this command.`,
@@ -185,7 +185,7 @@ module.exports = class CommandManager {
 
 				break;
 			case 3:
-				if (!(await utils.isOwner(interaction.member))) {
+				if (!(await ValidationUtils.isOwner(interaction.member))) {
 					interaction.editReply({
 						content: "You must be the owner of this server to use this command.",
 						ephemeral: true
@@ -195,7 +195,7 @@ module.exports = class CommandManager {
 
 				break;
 			case 4:
-				if (!(await utils.isDeveloper(interaction.member.id))) {
+				if (!(await ValidationUtils.isDeveloper(interaction.member.id))) {
 					interaction.editReply({
 						content: "You must be the developer of the bot to use this command.",
 						ephemeral: true

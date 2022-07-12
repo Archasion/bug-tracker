@@ -28,7 +28,7 @@ module.exports = class RejectReportButton extends Button {
 		];
 
 		// prettier-ignore
-		if (await utils.insufficientPermissions(interaction, generalPermissions)) return;
+		if (await ValidationUtils.insufficientPermissions(interaction, generalPermissions)) return;
 
 		const embed = interaction.message.embeds[0].data;
 

@@ -156,7 +156,7 @@ module.exports = class ChannelCommand extends Command {
 				const generalPermissions = ["SendMessages", "ViewChannel", "ReadMessageHistory"];
 
 				// prettier-ignore
-				if (await utils.insufficientPermissions(interaction, generalPermissions, channel)) return;
+				if (await ValidationUtils.insufficientPermissions(interaction, generalPermissions, channel)) return;
 
 				const suggestionBugPermissions = [
 					"CreatePublicThreads",
@@ -166,7 +166,7 @@ module.exports = class ChannelCommand extends Command {
 				];
 
 				// prettier-ignore
-				if ((type === "bugs" || type === "suggestions") && await utils.insufficientPermissions(interaction, suggestionBugPermissions, channel)) return;
+				if ((type === "bugs" || type === "suggestions") && await ValidationUtils.insufficientPermissions(interaction, suggestionBugPermissions, channel)) return;
 
 				await Guilds.updateOne(
 					{ id: interaction.guildId },

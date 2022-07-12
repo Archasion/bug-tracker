@@ -117,7 +117,7 @@ module.exports = class EditCommand extends Command {
 		];
 
 		// prettier-ignore
-		if (await utils.insufficientPermissions(interaction, generalPermissions, submissionChannel)) return;
+		if (await ValidationUtils.insufficientPermissions(interaction, generalPermissions, submissionChannel)) return;
 
 		const message = await submissionChannel.messages.fetch(report.messageId).catch(() => {
 			interaction.reply({

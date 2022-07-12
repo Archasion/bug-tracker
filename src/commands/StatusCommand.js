@@ -129,7 +129,7 @@ module.exports = class StatusCommand extends Command {
 		];
 
 		// prettier-ignore
-		if (await utils.insufficientPermissions(interaction, generalPermissions, submissionChannel)) return;
+		if (await ValidationUtils.insufficientPermissions(interaction, generalPermissions, submissionChannel)) return;
 
 		if (!submissionChannel) {
 			interaction.editReply({

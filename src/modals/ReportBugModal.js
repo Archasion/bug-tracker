@@ -46,7 +46,7 @@ module.exports = class ReportBugModal extends Modal {
 		];
 
 		// prettier-ignore
-		if (await utils.insufficientPermissions(interaction, generalPermissions, submissionChannel)) return;
+		if (await ValidationUtils.insufficientPermissions(interaction, generalPermissions, submissionChannel)) return;
 
 		const approveButton = new ButtonBuilder({})
 

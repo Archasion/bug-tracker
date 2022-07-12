@@ -14,8 +14,8 @@ module.exports = class MessageCreateEventListener extends EventListener {
 			message.delete();
 
 		if (
-			(await utils.isSupportChannel(message.channel.id)) &&
-			(await utils.isDeveloper(message.author.id)) &&
+			(await ValidationUtils.isSupportChannel(message.channel.id)) &&
+			(await ValidationUtils.isDeveloper(message.author.id)) &&
 			message.reference // Message is a reply
 		) {
 			const reference = message.channel.messages.cache.get(message.reference.messageId);
