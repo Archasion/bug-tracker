@@ -21,3 +21,10 @@ users:
   developers: 
     - "556206370429599755" # Archasion
     - "697765709580599406" # Archasion 2
+
+channels:
+  bot: # Channels related to the development/usage of the bot
+    support: "996440036205666344" #support
+    suggestions: "996440053557514261" #suggestions
+    bugs: "996440087921426512" #bugs
+    feedback: "996442097290858626" #feedback

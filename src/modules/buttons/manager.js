@@ -115,7 +115,7 @@ module.exports = class ButtonManager {
 
 				break;
 			case 4:
-				if (!(await utils.isDeveloper(interaction.member))) {
+				if (!(await utils.isDeveloper(interaction.member.id))) {
 					interaction.editReply({
 						content: "You must be the developer of the bot to use this button.",
 						ephemeral: true

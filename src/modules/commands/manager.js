@@ -110,7 +110,7 @@ module.exports = class CommandManager {
 		// Manage the blacklist
 		const { blacklist } = await Dev.findOne({});
 
-		if (!(await utils.isDeveloper(interaction.member))) {
+		if (!(await utils.isDeveloper(interaction.member.id))) {
 			for (const blacklistedId of blacklist.guilds) {
 				if (interaction.guildId === blacklistedId) {
 					interaction.editReply({
@@ -195,7 +195,7 @@ module.exports = class CommandManager {
 
 				break;
 			case 4:
-				if (!(await utils.isDeveloper(interaction.member))) {
+				if (!(await utils.isDeveloper(interaction.member.id))) {
 					interaction.editReply({
 						content: "You must be the developer of the bot to use this command.",
 						ephemeral: true

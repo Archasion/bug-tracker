@@ -27,7 +27,7 @@ module.exports = class HelpCommand extends Command {
 		const isModerator = await utils.isModerator(interaction.member);
 		const isAdministrator = await utils.isAdministrator(interaction.member);
 		const isOwner = await utils.isOwner(interaction.member);
-		const isDeveloper = await utils.isDeveloper(interaction.member);
+		const isDeveloper = await utils.isDeveloper(interaction.member.id);
 
 		const commands = this.manager.commands.filter(command => {
 			// Validate the user's permissions

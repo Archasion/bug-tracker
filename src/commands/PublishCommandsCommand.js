@@ -51,7 +51,7 @@ module.exports = class PublishCommandsCommand extends Command {
 
 		if (
 			guild.ownerId !== interaction.user.id &&
-			!(await utils.isDeveloper(interaction.member))
+			!(await utils.isDeveloper(interaction.member.id))
 		) {
 			interaction.editReply({
 				content: "You must be the owner of the guild to use this command",

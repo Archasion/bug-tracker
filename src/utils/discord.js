@@ -78,11 +78,20 @@ module.exports = class DiscordUtils {
 	}
 
 	/**
-	 * Check if a guild member is a developer
-	 * @param {GuildMember} member - the guild member
+	 * Check if a channel is a bot support channel
+	 * @param {string} channelId - the ID of the channel
 	 * @returns {boolean}
 	 */
-	async isDeveloper(member) {
-		return config.users.developers.includes(member.id);
+	async isSupportChannel(channelId) {
+		return Object.values(config.channels.bot).includes(channelId);
+	}
+
+	/**
+	 * Check if a guild member is a developer
+	 * @param {string} memberId - the ID of the member
+	 * @returns {boolean}
+	 */
+	async isDeveloper(memberId) {
+		return config.users.developers.includes(memberId);
 	}
 };
