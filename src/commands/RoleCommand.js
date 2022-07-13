@@ -98,7 +98,7 @@ module.exports = class RoleCommand extends Command {
 	 * @returns {Promise<void|any>}
 	 */
 	async execute(interaction) {
-		const action = interaction.options.getString("action");
+		const action = interaction.options.getSubcommand();
 		const role = interaction.options.getRole("role");
 		const type = interaction.options.getString("type");
 
