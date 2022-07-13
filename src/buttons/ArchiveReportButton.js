@@ -42,10 +42,12 @@ module.exports = class ArchiveReportButton extends Button {
 		const embed = message.embeds[0].data;
 
 		if (message.thread) {
-			await message.thread.edit({
-				archived: true,
-				locked: true
-			});
+			await message.thread
+				.edit({
+					archived: true,
+					locked: true
+				})
+				.catch(() => log.warn("Thread is already archived."));
 		}
 
 		archiveChannel.send({
