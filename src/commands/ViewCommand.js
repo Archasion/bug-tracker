@@ -68,7 +68,7 @@ module.exports = class ViewCommand extends Command {
 		const id = interaction.options.getString("id");
 
 		switch (type) {
-			case "bug":
+			case "bug_report":
 				type = "bugs";
 				break;
 			case "player_report":
