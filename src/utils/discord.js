@@ -1,4 +1,4 @@
-const Guilds = require("../mongodb/models/guilds");
+const Guilds = require("../db/models/guilds");
 
 module.exports = class ValidationUtils {
 	constructor(client) {

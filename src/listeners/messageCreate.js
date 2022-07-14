@@ -1,5 +1,5 @@
 const EventListener = require("../modules/listeners/listener");
-const Guilds = require("../mongodb/models/guilds");
+const Guilds = require("../db/models/guilds");
 
 const { EmbedBuilder } = require("discord.js");
 

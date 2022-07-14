@@ -1,5 +1,5 @@
 const EventListener = require("../modules/listeners/listener");
-const Guilds = require("../mongodb/models/guilds");
+const Guilds = require("../db/models/guilds");
 
 module.exports = class ReadyEventListener extends EventListener {
 	constructor(client) {

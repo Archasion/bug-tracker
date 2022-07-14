@@ -1,5 +1,5 @@
 const Modal = require("../modules/modals/modal");
-const Guilds = require("../mongodb/models/guilds");
+const Guilds = require("../db/models/guilds");
 
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 

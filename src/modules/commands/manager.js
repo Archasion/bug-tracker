@@ -1,6 +1,6 @@
 const { Collection, EmbedBuilder } = require("discord.js");
-const Guilds = require("./../../mongodb/models/guilds");
-const Dev = require("./../../mongodb/models/dev");
+const Guilds = require("./../../db/models/guilds");
+const Dev = require("./../../db/models/dev");
 
 const fs = require("fs");
 const { path } = require("../../utils/fs");

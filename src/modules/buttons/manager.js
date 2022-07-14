@@ -3,7 +3,7 @@ const { Collection } = require("discord.js");
 const fs = require("fs");
 const { path } = require("../../utils/fs");
 
-const Guilds = require("./../../mongodb/models/guilds");
+const Guilds = require("./../../db/models/guilds");
 
 /**
  * Manages the loading and execution of buttons

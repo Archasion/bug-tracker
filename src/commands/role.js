@@ -1,5 +1,5 @@
 const Command = require("../modules/commands/command");
-const Guilds = require("../mongodb/models/guilds");
+const Guilds = require("../db/models/guilds");
 
 module.exports = class RoleCommand extends Command {
 	constructor(client) {

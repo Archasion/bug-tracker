@@ -1,9 +1,9 @@
 const Button = require("../modules/buttons/button");
-const Guilds = require("../mongodb/models/guilds");
+const Guilds = require("../db/models/guilds");
 
 const { ButtonBuilder, ButtonStyle, EmbedBuilder, ActionRowBuilder, Attachment } = require("discord.js");
 
-const rejectedImage = new Attachment({ url: "images/status-rejected.png", filename: "rejected.png" });
+const rejectedImage = new Attachment({ url: "assets/status-rejected.png", filename: "rejected.png" });
 
 module.exports = class RejectReportButton extends Button {
 	constructor(client) {

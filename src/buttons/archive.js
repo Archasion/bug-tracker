@@ -1,5 +1,5 @@
 const Button = require("../modules/buttons/button");
-const Guilds = require("../mongodb/models/guilds");
+const Guilds = require("../db/models/guilds");
 
 module.exports = class ArchiveReportButton extends Button {
 	constructor(client) {

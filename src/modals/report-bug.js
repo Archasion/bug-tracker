@@ -1,13 +1,13 @@
 const Modal = require("../modules/modals/modal");
-const Guilds = require("../mongodb/models/guilds");
+const Guilds = require("../db/models/guilds");
 
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Attachment } = require("discord.js");
 
 const priorityImage = {
-	NONE: new Attachment({ url: "images/none-priority.png", filename: "NONE.png" }),
-	LOW: new Attachment({ url: "images/low-priority.png", filename: "LOW.png" }),
-	MEDIUM: new Attachment({ url: "images/medium-priority.png", filename: "MEDIUM.png" }),
-	HIGH: new Attachment({ url: "images/high-priority.png", filename: "HIGH.png" })
+	NONE: new Attachment({ url: "assets/none-priority.png", filename: "NONE.png" }),
+	LOW: new Attachment({ url: "assets/low-priority.png", filename: "LOW.png" }),
+	MEDIUM: new Attachment({ url: "assets/medium-priority.png", filename: "MEDIUM.png" }),
+	HIGH: new Attachment({ url: "assets/high-priority.png", filename: "HIGH.png" })
 };
 
 module.exports = class ReportBugModal extends Modal {

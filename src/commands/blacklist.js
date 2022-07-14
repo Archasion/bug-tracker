@@ -1,5 +1,5 @@
 const Command = require("../modules/commands/command");
-const Dev = require("../mongodb/models/dev");
+const Dev = require("../db/models/dev");
 
 module.exports = class BlacklistCommand extends Command {
 	constructor(client) {

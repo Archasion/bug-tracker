@@ -1,9 +1,9 @@
 const Button = require("../modules/buttons/button");
-const Guilds = require("../mongodb/models/guilds");
+const Guilds = require("../db/models/guilds");
 
 const { ButtonBuilder, ButtonStyle, EmbedBuilder, ActionRowBuilder, Attachment } = require("discord.js");
 
-const approvedImage = new Attachment({ url: "images/status-approved.png", filename: "approved.png" });
+const approvedImage = new Attachment({ url: "assets/status-approved.png", filename: "approved.png" });
 
 module.exports = class ApproveReportButton extends Button {
 	constructor(client) {

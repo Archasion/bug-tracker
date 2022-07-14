@@ -2,9 +2,9 @@ const Command = require("../modules/commands/command");
 const { EmbedBuilder, Attachment } = require("discord.js");
 
 const formImage = {
-	bug: new Attachment({ url: "images/bug-form.png", filename: "bug.png" }),
-	player: new Attachment({ url: "images/player-form.png", filename: "player.png" }),
-	suggestion: new Attachment({ url: "images/suggestion-form.png", filename: "suggestion.png" })
+	bug: new Attachment({ url: "assets/bug-form.png", filename: "bug.png" }),
+	player: new Attachment({ url: "assets/player-form.png", filename: "player.png" }),
+	suggestion: new Attachment({ url: "assets/suggestion-form.png", filename: "suggestion.png" })
 };
 
 module.exports = class GuideCommand extends Command {

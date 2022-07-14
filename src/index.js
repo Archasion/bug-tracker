@@ -7,7 +7,7 @@ const port = 80;
 
 const { path } = require("./utils/fs");
 
-const fileContents = fs.readFileSync(path("/src/config.yaml"), "utf8");
+const fileContents = fs.readFileSync(path("/src/data/config.yaml"), "utf8");
 
 process.title = "Bug Tracker";
 
@@ -19,7 +19,7 @@ app.listen(port, () => log.success(`Example app listening at http://localhost:${
 
 require("dotenv").config({ path: path("./.env") });
 require("./utils/functions")();
-require("./mongodb")();
+require("./db")();
 
 process.on("unhandledRejection", error => {
 	if (error instanceof Error) log.warn(`Uncaught ${error.name} (${error.message})`);
