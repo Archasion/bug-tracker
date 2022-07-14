@@ -2,6 +2,7 @@ const Modal = require("../modules/modals/modal");
 const Guilds = require("../db/models/guilds");
 
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Attachment } = require("discord.js");
+const { insufficientPermissions } = ValidationUtils;
 
 const priorityImage = {
 	NONE: new Attachment({ url: "assets/none-priority.png", filename: "NONE.png" }),
@@ -46,7 +47,7 @@ module.exports = class ReportBugModal extends Modal {
 		];
 
 		// prettier-ignore
-		if (await ValidationUtils.insufficientPermissions(interaction, generalPermissions, submissionChannel)) return;
+		if (await insufficientPermissions(interaction, generalPermissions, submissionChannel)) return;
 
 		const approveButton = new ButtonBuilder({})
 

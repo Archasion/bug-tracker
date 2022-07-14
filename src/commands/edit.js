@@ -2,6 +2,7 @@ const Command = require("../modules/commands/command");
 const Guilds = require("../db/models/guilds");
 
 const { ActionRowBuilder, TextInputBuilder, TextInputStyle, ModalBuilder } = require("discord.js");
+const { insufficientPermissions } = ValidationUtils;
 
 module.exports = class EditCommand extends Command {
 	constructor(client) {
@@ -117,7 +118,7 @@ module.exports = class EditCommand extends Command {
 		];
 
 		// prettier-ignore
-		if (await ValidationUtils.insufficientPermissions(interaction, generalPermissions, submissionChannel)) return;
+		if (await insufficientPermissions(interaction, generalPermissions, submissionChannel)) return;
 
 		const message = await submissionChannel.messages.fetch(report.messageId).catch(() => {
 			interaction.reply({

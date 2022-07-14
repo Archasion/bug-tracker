@@ -1,5 +1,6 @@
 const Command = require("../modules/commands/command");
 
+const { isModerator, isAdministrator, isOwner, isDeveloper } = ValidationUtils;
 const { EmbedBuilder } = require("discord.js");
 
 module.exports = class HelpCommand extends Command {
@@ -24,10 +25,10 @@ module.exports = class HelpCommand extends Command {
 	 */
 	async execute(interaction) {
 		// Check the user's rank
-		const isModerator = await ValidationUtils.isModerator(interaction.member);
-		const isAdministrator = await ValidationUtils.isAdministrator(interaction.member);
-		const isOwner = await ValidationUtils.isOwner(interaction.member);
-		const isDeveloper = await ValidationUtils.isDeveloper(interaction.member.id);
+		const moderator = await isModerator(interaction.member);
+		const administrator = await isAdministrator(interaction.member);
+		const owner = await isOwner(interaction.member);
+		const developer = await isDeveloper(interaction.member.id);
 
 		const commands = this.manager.commands.filter(command => {
 			// Validate the user's permissions
@@ -39,10 +40,10 @@ module.exports = class HelpCommand extends Command {
 
 			// Validate the user's rank
 			if (
-				(command.permission_level === 1 && isModerator) ||
-				(command.permission_level === 2 && isAdministrator) ||
-				(command.permission_level === 3 && isOwner) ||
-				(command.permission_level === 4 && isDeveloper)
+				(command.permission_level === 1 && moderator) ||
+				(command.permission_level === 2 && administrator) ||
+				(command.permission_level === 3 && owner) ||
+				(command.permission_level === 4 && developer)
 			)
 				return true;
 

@@ -1,6 +1,7 @@
 const Command = require("../modules/commands/command");
 const Guilds = require("../db/models/guilds");
 
+const { insufficientPermissions } = ValidationUtils;
 const { ChannelType } = require("discord.js");
 
 module.exports = class ChannelCommand extends Command {
@@ -156,7 +157,7 @@ module.exports = class ChannelCommand extends Command {
 				const generalPermissions = ["SendMessages", "ViewChannel", "ReadMessageHistory"];
 
 				// prettier-ignore
-				if (await ValidationUtils.insufficientPermissions(interaction, generalPermissions, channel)) return;
+				if (await insufficientPermissions(interaction, generalPermissions, channel)) return;
 
 				const suggestionBugPermissions = [
 					"CreatePublicThreads",
@@ -166,7 +167,7 @@ module.exports = class ChannelCommand extends Command {
 				];
 
 				// prettier-ignore
-				if ((type === "bugs" || type === "suggestions") && await ValidationUtils.insufficientPermissions(interaction, suggestionBugPermissions, channel)) return;
+				if ((type === "bugs" || type === "suggestions") && await insufficientPermissions(interaction, suggestionBugPermissions, channel)) return;
 
 				await Guilds.updateOne(
 					{ id: interaction.guildId },

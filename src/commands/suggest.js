@@ -2,6 +2,7 @@ const Command = require("../modules/commands/command");
 const Guilds = require("../db/models/guilds");
 
 const { ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder } = require("discord.js");
+const { insufficientPermissions } = ValidationUtils;
 
 module.exports = class SuggestCommand extends Command {
 	constructor(client) {
@@ -50,7 +51,7 @@ module.exports = class SuggestCommand extends Command {
 		];
 
 		// prettier-ignore
-		if (await ValidationUtils.insufficientPermissions(interaction, generalPermissions, submissionChannel)) return;
+		if (await insufficientPermissions(interaction, generalPermissions, submissionChannel)) return;
 
 		const suggestion = new TextInputBuilder()
 

@@ -1,4 +1,5 @@
 const Command = require("../modules/commands/command");
+const { isDeveloper } = ValidationUtils;
 
 module.exports = class PublishCommandsCommand extends Command {
 	constructor(client) {
@@ -49,10 +50,7 @@ module.exports = class PublishCommandsCommand extends Command {
 			return;
 		}
 
-		if (
-			guild.ownerId !== interaction.user.id &&
-			!(await ValidationUtils.isDeveloper(interaction.member.id))
-		) {
+		if (guild.ownerId !== interaction.user.id && !(await isDeveloper(interaction.member.id))) {
 			interaction.editReply({
 				content: "You must be the owner of the guild to use this command",
 				ephemeral: true

@@ -2,6 +2,7 @@ const Command = require("../modules/commands/command");
 const Guilds = require("../db/models/guilds");
 
 const { EmbedBuilder, ChannelType } = require("discord.js");
+const { insufficientPermissions } = ValidationUtils;
 
 module.exports = class AutoCommand extends Command {
 	constructor(client) {
@@ -185,7 +186,7 @@ module.exports = class AutoCommand extends Command {
 			];
 
 			// prettier-ignore
-			if (await ValidationUtils.insufficientPermissions(interaction, generalPermissions, channel)) return;
+			if (await insufficientPermissions(interaction, generalPermissions, channel)) return;
 
 			// prettier-ignore
 			if (settings.auto.threads[type] === enabled) {
@@ -253,7 +254,7 @@ module.exports = class AutoCommand extends Command {
 					];
 
 					// prettier-ignore
-					if (await ValidationUtils.insufficientPermissions(interaction, generalPermissions, channel)) return;
+					if (await insufficientPermissions(interaction, generalPermissions, channel)) return;
 
 					if (
 						channel.type !== ChannelType.GuildText &&

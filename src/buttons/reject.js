@@ -2,6 +2,7 @@ const Button = require("../modules/buttons/button");
 const Guilds = require("../db/models/guilds");
 
 const { ButtonBuilder, ButtonStyle, EmbedBuilder, ActionRowBuilder, Attachment } = require("discord.js");
+const { insufficientPermissions } = ValidationUtils;
 
 const rejectedImage = new Attachment({ url: "assets/status-rejected.png", filename: "rejected.png" });
 
@@ -28,7 +29,7 @@ module.exports = class RejectReportButton extends Button {
 		];
 
 		// prettier-ignore
-		if (await ValidationUtils.insufficientPermissions(interaction, generalPermissions)) return;
+		if (await insufficientPermissions(interaction, generalPermissions)) return;
 
 		const embed = interaction.message.embeds[0].data;
 

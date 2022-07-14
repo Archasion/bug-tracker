@@ -2,6 +2,7 @@ const Modal = require("../modules/modals/modal");
 const Guilds = require("../db/models/guilds");
 
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
+const { insufficientPermissions } = ValidationUtils;
 
 module.exports = class ReportPlayerModal extends Modal {
 	constructor(client) {
@@ -35,7 +36,7 @@ module.exports = class ReportPlayerModal extends Modal {
 		];
 
 		// prettier-ignore
-		if (await ValidationUtils.insufficientPermissions(interaction, generalPermissions, submissionChannel)) return;
+		if (await insufficientPermissions(interaction, generalPermissions, submissionChannel)) return;
 
 		const approveButton = new ButtonBuilder({})
 

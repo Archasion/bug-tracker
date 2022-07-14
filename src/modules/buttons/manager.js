@@ -50,6 +50,8 @@ module.exports = class ButtonManager {
 	 * @param {Interaction} interaction - Button message
 	 */
 	async handle(interaction) {
+		const { isDeveloper, isOwner, isAdministrator, isModerator } = ValidationUtils;
+
 		if (!interaction.guild) {
 			return log.debug("Ignoring non-guild button interaction");
 		}
@@ -67,7 +69,7 @@ module.exports = class ButtonManager {
 			case 1:
 				const moderatorRole = settings.roles.moderator;
 
-				if (!(await ValidationUtils.isModerator(interaction.member))) {
+				if (!(await isModerator(interaction.member))) {
 					if (moderatorRole) {
 						interaction.editReply({
 							content: `You must have the <@&${moderatorRole}> role to use this button.`,
@@ -87,7 +89,7 @@ module.exports = class ButtonManager {
 			case 2:
 				const administratorRole = settings.roles.administrator;
 
-				if (!(await ValidationUtils.isAdministrator(interaction.member))) {
+				if (!(await isAdministrator(interaction.member))) {
 					if (administratorRole) {
 						interaction.editReply({
 							content: `You must have the <@&${administratorRole}> role to use this button.`,
@@ -105,7 +107,7 @@ module.exports = class ButtonManager {
 
 				break;
 			case 3:
-				if (!(await ValidationUtils.isOwner(interaction.member))) {
+				if (!(await isOwner(interaction.member))) {
 					interaction.editReply({
 						content: "You must be the owner of this server to use this button.",
 						ephemeral: true
@@ -115,7 +117,7 @@ module.exports = class ButtonManager {
 
 				break;
 			case 4:
-				if (!(await ValidationUtils.isDeveloper(interaction.member.id))) {
+				if (!(await isDeveloper(interaction.member.id))) {
 					interaction.editReply({
 						content: "You must be the developer of the bot to use this button.",
 						ephemeral: true

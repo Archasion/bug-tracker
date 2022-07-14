@@ -1,6 +1,7 @@
 const EventListener = require("../modules/listeners/listener");
 const Guilds = require("../db/models/guilds");
 
+const { isSupportChannel, isDeveloper } = ValidationUtils;
 const { EmbedBuilder } = require("discord.js");
 
 module.exports = class MessageCreateEventListener extends EventListener {
@@ -14,8 +15,8 @@ module.exports = class MessageCreateEventListener extends EventListener {
 			message.delete();
 
 		if (
-			(await ValidationUtils.isSupportChannel(message.channel.id)) &&
-			(await ValidationUtils.isDeveloper(message.author.id)) &&
+			(await isSupportChannel(message.channel.id)) &&
+			(await isDeveloper(message.author.id)) &&
 			message.reference // Message is a reply
 		) {
 			const reference = message.channel.messages.cache.get(message.reference.messageId);

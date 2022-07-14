@@ -1,6 +1,8 @@
 const Button = require("../modules/buttons/button");
 const Guilds = require("../db/models/guilds");
 
+const { insufficientPermissions } = ValidationUtils;
+
 module.exports = class ReportDiscussionThreadButton extends Button {
 	constructor(client) {
 		super(client, {
@@ -24,7 +26,7 @@ module.exports = class ReportDiscussionThreadButton extends Button {
 		];
 
 		// prettier-ignore
-		if (await ValidationUtils.insufficientPermissions(interaction, generalPermissions)) return;
+		if (await insufficientPermissions(interaction, generalPermissions)) return;
 
 		if (interaction.message.hasThread) {
 			interaction.editReply({

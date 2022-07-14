@@ -56,6 +56,8 @@ module.exports = class ModalManager {
 	 * @param {Interaction} interaction - Modal message
 	 */
 	async handle(interaction) {
+		const { isDeveloper, isOwner, isAdministrator, isModerator } = ValidationUtils;
+
 		if (!interaction.guild) {
 			return log.debug("Ignoring non-guild modal interaction");
 		}
@@ -92,7 +94,7 @@ module.exports = class ModalManager {
 			case 1:
 				const moderatorRole = settings.roles.moderator;
 
-				if (!(await ValidationUtils.isModerator(interaction.member))) {
+				if (!(await isModerator(interaction.member))) {
 					if (moderatorRole) {
 						interaction.editReply({
 							content: `You must have the <@&${moderatorRole}> role to use this modal.`,
@@ -112,7 +114,7 @@ module.exports = class ModalManager {
 			case 2:
 				const administratorRole = settings.roles.administrator;
 
-				if (!(await ValidationUtils.isAdministrator(interaction.member))) {
+				if (!(await isAdministrator(interaction.member))) {
 					if (administratorRole) {
 						interaction.editReply({
 							content: `You must have the <@&${administratorRole}> role to use this modal.`,
@@ -130,7 +132,7 @@ module.exports = class ModalManager {
 
 				break;
 			case 3:
-				if (!(await ValidationUtils.isOwner(interaction.member))) {
+				if (!(await isOwner(interaction.member))) {
 					interaction.editReply({
 						content: "You must be the owner of this server to use this modal.",
 						ephemeral: true
@@ -140,7 +142,7 @@ module.exports = class ModalManager {
 
 				break;
 			case 4:
-				if (!(await ValidationUtils.isDeveloper(interaction.member.id))) {
+				if (!(await isDeveloper(interaction.member.id))) {
 					interaction.editReply({
 						content: "You must be the developer of the bot to use this modal.",
 						ephemeral: true

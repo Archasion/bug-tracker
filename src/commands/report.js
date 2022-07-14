@@ -2,6 +2,7 @@ const Command = require("../modules/commands/command");
 const Guilds = require("../db/models/guilds");
 
 const { ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder } = require("discord.js");
+const { insufficientPermissions } = ValidationUtils;
 
 module.exports = class ReportCommand extends Command {
 	constructor(client) {
@@ -160,7 +161,7 @@ module.exports = class ReportCommand extends Command {
 		];
 
 		// prettier-ignore
-		if (await ValidationUtils.insufficientPermissions(interaction, generalPermissions, submissionChannel)) return;
+		if (await insufficientPermissions(interaction, generalPermissions, submissionChannel)) return;
 
 		if (type === "bug") {
 			const bugPermissions = [
@@ -171,7 +172,7 @@ module.exports = class ReportCommand extends Command {
 			];
 
 			// prettier-ignore
-			if (await ValidationUtils.insufficientPermissions(interaction, bugPermissions, submissionChannel)) return;
+			if (await insufficientPermissions(interaction, bugPermissions, submissionChannel)) return;
 		}
 
 		components.forEach(component => {

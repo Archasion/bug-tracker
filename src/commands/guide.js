@@ -1,5 +1,7 @@
 const Command = require("../modules/commands/command");
+
 const { EmbedBuilder, Attachment } = require("discord.js");
+const { isModerator } = ValidationUtils;
 
 const formImage = {
 	bug: new Attachment({ url: "assets/bug-form.png", filename: "bug.png" }),
@@ -58,8 +60,7 @@ module.exports = class GuideCommand extends Command {
 		let publicMessage = interaction.options.getBoolean("public") || false;
 		const type = interaction.options.getString("guide");
 
-		if (!(await ValidationUtils.isModerator(interaction.member)) && publicMessage)
-			publicMessage = false;
+		if (!(await isModerator(interaction.member)) && publicMessage) publicMessage = false;
 
 		let guide;
 
