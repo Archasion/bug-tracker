@@ -1,5 +1,4 @@
 const fs = require("fs");
-const { path } = require("../../utils/fs");
 
 /**
  * Manages the loading of event listeners
@@ -15,7 +14,7 @@ module.exports = class ListenerLoader {
 	}
 
 	load() {
-		const files = fs.readdirSync(path("./src/listeners")).filter(file => file.endsWith(".js"));
+		const files = fs.readdirSync("src/listeners").filter(file => file.endsWith(".js"));
 
 		for (let file of files) {
 			try {

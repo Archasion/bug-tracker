@@ -1,8 +1,7 @@
-const { path } = require("./utils/fs");
 const Logger = require("leekslazylogger");
 module.exports = new Logger({
 	debug: config.debugging,
-	directory: path("./logs/"),
+	directory: "logs",
 	keepFor: 30,
 	levels: {
 		_logger: { format: "&f&!7{timestamp}&r [LOGGER] {text}" },

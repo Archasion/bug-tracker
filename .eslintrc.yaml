@@ -10,6 +10,7 @@ parserOptions:
   sourceType: module
 
 globals:
+  FormattingUtils: readonly
   ValidationUtils: readonly
   tickets: readonly
   action: readonly

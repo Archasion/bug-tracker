@@ -7,12 +7,14 @@ module.exports = class ValidationUtils {
 
 	/**
 	 * Check if the bot has the required permissions
+	 * @param {string} clientId - the ID of the bot
 	 * @param {Interaction} interaction - the interaction
-	 * @param {Array} permissions - the required permissions
+	 * @param {TextChannel} channel - the channel to check permissions in
+	 * @param {Array<PermissionResolvable>} permissions - the required permissions
 	 * @returns {boolean}
 	 */
-	async insufficientPermissions(interaction, permissions, channel = interaction.channel) {
-		const bot = await interaction.guild.members.fetch(this.client.user.id);
+	async insufficientPermissions(clientId, interaction, permissions, channel = interaction.channel) {
+		const bot = await interaction.guild.members.fetch(clientId);
 
 		const missingPermissions = permissions.filter(
 			permission => !bot.permissionsIn(channel).has(permission)

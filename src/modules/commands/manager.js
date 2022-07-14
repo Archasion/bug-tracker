@@ -3,7 +3,6 @@ const Guilds = require("./../../db/models/guilds");
 const Dev = require("./../../db/models/dev");
 
 const fs = require("fs");
-const { path } = require("../../utils/fs");
 
 /**
  * Manages the loading and execution of commands
@@ -31,7 +30,7 @@ module.exports = class CommandManager {
 	}
 
 	load() {
-		const files = fs.readdirSync(path("./src/commands")).filter(file => file.endsWith(".js"));
+		const files = fs.readdirSync("src/commands").filter(file => file.endsWith(".js"));
 
 		for (let file of files) {
 			try {

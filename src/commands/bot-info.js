@@ -2,6 +2,7 @@ const Command = require("../modules/commands/command");
 const Guilds = require("../db/models/guilds");
 
 const { EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require("discord.js");
+const { addCommas } = FormattingUtils;
 
 module.exports = class BotInfoCommand extends Command {
 	constructor(client) {
@@ -28,27 +29,31 @@ module.exports = class BotInfoCommand extends Command {
 		const permissions = bot.permissions.toArray().join("` `") || "None";
 		const { client } = this;
 
+		const stats = await Guilds.aggregate([
+			{
+				$group: {
+					_id: null,
+					bugCount: { $sum: { $size: "$bugs" } },
+					reportCount: { $sum: { $size: "$reports" } },
+					suggestionCount: { $sum: { $size: "$suggestions" } }
+				}
+			}
+		]);
+
+		const { bugCount, reportCount, suggestionCount } = stats[0];
+
 		let memberCount = 0;
 		client.guilds.cache.forEach(guild => {
 			memberCount += guild.memberCount;
 		});
 
-		const bugs = await Guilds.find({ bugs: { $ne: [] } });
-		const reports = await Guilds.find({ reports: { $ne: [] } });
-		const suggestions = await Guilds.find({ busuggestionsgs: { $ne: [] } });
-
-		let bugCount = 0;
-		let reportCount = 0;
-		let suggestionCount = 0;
-
-		for (const item of bugs) bugCount += item.bugs.length;
-		for (const item of reports) reportCount += item.reports.length;
-		for (const item of suggestions) suggestionCount += item.suggestions.length;
-
 		const info = new EmbedBuilder()
 
 			.setColor(config.colors.default)
-			.setAuthor({ name: client.user.tag, iconURL: client.user.avatarURL() })
+			.setAuthor({
+				name: client.user.tag,
+				iconURL: client.user.displayAvatarURL({ dynamic: true })
+			})
 			.setFields([
 				{
 					name: "Created",
@@ -67,32 +72,32 @@ module.exports = class BotInfoCommand extends Command {
 				},
 				{
 					name: "Guilds",
-					value: client.guilds.cache.size.toString(),
+					value: addCommas(client.guilds.cache.size),
 					inline: true
 				},
 				{
 					name: "Channels",
-					value: client.channels.cache.size.toString(),
+					value: addCommas(client.channels.cache.size),
 					inline: true
 				},
 				{
 					name: "Members",
-					value: memberCount.toString(),
+					value: addCommas(memberCount),
 					inline: true
 				},
 				{
 					name: "Bug Reports",
-					value: bugCount.toString(),
+					value: addCommas(bugCount),
 					inline: true
 				},
 				{
 					name: "Player Reports",
-					value: reportCount.toString(),
+					value: addCommas(reportCount),
 					inline: true
 				},
 				{
 					name: "Suggestions",
-					value: suggestionCount.toString(),
+					value: addCommas(suggestionCount),
 					inline: true
 				},
 				{

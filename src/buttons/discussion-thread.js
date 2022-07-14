@@ -26,7 +26,7 @@ module.exports = class ReportDiscussionThreadButton extends Button {
 		];
 
 		// prettier-ignore
-		if (await insufficientPermissions(interaction, generalPermissions)) return;
+		if (await insufficientPermissions(this.client.user.id, interaction, generalPermissions)) return;
 
 		if (interaction.message.hasThread) {
 			interaction.editReply({

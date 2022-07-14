@@ -5,9 +5,7 @@ const fs = require("fs");
 const app = express();
 const port = 80;
 
-const { path } = require("./utils/fs");
-
-const fileContents = fs.readFileSync(path("/src/data/config.yaml"), "utf8");
+const fileContents = fs.readFileSync("src/data/config.yaml", "utf8");
 
 process.title = "Bug Tracker";
 
@@ -17,8 +15,7 @@ global.log = require("./logger");
 app.get("/", (req, res) => res.send("Hello World!"));
 app.listen(port, () => log.success(`Example app listening at http://localhost:${port}`));
 
-require("dotenv").config({ path: path("./.env") });
-require("./utils/functions")();
+require("dotenv").config({ path: ".env" });
 require("./db")();
 
 process.on("unhandledRejection", error => {
@@ -30,7 +27,8 @@ const ListenerLoader = require("./modules/listeners/loader");
 const CommandManager = require("./modules/commands/manager");
 const ButtonManager = require("./modules/buttons/manager");
 const ModalManager = require("./modules/modals/manager");
-const ValidationUtils = require("./utils/discord");
+const ValidationUtils = require("./utils/ValidationUtils");
+const FormattingUtils = require("./utils/FormattingUtils");
 const Cryptr = require("cryptr");
 
 const { Client, GatewayIntentBits, Partials } = require("discord.js");
@@ -65,7 +63,9 @@ class Bot extends Client {
 
 		(async () => {
 			global.cryptr = new Cryptr(process.env.DB_ENCRYPTION_KEY);
+
 			global.ValidationUtils = new ValidationUtils(this);
+			global.FormattingUtils = new FormattingUtils();
 
 			log.info("Connecting to Discord API...");
 

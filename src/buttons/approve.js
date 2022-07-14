@@ -29,7 +29,7 @@ module.exports = class ApproveReportButton extends Button {
 		];
 
 		// prettier-ignore
-		if (await insufficientPermissions(interaction, generalPermissions)) return;
+		if (await insufficientPermissions(this.client.user.id, interaction, generalPermissions)) return;
 
 		const embed = interaction.message.embeds[0].data;
 

@@ -35,10 +35,10 @@ module.exports = class ArchiveReportButton extends Button {
 		];
 
 		// prettier-ignore
-		if (await insufficientPermissions(interaction, generalPermissions)) return;
+		if (await insufficientPermissions(this.client.user.id, interaction, generalPermissions)) return;
 		const archivePermissions = ["ViewChannel", "EmbedLinks", "SendMessages"];
 		// prettier-ignore
-		if (await insufficientPermissions(interaction, archivePermissions, archiveChannel)) return;
+		if (await insufficientPermissions(this.client.user.id, interaction, archivePermissions, archiveChannel)) return;
 
 		const { message } = interaction;
 		const embed = message.embeds[0].data;

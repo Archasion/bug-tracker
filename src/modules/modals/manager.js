@@ -1,8 +1,6 @@
 const { Collection } = require("discord.js");
 
 const fs = require("fs");
-const { path } = require("../../utils/fs");
-
 const Guilds = require("./../../db/models/guilds");
 
 /**
@@ -25,7 +23,7 @@ module.exports = class ModalManager {
 	}
 
 	load() {
-		const files = fs.readdirSync(path("./src/modals")).filter(file => file.endsWith(".js"));
+		const files = fs.readdirSync("src/modals").filter(file => file.endsWith(".js"));
 
 		for (let file of files) {
 			try {
