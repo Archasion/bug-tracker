@@ -10,11 +10,11 @@ parserOptions:
   sourceType: module
 
 globals:
+  ValidationUtils: readonly
   tickets: readonly
   action: readonly
   cryptr: readonly
   config: readonly
-  utils: readonly
   log: readonly
   db: readonly
 
