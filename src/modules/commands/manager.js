@@ -51,22 +51,47 @@ module.exports = class CommandManager {
 	}
 
 	async publish(guild) {
+		const commands = await Promise.all(
+			this.client.commands.commands.map(command => command.build(guild))
+		);
+
 		if (!guild) {
-			return this.client.guilds.cache.forEach(guild => {
-				this.publish(guild);
-			});
+			try {
+				await this.client.application.commands.set(commands);
+				log.success("Successfully PUBLISHED global commands");
+				return;
+			} catch {
+				log.error("Failed to PUBLISH global commands");
+			}
 		}
 
 		try {
-			const commands = await Promise.all(
-				this.client.commands.commands.map(command => command.build(guild))
-			);
 			await this.client.application.commands.set(commands, guild.id);
 			log.success(
-				`Published ${this.client.commands.commands.size} commands to "${guild.name}"`
+				`PUBLISHED ${this.client.commands.commands.size} commands to "${guild.name}"`
 			);
 		} catch {
-			log.warn("An error occurred whilst publishing the commands");
+			log.warn(`An error occurred whilst PUBLISHING commands in "${guild.name}"`);
+		}
+	}
+
+	async remove(guildId, guildName = "Unknown Guild") {
+		if (!guildId) {
+			try {
+				this.client.application.commands.set([]);
+				log.error("Successfully DELETED global commands");
+
+				return;
+			} catch {
+				log.warn("Failed to DELETE global commands");
+			}
+		}
+
+		try {
+			this.client.application.commands.set([], guildId);
+			log.error(`DELETED all commands from "${guildName}"`);
+		} catch {
+			log.warn(`An error occurred whilst DELETING commands in "${guildName}"`);
 		}
 	}
 
@@ -77,12 +102,13 @@ module.exports = class CommandManager {
 	async handle(interaction) {
 		const { isDeveloper, isOwner, isAdministrator, isModerator } = ValidationUtils;
 
-		if (!interaction.guild) {
-			return log.debug("Ignoring non-guild command interaction");
-		}
-
 		const command = this.commands.get(interaction.commandName);
 		if (!command) {
+			return;
+		}
+
+		if (!interaction.inGuild()) {
+			interaction.reply({ content: "Commands are unavailable in DMs.", ephemeral: true });
 			return;
 		}
 

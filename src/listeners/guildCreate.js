@@ -7,20 +7,13 @@ module.exports = class GuildCreateEventListener extends EventListener {
 	}
 
 	async execute(guild) {
-		this.client.commands.publish(guild);
+		const settings = await Guilds.findOne({ id: guild.id });
 
-		await Guilds.findOne({ id: guild.id }, (err, settings) => {
-			if (err) {
-				log.error(err);
-				return;
-			}
-
-			if (!settings) {
-				const newGuild = new Guilds({ id: guild.id });
-				newGuild.save().then(() => {
-					log.info(`Created new guild configuration: ${guild.name} - ${guild.id}`);
-				});
-			}
-		});
+		if (!settings) {
+			const newGuild = new Guilds({ id: guild.id });
+			newGuild.save().then(() => {
+				log.info(`Created new guild configuration: ${guild.name} - ${guild.id}`);
+			});
+		}
 	}
 };
