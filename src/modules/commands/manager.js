@@ -75,10 +75,10 @@ module.exports = class CommandManager {
 		}
 	}
 
-	async remove(guildId, guildName = "Unknown Guild") {
-		if (!guildId) {
+	async remove(guild) {
+		if (!guild) {
 			try {
-				this.client.application.commands.set([]);
+				await this.client.application.commands.set([]);
 				log.error("Successfully DELETED global commands");
 
 				return;
@@ -88,10 +88,13 @@ module.exports = class CommandManager {
 		}
 
 		try {
-			this.client.application.commands.set([], guildId);
-			log.error(`DELETED all commands from "${guildName}"`);
-		} catch {
-			log.warn(`An error occurred whilst DELETING commands in "${guildName}"`);
+			await this.client.application.commands.set([], guild.id);
+			log.error(`DELETED all commands from "${guild.name}"`);
+		} catch (err) {
+			if (err.rawError.code === 50001) {
+				await guild.leave();
+				log.error(`Left "${guild.name}" due to lack of scopes`);
+			} else log.warn(`An error occurred whilst DELETING commands in "${guild.name}"`);
 		}
 	}
 

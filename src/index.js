@@ -20,7 +20,7 @@ require("./db")();
 
 process.on("unhandledRejection", error => {
 	if (error instanceof Error) log.warn(`Uncaught ${error.name} (${error.message})`);
-	if (error.message !== "Missing Access") log.error(error);
+	// if (error.message !== "Missing Access") log.error(error);
 });
 
 const ListenerLoader = require("./modules/listeners/loader");
