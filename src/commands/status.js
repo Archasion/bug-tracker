@@ -14,7 +14,8 @@ const priorityImage = {
 const statusImage = {
 	approved: new Attachment({ url: "assets/status-approved.png", filename: "approved.png" }),
 	rejected: new Attachment({ url: "assets/status-rejected.png", filename: "rejected.png" }),
-	fixed: new Attachment({ url: "assets/status-fixed.png", filename: "fixed.png" })
+	fixed: new Attachment({ url: "assets/status-fixed.png", filename: "fixed.png" }),
+	considered: new Attachment({ url: "assets/status-considered.png", filename: "considered.png" })
 };
 
 module.exports = class StatusCommand extends Command {
@@ -181,7 +182,7 @@ module.exports = class StatusCommand extends Command {
 
 		// ANCHOR Change bug report status
 		if (type === "bugs") {
-			if (status === "implemented" || status === "considered") {
+			if (status === "implemented") {
 				interaction.editReply({
 					content: "This status is not applicable to bugs",
 					ephemeral: true
@@ -216,7 +217,7 @@ module.exports = class StatusCommand extends Command {
 
 		// ANCHOR Change player report status
 		if (type === "reports") {
-			if (status === "implemented" || status === "considered" || status === "fixed") {
+			if (status === "implemented" || status === "fixed") {
 				interaction.editReply({
 					content: "This status is not applicable to bugs",
 					ephemeral: true
