@@ -113,12 +113,15 @@ module.exports = class ViewCommand extends Command {
 					{
 						name: "Description",
 						value: report.description
-					},
-					{
-						name: "System Specs",
-						value: report.specs
 					}
 				]);
+
+				if (report.specs)
+					embed.data.fields.push({
+						name: "System Specs",
+						value: report.specs
+					});
+
 				break;
 
 			case "reports":
