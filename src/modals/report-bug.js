@@ -98,11 +98,6 @@ module.exports = class ReportBugModal extends Modal {
 					name: "Description",
 					value: description,
 					inline: false
-				},
-				{
-					name: "System Specs",
-					value: specs,
-					inline: false
 				}
 			])
 			.setColor(config.colors.priority[priority.toLowerCase()])
@@ -111,6 +106,13 @@ module.exports = class ReportBugModal extends Modal {
 			.setFooter({ text: `#${settings.bugs.length + 1}` })
 			.setThumbnail(`attachment://${priority}.png`)
 			.setTimestamp();
+
+		if (specs)
+			report.data.fields.push({
+				name: "System Specs",
+				value: specs,
+				inline: false
+			});
 
 		submissionChannel
 			.send({

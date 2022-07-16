@@ -196,6 +196,8 @@ module.exports = class StatusCommand extends Command {
 
 			if (reason && status !== "active") {
 				if (embed.fields[3]) embed.fields[3].value = reason;
+				else if (embed.fields[2]?.name === "Status Reason")
+					embed.fields[2].value = reason;
 				else {
 					embed.fields.push({
 						name: "Status Reason",
@@ -211,7 +213,8 @@ module.exports = class StatusCommand extends Command {
 				embed.thumbnail.url = `attachment://${report.priority}.png`;
 				file.push(priorityImage[report.priority]);
 
-				if (embed.fields[3]) embed.fields.splice(3, 1);
+				if (embed.fields[3] || embed.fields[2]?.name === "Status Reason")
+					embed.fields.pop();
 			}
 		}
 

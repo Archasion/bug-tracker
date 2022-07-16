@@ -98,8 +98,8 @@ module.exports = class ReportCommand extends Command {
 				.setLabel("System Specs")
 				.setMinLength(6)
 				.setMaxLength(1024)
-				.setPlaceholder("Please enter your system specs...")
-				.setRequired(true)
+				.setPlaceholder("(optional) Please enter your system specs...")
+				.setRequired(false)
 				.setValue("")
 				.setStyle(TextInputStyle.Paragraph);
 
