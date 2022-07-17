@@ -1,0 +1,25 @@
+{
+  "name": "bug-tracker",
+  "version": "1.0.0",
+  "description": "A bug tracking utility for developers",
+  "main": "dist/Bot.js",
+  "scripts": {
+    "test": "node dist/Bot.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Archasion/BugTracker.ts.git"
+  },
+  "author": "Archasion",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Archasion/BugTracker.ts/issues"
+  },
+  "homepage": "https://github.com/Archasion/BugTracker.ts#readme",
+  "dependencies": {
+    "discord.js": "^14.0.0-dev.1657757514-fe34f48",
+    "dotenv": "^16.0.1",
+    "fs": "^0.0.1-security",
+    "path": "^0.12.7"
+  }
+}
