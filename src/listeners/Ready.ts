@@ -1,15 +1,20 @@
 import EventListener from "../modules/listeners/Listener";
-import { Client } from "discord.js";
+import Bot from "../Bot";
 
 module.exports = class ReadyEventListener extends EventListener {
-      constructor(client: Client) {
+      declare client: Bot;
+
+      constructor(client: Bot) {
             super(client, {
                   name: "ready",
                   once: true
             });
       }
 
-      public static async execute(client: Client) {
+      public static async execute(client: Bot) {
             console.log(`${client.user?.tag} is online!`);
+
+            client.commands.load();
+            client.commands.publish();
       }
 }

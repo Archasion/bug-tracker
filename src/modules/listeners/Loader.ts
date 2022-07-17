@@ -11,9 +11,9 @@ export default class ListenerLoader {
                   const data = new EventListener(client);
 
                   if (data.once) {
-                        client.once(data.name, (...args) => EventListener.execute(client, ...args));
+                        client.once(data.name, (...args) => EventListener.execute(...args));
                   } else {
-                        client.on(data.name, (...args) => EventListener.execute(client, ...args));
+                        client.on(data.name, (...args) => EventListener.execute(...args));
                   }
             }
       }
