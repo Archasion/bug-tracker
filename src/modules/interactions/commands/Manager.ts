@@ -1,4 +1,4 @@
-import { ApplicationCommandDataResolvable, ChatInputCommandInteraction, Collection, Interaction } from "discord.js";
+import { ApplicationCommandDataResolvable, CommandInteraction, Collection } from "discord.js";
 import Command from "./Command";
 import Bot from "../../../Bot";
 import path from "path";
@@ -41,7 +41,7 @@ export default class CommandHandler {
             }
       }
 
-      public async handle(interaction: ChatInputCommandInteraction) {
+      public async handle(interaction: CommandInteraction) {
             const command = this.commands.get(interaction.commandName);
 
             if (!command) {

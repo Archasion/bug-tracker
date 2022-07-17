@@ -1,11 +1,11 @@
-import { Client } from "discord.js";
+import Bot from "../../Bot";
 
 export default class EventListener {
-      client: Client;
+      client: Bot;
       name: string;
       once: boolean;
 
-      constructor(client: Client, data: { name: string; once: boolean; }) {
+      constructor(client: Bot, data: { name: string; once: boolean; }) {
             this.client = client;
             this.name = data.name;
             this.once = data.once;
