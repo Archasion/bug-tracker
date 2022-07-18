@@ -16,7 +16,7 @@ export default class HelpCommand extends Command {
 
       async execute(interaction: ChatInputCommandInteraction) {
 		const level = await RestrictionUtils.getRestrictionLevel(interaction.member as GuildMember);
-		const commands = this.client.commands.commands.filter(command => command.restriction <= level);
+		const commands = this.manager.commands.filter(command => command.restriction <= level);
 
 		const commandList = new EmbedBuilder()
 			.setColor(Properties.colors.default)

@@ -1,5 +1,7 @@
 import { ApplicationCommandOptionData, ChatInputApplicationCommandData } from "discord.js";
 import { RestrictionLevel } from "../../../utils/RestrictionUtils";
+
+import CommandHandler from "./Manager";
 import Bot from "../../../Bot";
 
 type CustomApplicationCommandData = ChatInputApplicationCommandData & {
@@ -9,6 +11,7 @@ type CustomApplicationCommandData = ChatInputApplicationCommandData & {
 
 export default class Command {
       client: Bot;
+      manager: CommandHandler;
       restriction: RestrictionLevel;
       modalResponse: boolean;
       name: string;
@@ -17,6 +20,7 @@ export default class Command {
 
       constructor(client: Bot, data: CustomApplicationCommandData) {
             this.client = client;
+            this.manager = client.commands;
             this.restriction = data.restriction;
             this.modalResponse = data.modalResponse ?? false;
             this.name = data.name;
