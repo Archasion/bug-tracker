@@ -61,6 +61,11 @@ export default class CommandHandler {
                   return;
             }
             
-            await command.execute(interaction, this.client);
+            try {
+                  await command.execute(interaction, this.client);
+            } catch (err) {
+                  console.log(`Failed to execute command: ${command.name}`);
+                  console.error(err);
+            }
       }
 }
