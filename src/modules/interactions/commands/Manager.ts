@@ -52,13 +52,13 @@ export default class CommandHandler {
                   return;
             }
 
+            if (!command.modalResponse) await interaction.deferReply({ ephemeral: true });
+
             if (!await RestrictionUtils.verifyAccess(command.restriction, interaction.member as GuildMember)) {
-                  interaction.reply({
+                  interaction.editReply({
                         content:
                               `You are **below** the required restriction level for this command: \`${RestrictionLevel[command.restriction]}\`\n`
                               + `Your restriction level: \`${await RestrictionUtils.getRestrictionLevel(interaction.member as GuildMember)}\``,
-                        
-                        ephemeral: true
                   });
                   return;
             }

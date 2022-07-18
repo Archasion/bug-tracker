@@ -13,7 +13,7 @@ export default class HelpCommand extends Command {
             });
       }
 
-      async execute(interaction: ChatInputCommandInteraction, client: Client) {
-            interaction.reply("Works!");
+      async execute(interaction: ChatInputCommandInteraction) {
+            interaction.editReply("Works!");
       }
 }
