@@ -4,11 +4,13 @@ import Bot from "../../../Bot";
 
 type CustomApplicationCommandData = ChatInputApplicationCommandData & {
       restriction: RestrictionLevel;
+      modalResponse?: boolean;
 }
 
 export default class Command {
       client: Bot;
       restriction: RestrictionLevel;
+      modalResponse: boolean;
       name: string;
       description: string;
       options?: ApplicationCommandOptionData[];
@@ -16,6 +18,7 @@ export default class Command {
       constructor(client: Bot, data: CustomApplicationCommandData) {
             this.client = client;
             this.restriction = data.restriction;
+            this.modalResponse = data.modalResponse ?? false;
             this.name = data.name;
             this.description = data.description;
             this.options = data.options ?? [];
