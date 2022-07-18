@@ -1,8 +1,10 @@
 import { ApplicationCommandDataResolvable, CommandInteraction, Collection, GuildMember } from "discord.js";
 import RestrictionUtils, { RestrictionLevel } from "../../../utils/RestrictionUtils";
 
+import Properties from "../../../data/Properties";
 import Command from "./Command";
 import Bot from "../../../Bot";
+import clc from "cli-color";
 import path from "path";
 import fs from "fs";
 
@@ -27,7 +29,7 @@ export default class CommandHandler {
 
       public async register(command: Command) {
             this.commands.set(command.name, command);
-            console.log(`Registered command: "${command.name}"`);
+            console.log(`%s Registered command: "${command.name}"`, Properties.cli.modules.commands);
       }
 
       public async publish() {
@@ -37,7 +39,7 @@ export default class CommandHandler {
 
             try {
                   await this.client.application?.commands.set(commands);
-                  console.log(`Successfully loaded ${this.client.commands.commands.size} commands!`);
+                  console.log(clc.green(`(COMMANDS) Successfully loaded ${this.client.commands.commands.size} commands!`));
             } catch (err) {
                   console.error(err);
             }
@@ -63,6 +65,7 @@ export default class CommandHandler {
             
             try {
                   await command.execute(interaction, this.client);
+                  console.log(`%s Command "${command.name}" executed by ${interaction.user.tag} %s`, Properties.cli.modules.commands, clc.blackBright(`(guildId: ${interaction.guildId})`));
             } catch (err) {
                   console.log(`Failed to execute command: ${command.name}`);
                   console.error(err);

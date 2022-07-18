@@ -11,7 +11,7 @@ module.exports = class ReadyEventListener extends EventListener {
       }
 
       public async execute(client: Bot) {
-            console.log(`${clc.green("(READY)")} ${client.user?.tag} is online!`);
+            console.log(clc.green(`(EVENTS) ${client.user?.tag} is online!`));
 
             client.commands.load();
             client.commands.publish();
