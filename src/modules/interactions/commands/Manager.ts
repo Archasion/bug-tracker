@@ -58,7 +58,7 @@ export default class CommandHandler {
                   interaction.editReply({
                         content:
                               `You are **below** the required restriction level for this command: \`${RestrictionLevel[command.restriction]}\`\n`
-                              + `Your restriction level: \`${await RestrictionUtils.getRestrictionLevel(interaction.member as GuildMember)}\``,
+                              + `Your restriction level: \`${await RestrictionUtils.getRestrictionLabel(interaction.member as GuildMember)}\``,
                   });
                   return;
             }

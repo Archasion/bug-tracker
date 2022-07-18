@@ -11,20 +11,22 @@ export enum RestrictionLevel {
 }
 
 export default class RestrictionUtils {
-      public static async getRestrictionLevel(member: GuildMember ): Promise<string> {
-            if (await this.isDeveloper(member))
-                  return RestrictionLevel[4];
-            
-            if (await this.isOwner(member))
-                  return RestrictionLevel[3];
-            
-            if (await this.isAdministrator(member))
-                  return RestrictionLevel[2];
-            
-            if (await this.isModerator(member))
-                  return RestrictionLevel[1];
+      public static async getRestrictionLabel(member: GuildMember ): Promise<string> {
+            if (await this.isDeveloper(member)) return RestrictionLevel[4];
+            if (await this.isOwner(member)) return RestrictionLevel[3];
+            if (await this.isAdministrator(member)) return RestrictionLevel[2];
+            if (await this.isModerator(member)) return RestrictionLevel[1];
             
             return RestrictionLevel[0];
+      }
+
+      public static async getRestrictionLevel(member: GuildMember ): Promise<number> {
+            if (await this.isDeveloper(member)) return RestrictionLevel.Developer;
+            if (await this.isOwner(member)) return RestrictionLevel.Owner;
+            if (await this.isAdministrator(member)) return RestrictionLevel.Administrator;
+            if (await this.isModerator(member)) return RestrictionLevel.Moderator;
+
+            return RestrictionLevel.Public;
       }
 
       public static async verifyAccess(level: RestrictionLevel, member: GuildMember ): Promise<boolean> {
