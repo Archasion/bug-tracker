@@ -1,4 +1,4 @@
-import { ApplicationCommandDataResolvable, CommandInteraction, Collection, GuildMember } from "discord.js";
+import { ApplicationCommandDataResolvable, Collection, GuildMember, ChatInputCommandInteraction } from "discord.js";
 import RestrictionUtils, { RestrictionLevel } from "../../../utils/RestrictionUtils";
 
 import Properties from "../../../data/Properties";
@@ -45,7 +45,7 @@ export default class CommandHandler {
             }
       }
 
-      public async handle(interaction: CommandInteraction) {
+      public async handle(interaction: ChatInputCommandInteraction) {
             const command = this.commands.get(interaction.commandName);
 
             if (!command) {

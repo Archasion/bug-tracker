@@ -1,4 +1,4 @@
-import { CommandInteraction, Collection, GuildMember } from "discord.js";
+import { Collection, GuildMember, ButtonInteraction } from "discord.js";
 import RestrictionUtils, { RestrictionLevel } from "../../../utils/RestrictionUtils";
 
 import Properties from "../../../data/Properties";
@@ -32,8 +32,8 @@ export default class CommandHandler {
             console.log(`%s Registered command: "${button.name}"`, Properties.cli.modules.buttons);
       }
 
-      public async handle(interaction: CommandInteraction) {
-            const button = this.buttons.get(interaction.commandName);
+      public async handle(interaction: ButtonInteraction) {
+            const button = this.buttons.get(interaction.customId);
 
             if (!button) {
                   return;
