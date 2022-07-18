@@ -17,9 +17,14 @@
   },
   "homepage": "https://github.com/Archasion/BugTracker.ts#readme",
   "dependencies": {
+    "cli-color": "^2.0.3",
     "discord.js": "^14.0.0-dev.1657757514-fe34f48",
     "dotenv": "^16.0.1",
     "fs": "^0.0.1-security",
+    "mongoose": "^6.4.5",
     "path": "^0.12.7"
+  },
+  "devDependencies": {
+    "@types/cli-color": "^2.0.2"
   }
 }
