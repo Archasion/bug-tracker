@@ -1,4 +1,6 @@
-import { ApplicationCommandDataResolvable, CommandInteraction, Collection } from "discord.js";
+import { ApplicationCommandDataResolvable, CommandInteraction, Collection, GuildMember } from "discord.js";
+import RestrictionUtils, { RestrictionLevel } from "../../../utils/RestrictionUtils";
+
 import Command from "./Command";
 import Bot from "../../../Bot";
 import path from "path";
@@ -45,6 +47,17 @@ export default class CommandHandler {
             const command = this.commands.get(interaction.commandName);
 
             if (!command) {
+                  return;
+            }
+
+            if (!await RestrictionUtils.verifyAccess(command.restriction, interaction.member as GuildMember)) {
+                  interaction.reply({
+                        content:
+                              `You are **below** the required restriction level for this command: \`${RestrictionLevel[command.restriction]}\`\n`
+                              + `Your restriction level: \`${await RestrictionUtils.getRestrictionLevel(interaction.member as GuildMember)}\``,
+                        
+                        ephemeral: true
+                  });
                   return;
             }
             
