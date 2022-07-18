@@ -1,4 +1,5 @@
 import CommandHandler from "./modules/interactions/commands/Manager";
+import ButtonHandler from "./modules/interactions/buttons/Manager";
 import ListenerLoader from "./modules/listeners/Loader";
 import "dotenv/config";
 
@@ -8,6 +9,7 @@ require("./db/Manager")();
 
 export default class Bot extends Client {
       commands!: CommandHandler;
+      buttons!: ButtonHandler;
 
       constructor() {
             super({
@@ -27,6 +29,7 @@ export default class Bot extends Client {
 
             (async () => {
                   this.commands = new CommandHandler(this);
+                  this.buttons = new ButtonHandler(this);
 
                   const listeners = new ListenerLoader(this);
                   listeners.load();
