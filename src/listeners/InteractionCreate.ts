@@ -1,17 +1,19 @@
 import EventListener from "../modules/listeners/Listener";
-import { Client, CommandInteraction, Interaction, InteractionType } from "discord.js";
+import Bot from "../Bot";
+
+import { CommandInteraction, InteractionType } from "discord.js";
 
 module.exports = class InteractionCreateEventListener extends EventListener {
-      constructor(client: Client) {
+      constructor(client: Bot) {
             super(client, {
                   name: "interactionCreate",
                   once: false
             });
       }
 
-      public static async execute(interaction: CommandInteraction) {
+      public async execute(interaction: CommandInteraction) {
             if (interaction.type === InteractionType.ApplicationCommand) {
-                  interaction.reply("Works!");
+                  this.client.commands.handle(interaction);
             }
       }
 }
