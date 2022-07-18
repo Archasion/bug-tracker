@@ -14,7 +14,7 @@ export default class HelpCommand extends Command {
             });
       }
 
-      async execute(interaction: ChatInputCommandInteraction) {
+      async execute(interaction: ChatInputCommandInteraction): Promise<void> {
 		const level = await RestrictionUtils.getRestrictionLevel(interaction.member as GuildMember);
 		const commands = this.manager.commands.filter(command => command.restriction <= level);
 
@@ -35,6 +35,8 @@ export default class HelpCommand extends Command {
 
 		await interaction.editReply({
 			embeds: [commandList]
-		});
+            });
+            
+            return;
       }
 }
