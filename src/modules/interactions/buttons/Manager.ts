@@ -52,7 +52,7 @@ export default class CommandHandler {
             
             try {
                   await button.execute(interaction, this.client);
-                  console.log(`%s "${button.name}" executed by ${interaction.user.tag} %s`, Properties.cli.modules.buttons, clc.blackBright(`(guildId: ${interaction.guildId})`));
+                  console.log(`%s "${button.name}" executed by ${interaction.user.tag} %s`, Properties.cli.modules.buttons, clc.blackBright(`("${interaction.guild?.name}" • ${interaction.guildId})`));
             } catch (err) {
                   console.log(`Failed to execute button: ${button.name}`);
                   console.error(err);

@@ -65,7 +65,7 @@ export default class CommandHandler {
             
             try {
                   await command.execute(interaction, this.client);
-                  console.log(`%s "${command.name}" executed by ${interaction.user.tag} %s`, Properties.cli.modules.commands, clc.blackBright(`(guildId: ${interaction.guildId})`));
+                  console.log(`%s "${command.name}" executed by ${interaction.user.tag} %s`, Properties.cli.modules.commands, clc.blackBright(`("${interaction.guild?.name}" • ${interaction.guildId})`));
             } catch (err) {
                   console.log(`Failed to execute command: ${command.name}`);
                   console.error(err);

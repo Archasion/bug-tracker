@@ -66,7 +66,7 @@ export default class CommandHandler {
             
             try {
                   await modal.execute(interaction, this.client);
-                  console.log(`%s "${modalName}" executed by ${interaction.user.tag} %s`, Properties.cli.modules.modals, clc.blackBright(`(guildId: ${interaction.guildId})`));
+                  console.log(`%s "${modalName}" executed by ${interaction.user.tag} %s`, Properties.cli.modules.modals, clc.blackBright(`("${interaction.guild?.name}" • ${interaction.guildId})`));
             } catch (err) {
                   console.log(`Failed to execute modal: ${modal.name}`);
                   console.error(err);
