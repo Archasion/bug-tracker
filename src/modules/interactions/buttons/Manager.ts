@@ -18,10 +18,10 @@ export default class CommandHandler {
       }
 
       public async load() {
-            const commandFiles = fs.readdirSync(path.join(__dirname, "../../../interactions/buttons"))
+            const files = fs.readdirSync(path.join(__dirname, "../../../interactions/buttons"))
                   .filter(file => file.endsWith(".js"));
 
-            for (const file of commandFiles) {
+            for (const file of files) {
                   const button = require(path.join(__dirname, "../../../interactions/buttons", file)).default;
                   new button(this.client);
             }

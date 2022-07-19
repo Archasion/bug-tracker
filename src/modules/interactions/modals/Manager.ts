@@ -18,10 +18,10 @@ export default class CommandHandler {
       }
 
       public async load() {
-            const commandFiles = fs.readdirSync(path.join(__dirname, "../../../interactions/modals"))
+            const files = fs.readdirSync(path.join(__dirname, "../../../interactions/modals"))
                   .filter(file => file.endsWith(".js"));
 
-            for (const file of commandFiles) {
+            for (const file of files) {
                   const modal = require(path.join(__dirname, "../../../interactions/modals", file)).default;
                   new modal(this.client);
             }

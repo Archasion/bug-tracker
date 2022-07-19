@@ -10,9 +10,9 @@ export default class ListenerLoader {
       }
 
       public async load() {
-            const listenerFiles = fs.readdirSync(path.join(__dirname, "../../listeners")).filter(file => file.endsWith(".js"));
+            let files = fs.readdirSync(path.join(__dirname, "../../listeners")).filter(file => file.endsWith(".js"));
 
-            for (const file of listenerFiles) {
+            for (const file of files) {
                   const EventListener = require(path.join(__dirname, "../../listeners", file));
                   const listener = new EventListener(this.client);
 
