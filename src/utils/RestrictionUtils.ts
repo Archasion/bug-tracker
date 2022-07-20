@@ -67,8 +67,8 @@ export default class RestrictionUtils {
       // }
 
       public static async isModerator(member: GuildMember): Promise<boolean> {
-            const configuresRoles = await Guilds.findOne({ id: member.guild.id }, { roles: 1, _id: 0 }) as { [key: string]: string };
-            const moderatorRole = configuresRoles?.moderator;
+            const guildConfig = await Guilds.findOne({ id: member.guild.id }, { roles: 1, _id: 0 }) as any;
+            const moderatorRole = guildConfig?.roles.moderator;
             
             if (
                   (moderatorRole && member.roles.cache.has(moderatorRole)) ||
@@ -80,8 +80,8 @@ export default class RestrictionUtils {
       }
 
       public static async isAdministrator(member: GuildMember): Promise<boolean> {
-            const configuresRoles = await Guilds.findOne({ id: member.guild.id }, { roles: 1, _id: 0 }) as { [key: string]: string };
-            const administratorRole = configuresRoles?.administrator;
+            const guildConfig = await Guilds.findOne({ id: member.guild.id }, { roles: 1, _id: 0 }) as any;
+            const administratorRole = guildConfig?.roles.administrator;
             
             if (
                   (administratorRole && member.roles.cache.has(administratorRole)) ||
