@@ -17,7 +17,7 @@ export default class RestrictionUtils {
             if (await this.isOwner(member)) return "Owner";
             if (await this.isAdministrator(member)) return "Administrator";
             if (await this.isModerator(member)) return "Moderator";
-            if (await this.isReviewer(member)) return "Reviewer";
+            // if (await this.isReviewer(member)) return "Reviewer";
             
             return "Public";
       }
@@ -27,7 +27,7 @@ export default class RestrictionUtils {
             if (await this.isOwner(member)) return RestrictionLevel.Owner;
             if (await this.isAdministrator(member)) return RestrictionLevel.Administrator;
             if (await this.isModerator(member)) return RestrictionLevel.Moderator;
-            if (await this.isReviewer(member)) return RestrictionLevel.Reviewer;
+            // if (await this.isReviewer(member)) return RestrictionLevel.Reviewer;
 
             return RestrictionLevel.Public;
       }
@@ -37,8 +37,8 @@ export default class RestrictionUtils {
                   case RestrictionLevel.Public:
                         return true;
                   
-                  case RestrictionLevel.Reviewer:
-                        return await this.isReviewer(member);
+                  // case RestrictionLevel.Reviewer:
+                  //       return await this.isReviewer(member);
                   
                   case RestrictionLevel.Moderator:
                         return await this.isModerator(member);
@@ -57,18 +57,18 @@ export default class RestrictionUtils {
             }
       }
 
-      public static async isReviewer(member: GuildMember): Promise<boolean> {
-            const guildSettings = await Guilds.findOne({ id: member.guild.id });
-            const reviewerRole = guildSettings?.roles.reviewer;
+      // public static async isReviewer(member: GuildMember): Promise<boolean> {
+      //       const guildSettings = await Guilds.findOne({ id: member.guild.id });
+      //       const reviewerRole = guildSettings?.roles.reviewer;
             
-            if (reviewerRole && member.roles.cache.has(reviewerRole))return true;
+      //       if (reviewerRole && member.roles.cache.has(reviewerRole))return true;
 
-            return await this.isModerator(member);
-      }
+      //       return await this.isModerator(member);
+      // }
 
       public static async isModerator(member: GuildMember): Promise<boolean> {
-            const guildSettings = await Guilds.findOne({ id: member.guild.id });
-            const moderatorRole = guildSettings?.roles.moderator;
+            const configuresRoles = await Guilds.findOne({ id: member.guild.id }, { roles: 1, _id: 0 }) as any;
+            const moderatorRole = configuresRoles?.moderator;
             
             if (
                   (moderatorRole && member.roles.cache.has(moderatorRole)) ||
@@ -80,8 +80,8 @@ export default class RestrictionUtils {
       }
 
       public static async isAdministrator(member: GuildMember): Promise<boolean> {
-            const guildSettings = await Guilds.findOne({ id: member.guild.id });
-            const administratorRole = guildSettings?.roles.administrator;
+            const configuresRoles = await Guilds.findOne({ id: member.guild.id }, { roles: 1, _id: 0 }) as any;
+            const administratorRole = configuresRoles?.administrator;
             
             if (
                   (administratorRole && member.roles.cache.has(administratorRole)) ||
