@@ -4,20 +4,22 @@ import { GuildMember } from "discord.js";
 
 export enum RestrictionLevel {
       Public = 0,
-      Moderator = 1,
-      Administrator = 2,
-      Owner = 3,
-      Developer = 4
+      Reviewer = 1,
+      Moderator = 2,
+      Administrator = 3,
+      Owner = 4,
+      Developer = 5
 }
 
 export default class RestrictionUtils {
       public static async getRestrictionLabel(member: GuildMember ): Promise<string> {
-            if (await this.isDeveloper(member)) return RestrictionLevel[4];
-            if (await this.isOwner(member)) return RestrictionLevel[3];
-            if (await this.isAdministrator(member)) return RestrictionLevel[2];
-            if (await this.isModerator(member)) return RestrictionLevel[1];
+            if (await this.isDeveloper(member)) return "Developer";
+            if (await this.isOwner(member)) return "Owner";
+            if (await this.isAdministrator(member)) return "Administrator";
+            if (await this.isModerator(member)) return "Moderator";
+            if (await this.isReviewer(member)) return "Reviewer";
             
-            return RestrictionLevel[0];
+            return "Public";
       }
 
       public static async getRestrictionLevel(member: GuildMember ): Promise<number> {
@@ -25,6 +27,7 @@ export default class RestrictionUtils {
             if (await this.isOwner(member)) return RestrictionLevel.Owner;
             if (await this.isAdministrator(member)) return RestrictionLevel.Administrator;
             if (await this.isModerator(member)) return RestrictionLevel.Moderator;
+            if (await this.isReviewer(member)) return RestrictionLevel.Reviewer;
 
             return RestrictionLevel.Public;
       }
@@ -33,6 +36,9 @@ export default class RestrictionUtils {
             switch (level) {
                   case RestrictionLevel.Public:
                         return true;
+                  
+                  case RestrictionLevel.Reviewer:
+                        return await this.isReviewer(member);
                   
                   case RestrictionLevel.Moderator:
                         return await this.isModerator(member);
@@ -49,6 +55,15 @@ export default class RestrictionUtils {
                   default:
                         return false;
             }
+      }
+
+      public static async isReviewer(member: GuildMember): Promise<boolean> {
+            const guildSettings = await Guilds.findOne({ id: member.guild.id });
+            const reviewerRole = guildSettings?.roles.reviewer;
+            
+            if (reviewerRole && member.roles.cache.has(reviewerRole))return true;
+
+            return await this.isModerator(member);
       }
 
       public static async isModerator(member: GuildMember): Promise<boolean> {
