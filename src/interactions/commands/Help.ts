@@ -2,7 +2,7 @@ import Command from "../../modules/interactions/commands/Command";
 import Properties from "../../data/Properties";
 import Bot from "../../Bot";
 
-import { ChatInputCommandInteraction, EmbedBuilder, GuildMember } from "discord.js";
+import { ApplicationCommandType, ChatInputCommandInteraction, EmbedBuilder, GuildMember } from "discord.js";
 import RestrictionUtils, { RestrictionLevel } from "../../utils/RestrictionUtils";
 
 export default class HelpCommand extends Command {
@@ -11,6 +11,7 @@ export default class HelpCommand extends Command {
                   name: "help",
                   description: "Shows all commands",
                   restriction: RestrictionLevel.Public,
+                  type: ApplicationCommandType.ChatInput,
             });
       }
 

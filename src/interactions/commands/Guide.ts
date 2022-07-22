@@ -3,7 +3,7 @@ import Properties from "../../data/Properties";
 import Guides from "../../data/Guides";
 import Bot from "../../Bot";
 
-import { ApplicationCommandOptionType, ChatInputCommandInteraction, EmbedBuilder, GuildMember } from "discord.js";
+import { ApplicationCommandOptionType, ApplicationCommandType, ChatInputCommandInteraction, EmbedBuilder, GuildMember } from "discord.js";
 import RestrictionUtils, { RestrictionLevel } from "../../utils/RestrictionUtils";
 import PermissionUtils from "../../utils/PermissionUtils";
 
@@ -13,6 +13,7 @@ export default class GuideCommand extends Command {
 			name: "guide",
 			description: "View guides on certain usages of the bot.",
 			restriction: RestrictionLevel.Public,
+                  type: ApplicationCommandType.ChatInput,
 			options: [
                         {
                               name: "topic",

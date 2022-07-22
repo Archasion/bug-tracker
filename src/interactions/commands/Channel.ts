@@ -3,7 +3,7 @@ import PermissionUtils from "../../utils/PermissionUtils";
 import Guilds from "../../db/models/Guilds";
 import Bot from "../../Bot";
 
-import { ApplicationCommandChoicesData, ApplicationCommandOptionType, ChatInputCommandInteraction, ChannelType, PermissionResolvable, NewsChannel, TextChannel } from "discord.js";
+import { ApplicationCommandChoicesData, ApplicationCommandOptionType, ChatInputCommandInteraction, ChannelType, PermissionResolvable, NewsChannel, TextChannel, ApplicationCommandType } from "discord.js";
 import { RestrictionLevel } from "../../utils/RestrictionUtils";
 
 const channelType: ApplicationCommandChoicesData = {
@@ -55,6 +55,7 @@ export default class ChannelCommand extends Command {
 			name: "channel",
 			description: "Manage the channels configured for the bot.",
 			restriction: RestrictionLevel.Administrator,
+                  type: ApplicationCommandType.ChatInput,
 			options: [
                         {
                               name: "set",

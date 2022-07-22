@@ -3,7 +3,7 @@ import Properties from "../../data/Properties";
 import Guilds from "../../db/models/Guilds";
 import Bot from "../../Bot";
 
-import { ApplicationCommandOptionType, ChatInputCommandInteraction, EmbedBuilder } from "discord.js";
+import { ApplicationCommandOptionType, ApplicationCommandType, ChatInputCommandInteraction, EmbedBuilder } from "discord.js";
 import { RestrictionLevel } from "../../utils/RestrictionUtils";
 
 export default class EvalCommand extends Command {
@@ -12,6 +12,7 @@ export default class EvalCommand extends Command {
 			name: "server",
 			description: "Displays information about the server and configuration.",
 			restriction: RestrictionLevel.Public,
+			type: ApplicationCommandType.ChatInput,
 			options: [
 				{
 					name: "info",

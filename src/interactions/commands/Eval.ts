@@ -2,7 +2,7 @@ import Command from "../../modules/interactions/commands/Command";
 import Properties from "../../data/Properties";
 import Bot from "../../Bot";
 
-import { ApplicationCommandOptionType, ChatInputCommandInteraction, EmbedBuilder } from "discord.js";
+import { ApplicationCommandOptionType, ApplicationCommandType, ChatInputCommandInteraction, EmbedBuilder } from "discord.js";
 import { RestrictionLevel } from "../../utils/RestrictionUtils";
 
 export default class EvalCommand extends Command {
@@ -11,6 +11,7 @@ export default class EvalCommand extends Command {
 			name: "eval",
 			description: "Evaluates code.",
 			restriction: RestrictionLevel.Developer,
+			type: ApplicationCommandType.ChatInput,
 			options: [
                         {
                               name: "code",

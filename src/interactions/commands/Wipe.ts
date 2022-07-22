@@ -2,7 +2,7 @@ import Command from "../../modules/interactions/commands/Command";
 import Guilds from "../../db/models/Guilds";
 import Bot from "../../Bot";
 
-import { ApplicationCommandOptionType, ChatInputCommandInteraction } from "discord.js";
+import { ApplicationCommandOptionType, ApplicationCommandType, ChatInputCommandInteraction } from "discord.js";
 import { RestrictionLevel } from "../../utils/RestrictionUtils";
 
 export default class WipeCommand extends Command {
@@ -11,6 +11,7 @@ export default class WipeCommand extends Command {
 			name: "wipe",
 			description: "Wipe certain/all data from the database",
 			restriction: RestrictionLevel.Owner,
+			type: ApplicationCommandType.ChatInput,
 			options: [
 				{
 					name: "type",
