@@ -47,7 +47,7 @@ const permissions: { [key: string]: PermissionResolvable[] } = {
             "AddReactions",
             "UseExternalEmojis"
       ]
-}
+};
 
 export default class ChannelCommand extends Command {
 	constructor(client: Bot) {
@@ -96,12 +96,12 @@ export default class ChannelCommand extends Command {
 		const type = interaction.options.getString("type") as string;
 
             switch (action) {
-                  case "set":
+                  case "set": {
                         const channel = interaction.options.getChannel("channel");
 
                         if (
-                              channel!.type !== ChannelType.GuildText &&
-                              channel!.type !== ChannelType.GuildNews
+                              channel?.type !== ChannelType.GuildText &&
+                              channel?.type !== ChannelType.GuildNews
                         ) {
                               interaction.editReply("You must select either a text or a news channel.");
                               return;
@@ -117,28 +117,35 @@ export default class ChannelCommand extends Command {
 
                         if (!hasPerms) return;
 
-                        await Guilds.updateOne({ id: interaction.guildId }, { $set: { [`channels.${type}`]: channel!.id } });
+                        await Guilds.updateOne({ id: interaction.guildId }, { $set: { [`channels.${type}`]: channel?.id } });
                         interaction.editReply(`The **${type}** channel has been set to ${channel}.`);
                         break;
+                  }
 
-                  case "reset":
+                  case "reset": {
                         await Guilds.updateOne({ id: interaction.guildId }, { $set: { [`channels.${type}`]: null } });
                         interaction.editReply(`The **${type}** channel has been reset.`);
                         break;
+                  }
 
-                  case "view":
-                        const guildConfig = await Guilds.findOne({ id: interaction.guildId }, { channels: 1, _id: 0 }) as any;
-                        const channelId = guildConfig.channels[type];
+                  case "view": {
+                        const guildConfig = await Guilds.findOne(
+                              { id: interaction.guildId }, 
+                              { channels: 1, _id: 0 }
+                        );
+
+                        const channelId = guildConfig?.channels[type];
 
                         if (!channelId) {
-                              interaction.editReply(`There is no channel set for this type.\nYou can set one using \`/channel set\``);
+                              interaction.editReply("There is no channel set for this type.\nYou can set one using `/channel set`");
                               return;
                         }
 
                         interaction.editReply(`The **${type.replace(/_/g, " ")}** channel is set to <#${channelId}>.`);
                         break;
+                  }
             }
 
             return;
 	}
-};
+}

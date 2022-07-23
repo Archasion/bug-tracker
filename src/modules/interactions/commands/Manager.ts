@@ -10,7 +10,7 @@ import fs from "fs";
 
 export default class CommandHandler {
       client: Bot;
-      commands: Collection<string, any>;
+      commands: Collection<string, Command>;
 
       constructor(client: Bot) {
             this.client = client;
@@ -22,6 +22,7 @@ export default class CommandHandler {
                   .filter(file => file.endsWith(".js"));
 
             for (const file of files) {
+                  // eslint-disable-next-line @typescript-eslint/no-var-requires
                   const command = require(path.join(__dirname, "../../../interactions/commands", file)).default;
                   new command(this.client);
             }
@@ -64,6 +65,8 @@ export default class CommandHandler {
             }
             
             try {
+                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                  // @ts-ignore
                   await command.execute(interaction, this.client);
                   console.log(`%s "${command.name}" executed by ${interaction.user.tag} %s`, Properties.cli.modules.commands, clc.blackBright(`("${interaction.guild?.name}" • ${interaction.guildId})`));
             } catch (err) {

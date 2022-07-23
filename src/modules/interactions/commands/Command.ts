@@ -40,6 +40,6 @@ export default class Command {
                   name: this.name,
                   description: this.description,
                   options: this.options ?? [],
-            }
+            };
       }
 }

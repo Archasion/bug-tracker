@@ -2,10 +2,12 @@ import CommandHandler from "./modules/interactions/commands/Manager";
 import ButtonHandler from "./modules/interactions/buttons/Manager";
 import ModalHandler from "./modules/interactions/modals/Manager";
 import ListenerLoader from "./modules/listeners/Loader";
-import "dotenv/config";
 
 import { Client, GatewayIntentBits, Partials } from "discord.js";
 
+import "dotenv/config";
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 require("./db/Manager")();
 
 process.on("unhandledRejection", (err) => {

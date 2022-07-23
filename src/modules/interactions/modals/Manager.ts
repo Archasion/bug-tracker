@@ -10,7 +10,7 @@ import fs from "fs";
 
 export default class CommandHandler {
       client: Bot;
-      modals: Collection<string | { startsWith: string } | { endsWith: string } | { includes: string }, any>;
+      modals: Collection<string | { startsWith: string } | { endsWith: string } | { includes: string }, Modal>;
 
       constructor(client: Bot) {
             this.client = client;
@@ -22,6 +22,7 @@ export default class CommandHandler {
                   .filter(file => file.endsWith(".js"));
 
             for (const file of files) {
+                  // eslint-disable-next-line @typescript-eslint/no-var-requires
                   const modal = require(path.join(__dirname, "../../../interactions/modals", file)).default;
                   new modal(this.client);
             }
@@ -41,9 +42,9 @@ export default class CommandHandler {
             const modal = this.modals.find(m => {
 			if (typeof m.name === "string") return m.name === interaction.customId;
 
-			if (m.name.startsWith) return interaction.customId.startsWith(m.name.startsWith);
-			if (m.name.endsWith) return interaction.customId.endsWith(m.name.endsWith);
-			if (m.name.includes) return interaction.customId.includes(m.name.includes);
+			if ((m.name as { startsWith: string }).startsWith) return interaction.customId.startsWith((m.name as { startsWith: string }).startsWith);
+			if ((m.name as { endsWith: string }).endsWith) return interaction.customId.endsWith((m.name as { endsWith: string }).endsWith);
+			if ((m.name as { includes: string }).includes) return interaction.customId.includes((m.name as { includes: string }).includes);
 
 			return false;
 		});
@@ -65,6 +66,8 @@ export default class CommandHandler {
             }
             
             try {
+                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                  // @ts-ignore
                   await modal.execute(interaction, this.client);
                   console.log(`%s "${modalName}" executed by ${interaction.user.tag} %s`, Properties.cli.modules.modals, clc.blackBright(`("${interaction.guild?.name}" • ${interaction.guildId})`));
             } catch (err) {

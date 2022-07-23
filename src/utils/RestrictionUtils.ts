@@ -1,5 +1,6 @@
 import Properties from "../data/Properties";
 import Guilds from "../db/models/Guilds";
+
 import { GuildMember } from "discord.js";
 
 export enum RestrictionLevel {
@@ -34,26 +35,13 @@ export default class RestrictionUtils {
 
       public static async verifyAccess(level: RestrictionLevel, member: GuildMember ): Promise<boolean> {
             switch (level) {
-                  case RestrictionLevel.Public:
-                        return true;
-                  
-                  // case RestrictionLevel.Reviewer:
-                  //       return await this.isReviewer(member);
-                  
-                  case RestrictionLevel.Moderator:
-                        return await this.isModerator(member);
-                  
-                  case RestrictionLevel.Administrator:
-                        return await this.isAdministrator(member);
-                  
-                  case RestrictionLevel.Owner:
-                        return await this.isOwner(member);
-                  
-                  case RestrictionLevel.Developer:
-                        return await this.isDeveloper(member);
-                  
-                  default:
-                        return false;
+                  case RestrictionLevel.Public: return true;
+                  // case RestrictionLevel.Reviewer: return await this.isReviewer(member);
+                  case RestrictionLevel.Moderator: return await this.isModerator(member);
+                  case RestrictionLevel.Administrator: return await this.isAdministrator(member);
+                  case RestrictionLevel.Owner: return await this.isOwner(member);
+                  case RestrictionLevel.Developer: return await this.isDeveloper(member);
+                  default: return false;
             }
       }
 
@@ -67,27 +55,33 @@ export default class RestrictionUtils {
       // }
 
       public static async isModerator(member: GuildMember): Promise<boolean> {
-            const guildConfig = await Guilds.findOne({ id: member.guild.id }, { roles: 1, _id: 0 }) as any;
+            const guildConfig = await Guilds.findOne(
+                  { id: member.guild.id }, 
+                  { roles: 1, _id: 0 }
+            );
+            
             const moderatorRole = guildConfig?.roles.moderator;
             
             if (
                   (moderatorRole && member.roles.cache.has(moderatorRole)) ||
                   member.permissions.has("ModerateMembers")
-            )
-                  return true;
+            ) return true;
 
             return await this.isAdministrator(member);
       }
 
       public static async isAdministrator(member: GuildMember): Promise<boolean> {
-            const guildConfig = await Guilds.findOne({ id: member.guild.id }, { roles: 1, _id: 0 }) as any;
+            const guildConfig = await Guilds.findOne(
+                  { id: member.guild.id }, 
+                  { roles: 1, _id: 0 }
+            );
+            
             const administratorRole = guildConfig?.roles.administrator;
             
             if (
                   (administratorRole && member.roles.cache.has(administratorRole)) ||
                   member.permissions.has("Administrator")
-            )
-                  return true;
+            ) return true;
 
             return await this.isOwner(member);
       }

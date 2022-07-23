@@ -1,7 +1,7 @@
-import { RestrictionLevel } from "../../../utils/RestrictionUtils";
-
 import ModalHandler from "./Manager";
 import Bot from "../../../Bot";
+
+import { RestrictionLevel } from "../../../utils/RestrictionUtils";
 
 export default class Modal {
       client: Bot;
@@ -9,8 +9,8 @@ export default class Modal {
       restriction: RestrictionLevel;
       modalResponse?: boolean;
       name: string | { startsWith: string } | { endsWith: string } | { includes: string };
-
-      constructor(client: Bot, data: any) {
+      
+      constructor(client: Bot, data: { restriction: RestrictionLevel; modalResponse: boolean; name: string | { startsWith: string; } | { endsWith: string; } | { includes: string; } }) {
             this.client = client;
             this.manager = client.modals;
             this.restriction = data.restriction;

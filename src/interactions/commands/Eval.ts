@@ -2,7 +2,7 @@ import Command from "../../modules/interactions/commands/Command";
 import Properties from "../../data/Properties";
 import Bot from "../../Bot";
 
-import { ApplicationCommandOptionType, ApplicationCommandType, ChatInputCommandInteraction, EmbedBuilder } from "discord.js";
+import { ApplicationCommandOptionType, ApplicationCommandType, ChatInputCommandInteraction, ColorResolvable, EmbedBuilder } from "discord.js";
 import { RestrictionLevel } from "../../utils/RestrictionUtils";
 
 export default class EvalCommand extends Command {
@@ -31,9 +31,9 @@ export default class EvalCommand extends Command {
 		const codeToEvaluate = interaction.options.getString("code") as string;
 
             const embed = new EmbedBuilder()
-                  .setColor(Properties.colors.default)
+                  .setColor(Properties.colors.default as ColorResolvable)
                   .setTitle("Evaluated code")
-                  .setTimestamp()
+                  .setTimestamp();
 
 		try {
 			let evaluatedCode = eval(codeToEvaluate);
@@ -61,4 +61,4 @@ export default class EvalCommand extends Command {
             
             return;
 	}
-};
+}

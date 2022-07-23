@@ -10,7 +10,7 @@ import fs from "fs";
 
 export default class CommandHandler {
       client: Bot;
-      buttons: Collection<string, any>;
+      buttons: Collection<string, Button>;
 
       constructor(client: Bot) {
             this.client = client;
@@ -22,6 +22,7 @@ export default class CommandHandler {
                   .filter(file => file.endsWith(".js"));
 
             for (const file of files) {
+                  // eslint-disable-next-line @typescript-eslint/no-var-requires
                   const button = require(path.join(__dirname, "../../../interactions/buttons", file)).default;
                   new button(this.client);
             }
@@ -51,6 +52,8 @@ export default class CommandHandler {
             }
             
             try {
+                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                  // @ts-ignore
                   await button.execute(interaction, this.client);
                   console.log(`%s "${button.name}" executed by ${interaction.user.tag} %s`, Properties.cli.modules.buttons, clc.blackBright(`("${interaction.guild?.name}" • ${interaction.guildId})`));
             } catch (err) {

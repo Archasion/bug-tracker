@@ -119,4 +119,4 @@ export default class WipeCommand extends Command {
 
             return;
 	}
-};
+}

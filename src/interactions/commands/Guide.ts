@@ -3,7 +3,7 @@ import Properties from "../../data/Properties";
 import Guides from "../../data/Guides";
 import Bot from "../../Bot";
 
-import { ApplicationCommandOptionType, ApplicationCommandType, ChatInputCommandInteraction, EmbedBuilder, GuildMember } from "discord.js";
+import { ApplicationCommandOptionType, ApplicationCommandType, ChatInputCommandInteraction, ColorResolvable, EmbedBuilder, GuildMember } from "discord.js";
 import RestrictionUtils, { RestrictionLevel } from "../../utils/RestrictionUtils";
 import PermissionUtils from "../../utils/PermissionUtils";
 
@@ -52,11 +52,12 @@ export default class GuideCommand extends Command {
             const sendPublicly = interaction.options.getBoolean("public");
             const topic = interaction.options.getString("topic");
 
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
             const { title, description, example, attachmentName, attachmentFile } = Guides[topic];
 
             const embed = new EmbedBuilder()
-                  .setColor(Properties.colors.default)
+                  .setColor(Properties.colors.default as ColorResolvable)
                   .setTitle(title)
                   .setDescription(description)
                   .setFooter({
@@ -89,4 +90,4 @@ export default class GuideCommand extends Command {
 
             return;
 	}
-};
+}

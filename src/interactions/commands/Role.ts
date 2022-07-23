@@ -87,34 +87,41 @@ export default class RoleCommand extends Command {
             const role = interaction.options.getRole("role") as Role;
 
             switch (action) {
-                  case "set":
-                        await Guilds.updateOne({ id: interaction.guildId }, { $set: { [`roles.${type}`]: role!.id } });
+                  case "set": {
+                        await Guilds.updateOne({ id: interaction.guildId }, { $set: { [`roles.${type}`]: role?.id } });
                         interaction.editReply(`The **${type}** role has been set to ${role}.`);
                         break;
+                  }
 
-                  case "reset":
+                  case "reset": {
                         await Guilds.updateOne({ id: interaction.guildId }, { $set: { [`roles.${type}`]: null } });
                         interaction.editReply(`The **${type}** role has been reset.`);
                         break;
+                  }
 
-                  case "view":
-                        const guildConfig = await Guilds.findOne({ id: interaction.guildId }, { roles: 1, _id: 0 }) as any;
-                        const roleId = guildConfig.roles[type];
+                  case "view": {
+                        const guildConfig = await Guilds.findOne(
+                              { id: interaction.guildId }, 
+                              { roles: 1, _id: 0 }
+                        );
+
+                        const roleId = guildConfig?.roles[type];
 
                         if (!roleId) {
-                              interaction.editReply(`There is no role set for this rank.\nYou can set one using \`/role set\``);
+                              interaction.editReply("There is no role set for this rank.\nYou can set one using `/role set`");
                               return;
                         }
 
                         interaction.editReply(`The **${type.replace(/_/g, " ")}** role is set to <@&${roleId}>.`);
                         break;
+                  }
 
-                  case "info":
+                  case "info": {
                         const embed = new EmbedBuilder()
-                              .setColor(role!.color)
-                              .setTitle(role!.name)
+                              .setColor(role?.color)
+                              .setTitle(role?.name)
                               .setThumbnail((role as Role).iconURL())
-                              .setFooter({ text: `ID: ${role!.id}` })
+                              .setFooter({ text: `ID: ${role?.id}` })
                               .setFields([
                                     {
                                           name: "Created",
@@ -155,8 +162,9 @@ export default class RoleCommand extends Command {
 
                               interaction.editReply({ embeds: [embed] });
                         break;
+                  }
             }
 
             return;
 	}
-};
+}

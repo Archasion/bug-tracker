@@ -1,7 +1,7 @@
 import EventListener from "../modules/listeners/Listener";
 import Bot from "../Bot";
 
-import { BaseInteraction, ChatInputCommandInteraction, Interaction, InteractionType } from "discord.js";
+import { Interaction, InteractionType } from "discord.js";
 
 module.exports = class InteractionCreateEventListener extends EventListener {
       constructor(client: Bot) {
@@ -24,4 +24,4 @@ module.exports = class InteractionCreateEventListener extends EventListener {
                   this.client.modals.handle(interaction);
             }
       }
-}
+};

@@ -1,4 +1,4 @@
-import { ChatInputCommandInteraction, GuildChannelResolvable, GuildMember, NewsChannel, PermissionResolvable, TextChannel } from "discord.js";
+import { ChatInputCommandInteraction, GuildMember, NewsChannel, PermissionResolvable, TextChannel } from "discord.js";
  
 export default class PermissionUtils {
       public static async botHasPermissions(interaction: ChatInputCommandInteraction, permissions: PermissionResolvable[], channel: TextChannel | NewsChannel = interaction.channel as TextChannel): Promise<boolean> {

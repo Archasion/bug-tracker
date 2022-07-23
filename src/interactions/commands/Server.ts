@@ -3,7 +3,7 @@ import Properties from "../../data/Properties";
 import Guilds from "../../db/models/Guilds";
 import Bot from "../../Bot";
 
-import { ApplicationCommandOptionType, ApplicationCommandType, ChatInputCommandInteraction, EmbedBuilder } from "discord.js";
+import { ApplicationCommandOptionType, ApplicationCommandType, ChatInputCommandInteraction, ColorResolvable, EmbedBuilder } from "discord.js";
 import { RestrictionLevel } from "../../utils/RestrictionUtils";
 
 export default class EvalCommand extends Command {
@@ -36,7 +36,7 @@ export default class EvalCommand extends Command {
 		const type = interaction.options.getSubcommand();
 
 		const embed = new EmbedBuilder()
-			.setColor(Properties.colors.default)
+			.setColor(Properties.colors.default as ColorResolvable)
 			.setAuthor({ name: interaction.guild?.name as string, iconURL: interaction.guild?.iconURL() as string })
 			.setFooter({ text: `Server ID: ${interaction.guild?.id}` })
 			.setTimestamp();
@@ -52,8 +52,10 @@ export default class EvalCommand extends Command {
 				suggestions: 1,
 				_id: 0
 			}
-		) as any;
+		);
 
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+		// @ts-ignore
 		const { channels, roles, auto, bugs, reports, suggestions } = guildConfig;
 
 		if (type === "config") {
@@ -189,9 +191,9 @@ export default class EvalCommand extends Command {
 					inline: true
 				}
 			]);
-
-			interaction.editReply({ embeds: [embed] });
-			return;
 		}
+
+		interaction.editReply({ embeds: [embed] });
+		return;
 	}
-};
+}
