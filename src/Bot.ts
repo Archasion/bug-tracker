@@ -8,6 +8,11 @@ import { Client, GatewayIntentBits, Partials } from "discord.js";
 
 require("./db/Manager")();
 
+process.on("unhandledRejection", (err) => {
+      console.error(err);
+      process.exit(1);
+});
+
 export default class Bot extends Client {
       commands!: CommandHandler;
       buttons!: ButtonHandler;
