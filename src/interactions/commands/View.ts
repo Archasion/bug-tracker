@@ -94,20 +94,12 @@ export default class ViewCommand extends Command {
 			return;
 		}
 
-		const author = await interaction.guild?.members.fetch(report.author);
-
-            if (!author) {
-                  interaction.editReply("Failed to fetch the author.");
-                  return;
-            }
-
 		const embed = new EmbedBuilder()
 			.setColor(Properties.colors.default as ColorResolvable)
-			.setThumbnail(author?.displayAvatarURL())
 			.setFooter({ text: `#${id}` });
 
 		switch (type) {
-			case "bugs":
+			case "bugs": {
 				embed.setAuthor({ name: `Priority: ${report.priority}` });
 				embed.setFields([
 					{
@@ -127,8 +119,9 @@ export default class ViewCommand extends Command {
 					});
 
 				break;
+			}
 
-			case "reports":
+			case "reports": {
 				embed.setFields([
 					{
 						name: "Reported Player",
@@ -140,8 +133,9 @@ export default class ViewCommand extends Command {
 					}
 				]);
 				break;
+			}
 
-			case "suggestions":
+			case "suggestions": {
 				embed.setFields([
 					{
 						name: "Suggestion",
@@ -149,10 +143,11 @@ export default class ViewCommand extends Command {
 					}
 				]);
 				break;
+			}
 		}
 
 		interaction.editReply({
-			content: `${author} (\`${author?.id}\`)`,
+			content: `<@${report.author}> (\`${report.author}\`)`,
 			embeds: [embed]
 		});
 	}
