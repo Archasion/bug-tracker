@@ -2,6 +2,7 @@ import CommandHandler from "./modules/interactions/commands/Manager";
 import ButtonHandler from "./modules/interactions/buttons/Manager";
 import ModalHandler from "./modules/interactions/modals/Manager";
 import ListenerLoader from "./modules/listeners/Loader";
+import clc from "cli-color";
 
 import { Client, GatewayIntentBits, Partials } from "discord.js";
 
@@ -10,9 +11,8 @@ import "dotenv/config";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require("./db/Manager")();
 
-process.on("unhandledRejection", (err) => {
-      console.error(err);
-      process.exit(1);
+process.on("unhandledRejection", (error: Error) => {
+      console.error(clc.red(error.stack));
 });
 
 export default class Bot extends Client {
