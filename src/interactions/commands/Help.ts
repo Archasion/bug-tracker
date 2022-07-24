@@ -2,7 +2,14 @@ import Command from "../../modules/interactions/commands/Command";
 import Properties from "../../data/Properties";
 import Bot from "../../Bot";
 
-import { ApplicationCommandType, ChatInputCommandInteraction, ColorResolvable, EmbedBuilder, GuildMember } from "discord.js";
+import { 
+      ChatInputCommandInteraction, 
+      ApplicationCommandType, 
+      ColorResolvable, 
+      EmbedBuilder, 
+      GuildMember 
+} from "discord.js";
+
 import RestrictionUtils, { RestrictionLevel } from "../../utils/RestrictionUtils";
 
 export default class HelpCommand extends Command {

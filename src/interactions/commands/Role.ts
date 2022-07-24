@@ -2,7 +2,15 @@ import Command from "../../modules/interactions/commands/Command";
 import Guilds from "../../db/models/Guilds";
 import Bot from "../../Bot";
 
-import { ApplicationCommandChoicesData, ApplicationCommandOptionType, ApplicationCommandType, ChatInputCommandInteraction, EmbedBuilder, Role } from "discord.js";
+import { 
+      ApplicationCommandChoicesData, 
+      ApplicationCommandOptionType, 
+      ChatInputCommandInteraction, 
+      ApplicationCommandType, 
+      EmbedBuilder, 
+      Role 
+} from "discord.js";
+
 import { RestrictionLevel } from "../../utils/RestrictionUtils";
 
 const roleType: ApplicationCommandChoicesData = {

@@ -3,7 +3,16 @@ import Properties from "../../data/Properties";
 import Guides from "../../data/Guides";
 import Bot from "../../Bot";
 
-import { ApplicationCommandOptionType, ApplicationCommandType, ChatInputCommandInteraction, ColorResolvable, EmbedBuilder, GuildMember, PermissionFlagsBits } from "discord.js";
+import { 
+      ApplicationCommandOptionType, 
+      ChatInputCommandInteraction, 
+      ApplicationCommandType, 
+      PermissionFlagsBits,
+      ColorResolvable, 
+      EmbedBuilder, 
+      GuildMember
+} from "discord.js";
+
 import RestrictionUtils, { RestrictionLevel } from "../../utils/RestrictionUtils";
 import PermissionUtils from "../../utils/PermissionUtils";
 

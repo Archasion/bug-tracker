@@ -3,7 +3,14 @@ import Properties from "../../data/Properties";
 import Guilds from "../../db/models/Guilds";
 import Bot from "../../Bot";
 
-import { ApplicationCommandOptionType, ApplicationCommandType, ChatInputCommandInteraction, ColorResolvable, EmbedBuilder } from "discord.js";
+import { 
+	ApplicationCommandOptionType, 
+	ChatInputCommandInteraction, 
+	ApplicationCommandType, 
+	ColorResolvable, 
+	EmbedBuilder 
+} from "discord.js";
+
 import { RestrictionLevel } from "../../utils/RestrictionUtils";
 
 export default class ViewCommand extends Command {

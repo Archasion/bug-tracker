@@ -2,7 +2,12 @@ import Command from "../../modules/interactions/commands/Command";
 import Guilds from "../../db/models/Guilds";
 import Bot from "../../Bot";
 
-import { ApplicationCommandOptionType, ApplicationCommandType, ChatInputCommandInteraction } from "discord.js";
+import { 
+	ApplicationCommandOptionType, 
+	ChatInputCommandInteraction, 
+	ApplicationCommandType
+} from "discord.js";
+
 import { RestrictionLevel } from "../../utils/RestrictionUtils";
 
 export default class WipeCommand extends Command {

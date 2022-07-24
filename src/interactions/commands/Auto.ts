@@ -4,7 +4,19 @@ import Properties from "../../data/Properties";
 import Guilds from "../../db/models/Guilds";
 import Bot from "../../Bot";
 
-import { ApplicationCommandChoicesData, ApplicationCommandOptionType, ApplicationCommandType, ChannelType, ChatInputCommandInteraction, ColorResolvable, EmbedBuilder, PermissionFlagsBits, Role, TextChannel } from "discord.js";
+import { 
+      ApplicationCommandChoicesData, 
+      ApplicationCommandOptionType, 
+      ChatInputCommandInteraction, 
+      ApplicationCommandType, 
+      PermissionFlagsBits, 
+      ColorResolvable, 
+      EmbedBuilder, 
+      ChannelType, 
+      TextChannel,
+      Role
+} from "discord.js";
+
 import { RestrictionLevel } from "../../utils/RestrictionUtils";
 
 const actionOption: ApplicationCommandChoicesData = {

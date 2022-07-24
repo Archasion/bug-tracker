@@ -3,7 +3,18 @@ import PermissionUtils from "../../utils/PermissionUtils";
 import Guilds from "../../db/models/Guilds";
 import Bot from "../../Bot";
 
-import { ApplicationCommandChoicesData, ApplicationCommandOptionType, ChatInputCommandInteraction, ChannelType, PermissionResolvable, NewsChannel, TextChannel, ApplicationCommandType, PermissionFlagsBits } from "discord.js";
+import { 
+      ApplicationCommandChoicesData, 
+      ApplicationCommandOptionType, 
+      ChatInputCommandInteraction, 
+      ApplicationCommandType, 
+      PermissionResolvable, 
+      PermissionFlagsBits,
+      ChannelType, 
+      NewsChannel, 
+      TextChannel
+} from "discord.js";
+
 import { RestrictionLevel } from "../../utils/RestrictionUtils";
 
 const channelType: ApplicationCommandChoicesData = {

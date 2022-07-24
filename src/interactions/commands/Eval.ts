@@ -2,7 +2,14 @@ import Command from "../../modules/interactions/commands/Command";
 import Properties from "../../data/Properties";
 import Bot from "../../Bot";
 
-import { ApplicationCommandOptionType, ApplicationCommandType, ChatInputCommandInteraction, ColorResolvable, EmbedBuilder } from "discord.js";
+import { 
+	ApplicationCommandOptionType, 
+	ChatInputCommandInteraction, 
+	ApplicationCommandType, 
+	ColorResolvable, 
+	EmbedBuilder 
+} from "discord.js";
+
 import { RestrictionLevel } from "../../utils/RestrictionUtils";
 
 export default class EvalCommand extends Command {
