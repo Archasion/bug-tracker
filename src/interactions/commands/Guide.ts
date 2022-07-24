@@ -3,7 +3,7 @@ import Properties from "../../data/Properties";
 import Guides from "../../data/Guides";
 import Bot from "../../Bot";
 
-import { ApplicationCommandOptionType, ApplicationCommandType, ChatInputCommandInteraction, ColorResolvable, EmbedBuilder, GuildMember } from "discord.js";
+import { ApplicationCommandOptionType, ApplicationCommandType, ChatInputCommandInteraction, ColorResolvable, EmbedBuilder, GuildMember, PermissionFlagsBits } from "discord.js";
 import RestrictionUtils, { RestrictionLevel } from "../../utils/RestrictionUtils";
 import PermissionUtils from "../../utils/PermissionUtils";
 
@@ -71,7 +71,7 @@ export default class GuideCommand extends Command {
             
             if (
                   await RestrictionUtils.isModerator(interaction.member as GuildMember) && 
-                  await PermissionUtils.botHasPermissions(interaction, ["SendMessages"]) &&
+                  await PermissionUtils.botHasPermissions(interaction, [PermissionFlagsBits.SendMessages]) &&
                   sendPublicly
             ) {
                   interaction.channel?.send({ 

@@ -3,7 +3,7 @@ import PermissionUtils from "../../utils/PermissionUtils";
 import Guilds from "../../db/models/Guilds";
 import Bot from "../../Bot";
 
-import { ApplicationCommandChoicesData, ApplicationCommandOptionType, ChatInputCommandInteraction, ChannelType, PermissionResolvable, NewsChannel, TextChannel, ApplicationCommandType } from "discord.js";
+import { ApplicationCommandChoicesData, ApplicationCommandOptionType, ChatInputCommandInteraction, ChannelType, PermissionResolvable, NewsChannel, TextChannel, ApplicationCommandType, PermissionFlagsBits } from "discord.js";
 import { RestrictionLevel } from "../../utils/RestrictionUtils";
 
 const channelType: ApplicationCommandChoicesData = {
@@ -37,15 +37,15 @@ const channelType: ApplicationCommandChoicesData = {
 
 const permissions: { [key: string]: PermissionResolvable[] } = {
       setChannel: [
-            "SendMessages",
-            "ViewChannel",
-            "ReadMessageHistory"
+            PermissionFlagsBits.SendMessages,
+            PermissionFlagsBits.ViewChannel,
+            PermissionFlagsBits.ReadMessageHistory,
       ],
       setReportChannel: [
-            "CreatePublicThreads",
-            "ManageThreads",
-            "AddReactions",
-            "UseExternalEmojis"
+            PermissionFlagsBits.CreatePublicThreads,
+            PermissionFlagsBits.ManageThreads,
+            PermissionFlagsBits.AddReactions,
+            PermissionFlagsBits.UseExternalEmojis
       ]
 };
 
