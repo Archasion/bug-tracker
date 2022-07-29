@@ -5,10 +5,10 @@ import Bot from "../../Bot";
 import { 
 	ChatInputCommandInteraction, 
 	ApplicationCommandType,
-      ModalBuilder,
       ActionRowBuilder,
+      TextInputBuilder,
       TextInputStyle,
-      TextInputBuilder
+      ModalBuilder
 } from "discord.js";
 
 import { RestrictionLevel } from "../../utils/RestrictionUtils";
