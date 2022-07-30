@@ -41,7 +41,8 @@ export default class Properties {
                   support: "996440036205666344", // #support
                   suggestions: "996440053557514261", // #suggestions
                   bugs: "996440087921426512", // #bugs
-                  feedback: "996442097290858626" // #feedback
+                  feedback: "996442097290858626", // #feedback
+                  other: "1002882056994439169" // #other
             }
       };
 }
