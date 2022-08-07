@@ -1,3 +1,3 @@
 # Self-hosting
 
-*IN DEVELOPMENT...*
+IN DEVELOPMENT...
