@@ -8,10 +8,20 @@ import {
 	ChatInputCommandInteraction, 
 	ApplicationCommandType, 
 	ColorResolvable, 
-	EmbedBuilder 
+	EmbedBuilder,
+	ApplicationCommandNumericOptionData,
 } from "discord.js";
 
 import { RestrictionLevel } from "../../utils/RestrictionUtils";
+
+const idOption: ApplicationCommandNumericOptionData[] = [
+	{
+		name: "id",
+		description: "The ID of the bug report.",
+		type: ApplicationCommandOptionType.Number,
+		required: true
+	}
+];
 
 export default class ViewCommand extends Command {
 	constructor(client: Bot) {
@@ -25,40 +35,19 @@ export default class ViewCommand extends Command {
 					name: "bug_report",
 					description: "View a submitted bug report.",
 					type: ApplicationCommandOptionType.Subcommand,
-					options: [
-						{
-							name: "id",
-							description: "The ID of the bug report.",
-							type: ApplicationCommandOptionType.String,
-							required: true
-						}
-					]
+					options: idOption
 				},
 				{
 					name: "player_report",
 					description: "View a submitted player report.",
 					type: ApplicationCommandOptionType.Subcommand,
-					options: [
-						{
-							name: "id",
-							description: "The ID of the player report.",
-							type: ApplicationCommandOptionType.String,
-							required: true
-						}
-					]
+					options: idOption
 				},
 				{
 					name: "suggestion",
 					description: "View a submitted suggestion.",
 					type: ApplicationCommandOptionType.Subcommand,
-					options: [
-						{
-							name: "id",
-							description: "The ID of the suggestion.",
-							type: ApplicationCommandOptionType.String,
-							required: true
-						}
-					]
+					options: idOption
 				}
 			]
 		});
@@ -70,7 +59,7 @@ export default class ViewCommand extends Command {
 	 */
 	async execute(interaction: ChatInputCommandInteraction): Promise<void> {
 		let type = interaction.options.getSubcommand();
-		const id = interaction.options.getString("id");
+		const id = interaction.options.getNumber("id") as number;
 
 		switch (type) {
 			case "bug_report":
@@ -84,19 +73,16 @@ export default class ViewCommand extends Command {
 				break;
 		}
 
-		const reports = await Guilds.findOne(
+		const guildConfig = await Guilds.findOne(
                   { id: interaction.guildId },
                   { [type]: 1, _id: 0 }
             );
 
-		let report;
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
-		for (const item of reports[type]) {
-			if (item.number == id) report = item;
-		}
+		const submission = guildConfig?.[type].find(item => item.number === id);
 
-		if (!report) {
+		if (!submission) {
 			interaction.editReply(`There are no **${type}** with the ID of \`${id}\``);
 			return;
 		}
@@ -107,22 +93,22 @@ export default class ViewCommand extends Command {
 
 		switch (type) {
 			case "bugs": {
-				embed.setAuthor({ name: `Priority: ${report.priority}` });
+				embed.setAuthor({ name: `Priority: ${submission.priority}` });
 				embed.setFields([
 					{
 						name: "Summary",
-						value: report.summary
+						value: submission.summary
 					},
 					{
 						name: "Description",
-						value: report.description
+						value: submission.description
 					}
 				]);
 
-				if (report.specs)
+				if (submission.specs)
 					embed.data.fields?.push({
 						name: "System Specs",
-						value: report.specs
+						value: submission.specs
 					});
 
 				break;
@@ -132,11 +118,11 @@ export default class ViewCommand extends Command {
 				embed.setFields([
 					{
 						name: "Reported Player",
-						value: report.player
+						value: submission.player
 					},
 					{
 						name: "Reason",
-						value: report.reason
+						value: submission.reason
 					}
 				]);
 				break;
@@ -146,7 +132,7 @@ export default class ViewCommand extends Command {
 				embed.setFields([
 					{
 						name: "Suggestion",
-						value: report.suggestion
+						value: submission.suggestion
 					}
 				]);
 				break;
@@ -154,7 +140,7 @@ export default class ViewCommand extends Command {
 		}
 
 		interaction.editReply({
-			content: `<@${report.author}> (\`${report.author}\`)`,
+			content: `<@${submission.author}> (\`${submission.author}\`)`,
 			embeds: [embed]
 		});
 	}
