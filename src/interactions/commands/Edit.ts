@@ -129,7 +129,7 @@ export default class EditCommand extends Command {
                   return;
             }
 
-            const embedFields = reportMessage?.embeds[0].data.fields;
+            const [embed] = reportMessage.embeds;
 
             const modal = new ModalBuilder()
                   .setTitle("Edit Submission")
@@ -137,7 +137,7 @@ export default class EditCommand extends Command {
 
             const modalComponents: ActionRowBuilder<TextInputBuilder>[] = [];
 
-            embedFields?.forEach(field => {
+            embed.data.fields?.forEach(field => {
                   if (!field.name.includes("Reason")) {
                         modalComponents.push(
                               new ActionRowBuilder().addComponents(
