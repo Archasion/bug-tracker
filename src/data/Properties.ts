@@ -11,21 +11,21 @@ export default class Properties {
       };
 
       public static readonly colors = {
-            default: "#2F3136",
-            success: "#84F584",
-            error: "#202020",
+            default: 0x2F3136,
+            success: 0x84F584,
+            error: 0x202020,
             priority: {
-                  high: "#e86864",
-                  medium: "#e89d3a",
-                  low: "#71d17f",
-                  none: "#4a4a4a"
+                  high: 0xe86864,
+                  medium: 0xe89d3a,
+                  low: 0x71d17f,
+                  none: 0x4a4a4a
             },
             status: {
-                  approved: "#437B4B",
-                  rejected: "#C74945",
-                  implemented: "#5d97c9",
-                  considered: "#f2e65e",
-                  fixed: "#855dc9"
+                  approved: 0x437B4B,
+                  rejected: 0xC74945,
+                  implemented: 0x5d97c9,
+                  considered: 0xf2e65e,
+                  fixed: 0x855dc9
             }
       };
 
