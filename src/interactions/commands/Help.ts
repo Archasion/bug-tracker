@@ -5,7 +5,6 @@ import Bot from "../../Bot";
 import { 
       ChatInputCommandInteraction, 
       ApplicationCommandType, 
-      ColorResolvable, 
       EmbedBuilder, 
       GuildMember 
 } from "discord.js";
@@ -27,7 +26,7 @@ export default class HelpCommand extends Command {
 		const commands = this.manager.commands.filter(command => command.restriction <= level);
 
 		const commandList = new EmbedBuilder()
-			.setColor(Properties.colors.default as ColorResolvable)
+			.setColor(Properties.colors.default)
                   .setTitle("Command Guide")
                   .setFields([]);
 

@@ -8,7 +8,6 @@ import {
       ChatInputCommandInteraction, 
       ApplicationCommandType,
       ActionRowBuilder,
-      ColorResolvable,
       ButtonBuilder,
       EmbedBuilder,
       GuildMember,
@@ -57,7 +56,7 @@ export default class UserInfoCommand extends Command {
 		const roles = member.roles.cache.map(role => role).join(" ") || "None";
 
 		const info = new EmbedBuilder()
-			.setColor(Properties.colors.default as ColorResolvable)
+			.setColor(Properties.colors.default)
 			.setTitle(member.displayName)
 			.setThumbnail(member.displayAvatarURL())
 			.setImage(member.user.bannerURL() as string | null)

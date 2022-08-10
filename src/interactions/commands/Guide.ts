@@ -8,7 +8,6 @@ import {
       ChatInputCommandInteraction, 
       ApplicationCommandType, 
       PermissionFlagsBits,
-      ColorResolvable, 
       EmbedBuilder, 
       GuildMember
 } from "discord.js";
@@ -66,7 +65,7 @@ export default class GuideCommand extends Command {
             const { title, description, example, attachmentName, attachmentFile } = Guides[topic];
 
             const embed = new EmbedBuilder()
-                  .setColor(Properties.colors.default as ColorResolvable)
+                  .setColor(Properties.colors.default)
                   .setTitle(title)
                   .setDescription(description)
                   .setFooter({

@@ -10,7 +10,6 @@ import {
       ChatInputCommandInteraction, 
       ApplicationCommandType, 
       PermissionFlagsBits, 
-      ColorResolvable, 
       EmbedBuilder, 
       ChannelType, 
       TextChannel,
@@ -192,7 +191,7 @@ export default class AutoCommand extends Command {
                         }
 
                         const embed = new EmbedBuilder()
-                              .setColor(Properties.colors.default as ColorResolvable)
+                              .setColor(Properties.colors.default)
                               .setTitle("Role Automation")
                               .setFields([
                                     {
@@ -267,7 +266,7 @@ export default class AutoCommand extends Command {
                         }
 
                         const embed = new EmbedBuilder()
-                              .setColor(Properties.colors.default as ColorResolvable)
+                              .setColor(Properties.colors.default)
                               .setTitle("Automatic Message Deletion")
                               .setFields([
                                     {

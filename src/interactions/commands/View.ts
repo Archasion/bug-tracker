@@ -7,7 +7,6 @@ import {
 	ApplicationCommandOptionType, 
 	ChatInputCommandInteraction, 
 	ApplicationCommandType, 
-	ColorResolvable, 
 	EmbedBuilder,
 	ApplicationCommandNumericOptionData,
 } from "discord.js";
@@ -88,7 +87,7 @@ export default class ViewCommand extends Command {
 		}
 
 		const embed = new EmbedBuilder()
-			.setColor(Properties.colors.default as ColorResolvable)
+			.setColor(Properties.colors.default)
 			.setFooter({ text: `#${id}` });
 
 		switch (type) {

@@ -6,7 +6,6 @@ import {
 	ApplicationCommandOptionType, 
 	ChatInputCommandInteraction, 
 	ApplicationCommandType, 
-	ColorResolvable, 
 	EmbedBuilder 
 } from "discord.js";
 
@@ -38,7 +37,7 @@ export default class EvalCommand extends Command {
 		const codeToEvaluate = interaction.options.getString("code") as string;
 
             const embed = new EmbedBuilder()
-                  .setColor(Properties.colors.default as ColorResolvable)
+                  .setColor(Properties.colors.default)
                   .setTitle("Evaluated code")
                   .setTimestamp();
 

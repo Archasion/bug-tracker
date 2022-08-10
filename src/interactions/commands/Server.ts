@@ -7,7 +7,6 @@ import {
 	ApplicationCommandOptionType, 
 	ChatInputCommandInteraction, 
 	ApplicationCommandType, 
-	ColorResolvable, 
 	EmbedBuilder 
 } from "discord.js";
 
@@ -43,7 +42,7 @@ export default class EvalCommand extends Command {
 		const type = interaction.options.getSubcommand();
 
 		const embed = new EmbedBuilder()
-			.setColor(Properties.colors.default as ColorResolvable)
+			.setColor(Properties.colors.default)
 			.setAuthor({ name: interaction.guild?.name as string, iconURL: interaction.guild?.iconURL() as string })
 			.setFooter({ text: `Server ID: ${interaction.guild?.id}` })
 			.setTimestamp();
