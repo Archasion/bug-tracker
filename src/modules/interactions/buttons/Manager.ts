@@ -30,7 +30,7 @@ export default class CommandHandler {
 
       public async register(button: Button) {
             this.buttons.set(button.name, button);
-            console.log(`%s Registered command: "${button.name}"`, Properties.cli.modules.buttons);
+            console.log(`%s Registered button: "${button.name}"`, Properties.cli.modules.buttons);
       }
 
       public async handle(interaction: ButtonInteraction) {
