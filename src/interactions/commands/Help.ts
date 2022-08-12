@@ -23,7 +23,7 @@ export default class HelpCommand extends Command {
 
       /**
 	 * @param {ChatInputCommandInteraction} interaction
-	 * @returns {Promise<void|any>}
+	 * @returns {Promise<void>}
 	 */
       async execute(interaction: ChatInputCommandInteraction): Promise<void> {
 		const level = await RestrictionUtils.getRestrictionLevel(interaction.member as GuildMember);

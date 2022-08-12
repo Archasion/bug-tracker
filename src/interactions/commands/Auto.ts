@@ -135,7 +135,7 @@ export default class AutoCommand extends Command {
 
 	/**
 	 * @param {ChatInputCommandInteraction} interaction
-	 * @returns {Promise<void|any>}
+	 * @returns {Promise<void>}
 	 */
 	async execute(interaction: ChatInputCommandInteraction): Promise<void> {
 		const subCommand = interaction.options.getSubcommand();

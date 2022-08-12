@@ -35,7 +35,7 @@ export default class UserInfoCommand extends Command {
 
 	/**
 	 * @param {ChatInputCommandInteraction} interaction
-	 * @returns {Promise<void|any>}
+	 * @returns {Promise<void>}
 	 */
       async execute(interaction: ChatInputCommandInteraction): Promise<void> {
             const guildConfig = await Guilds.findOne(

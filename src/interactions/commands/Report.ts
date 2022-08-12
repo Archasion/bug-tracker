@@ -68,7 +68,7 @@ export default class GuideCommand extends Command {
 
 	/**
 	 * @param {ChatInputCommandInteraction} interaction
-	 * @returns {Promise<void|any>}
+	 * @returns {Promise<void>}
 	 */
 	async execute(interaction: ChatInputCommandInteraction): Promise<void> {
             const priority = interaction.options.getString("priority");

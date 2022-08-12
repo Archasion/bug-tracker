@@ -26,7 +26,7 @@ export default class SuggestCommand extends Command {
 
 	/**
 	 * @param {ChatInputCommandInteraction} interaction
-	 * @returns {Promise<void|any>}
+	 * @returns {Promise<void>}
 	 */
 	async execute(interaction: ChatInputCommandInteraction): Promise<void> {
             const submissionChannel = await Guilds.findOne({ id: interaction.guildId }, { ["channels.suggestions"]: 1, _id: 0 });

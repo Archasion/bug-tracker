@@ -54,7 +54,7 @@ export default class ViewCommand extends Command {
 
 	/**
 	 * @param {ChatInputCommandInteraction} interaction
-	 * @returns {Promise<void|any>}
+	 * @returns {Promise<void>}
 	 */
 	async execute(interaction: ChatInputCommandInteraction): Promise<void> {
 		let type = interaction.options.getSubcommand();

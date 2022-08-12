@@ -79,7 +79,7 @@ export default class ContactCommand extends Command {
 
 	/**
 	 * @param {ChatInputCommandInteraction} interaction
-	 * @returns {Promise<void|any>}
+	 * @returns {Promise<void>}
 	 */
 	async execute(interaction: ChatInputCommandInteraction): Promise<void> {
             const enquiry = interaction.options.getString("enquiry") as string;

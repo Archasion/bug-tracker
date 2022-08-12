@@ -31,7 +31,7 @@ export default class EvalCommand extends Command {
 
 	/**
 	 * @param {ChatInputCommandInteraction} interaction
-	 * @returns {Promise<void|any>}
+	 * @returns {Promise<void>}
 	 */
 	async execute(interaction: ChatInputCommandInteraction): Promise<void> {
 		const codeToEvaluate = interaction.options.getString("code") as string;
