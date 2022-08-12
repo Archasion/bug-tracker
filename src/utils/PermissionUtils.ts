@@ -1,7 +1,7 @@
-import { ChatInputCommandInteraction, GuildMember, NewsChannel, PermissionResolvable, TextChannel } from "discord.js";
+import { CommandInteraction, GuildMember, MessageComponentInteraction, NewsChannel, PermissionResolvable, TextChannel } from "discord.js";
  
 export default class PermissionUtils {
-      public static async botHasPermissions(interaction: ChatInputCommandInteraction, permissions: PermissionResolvable[], channel: TextChannel | NewsChannel = interaction.channel as TextChannel): Promise<boolean> {
+      public static async botHasPermissions(interaction: CommandInteraction | MessageComponentInteraction, permissions: PermissionResolvable[], channel: TextChannel | NewsChannel = interaction.channel as TextChannel | NewsChannel): Promise<boolean> {
             const client = interaction.guild?.members.me as GuildMember;
             const missingPermissions = permissions.filter(permission => !client.permissionsIn(channel).has(permission));
 
