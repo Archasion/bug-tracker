@@ -168,7 +168,7 @@ export default class StatusCommand extends Command {
                   }
             );
 
-            const submissionData = guildConfig?.[type].find(item => item.number === id);
+            const submissionData = guildConfig?.[type].find(doc => doc.number === id);
 
             if (!submissionData) {
                   interaction.editReply(`Could not find submission with the ID \`#${id}\`.`);
@@ -335,7 +335,7 @@ export default class StatusCommand extends Command {
                         const jumpUrl = new ButtonBuilder()
                               .setLabel("Jump to Submission")
                               .setStyle(ButtonStyle.Link)
-                              .setURL(`https://discordapp.com/channels/${interaction.guildId}/${submissionChannelId}/${submissionData.messageId}`);
+                              .setURL(submission.url);
 
                         const urlActionRow = new ActionRowBuilder().setComponents(jumpUrl);
 
