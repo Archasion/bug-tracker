@@ -15,6 +15,7 @@ import {
       EmbedBuilder,
       ButtonStyle,
       TextChannel,
+      NewsChannel,
       ActionRow
 } from "discord.js";
 
@@ -182,7 +183,7 @@ export default class StatusCommand extends Command {
                   return;
             }
 
-            const submissionChannel = interaction.guild?.channels.cache.get(submissionChannelId) as TextChannel;
+            const submissionChannel = interaction.guild?.channels.cache.get(submissionChannelId) as TextChannel | NewsChannel;
             const submission = await submissionChannel.messages.fetch(submissionData.messageId);
 
             if (!submission) {

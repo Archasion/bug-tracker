@@ -13,6 +13,7 @@ import {
       EmbedBuilder, 
       ChannelType, 
       TextChannel,
+      NewsChannel,
       Role
 } from "discord.js";
 
@@ -279,7 +280,7 @@ export default class AutoCommand extends Command {
                         return;
                   }
 
-                  const channel = interaction.options.getChannel("channel") as TextChannel;
+                  const channel = interaction.options.getChannel("channel") as TextChannel | NewsChannel;
 
                   if (!channel) {
                         interaction.editReply("Please specify a channel to perform the action on.");
