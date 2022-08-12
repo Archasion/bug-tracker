@@ -33,6 +33,10 @@ export default class UserInfoCommand extends Command {
             });
       }
 
+	/**
+	 * @param {ChatInputCommandInteraction} interaction
+	 * @returns {Promise<void|any>}
+	 */
       async execute(interaction: ChatInputCommandInteraction): Promise<void> {
             const guildConfig = await Guilds.findOne(
                   { id: interaction.guildId }, 

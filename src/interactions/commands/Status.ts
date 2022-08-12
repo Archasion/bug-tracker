@@ -149,6 +149,10 @@ export default class StatusCommand extends Command {
             });
       }
 
+      /**
+	 * @param {ChatInputCommandInteraction} interaction
+	 * @returns {Promise<void|any>}
+	 */
       async execute(interaction: ChatInputCommandInteraction): Promise<void> {
             const action = interaction.options.getSubcommand() as "set" | "remove" | "reason";
             const type = interaction.options.getString("type") as SubmissionType;

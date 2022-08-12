@@ -86,7 +86,7 @@ export default class RoleCommand extends Command {
 	}
 
 	/**
-	 * @param {Interaction} interaction
+	 * @param {ChatInputCommandInteraction} interaction
 	 * @returns {Promise<void|any>}
 	 */
       async execute(interaction: ChatInputCommandInteraction): Promise<void> {    
