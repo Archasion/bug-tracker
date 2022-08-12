@@ -7,7 +7,7 @@ export default class Button {
       modalResponse?: boolean;
       name: string;
 
-      constructor(client: Bot, data: { restriction: RestrictionLevel; modalResponse: boolean; name: string; }) {
+      constructor(client: Bot, data: { restriction: RestrictionLevel; modalResponse?: boolean; name: string; }) {
             this.client = client;
             this.restriction = data.restriction;
             this.modalResponse = data.modalResponse ?? false;
