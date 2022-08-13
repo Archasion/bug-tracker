@@ -65,6 +65,13 @@ export default class ArchiveButton extends Button {
             if (!await PermissionUtils.botHasPermissions(interaction, ["SendMessages", "ViewChannel"], archiveChannel)) return;
             if (!await PermissionUtils.botHasPermissions(interaction, ["ManageMessages", "ViewChannel"])) return;
 
+            if (interaction.message.hasThread) {
+			await interaction.message.thread?.edit({
+					archived: true,
+					locked: true
+                        }).catch(() => console.log("Failed to archive thread"));
+		}
+
             archiveChannel.send({
                   content: interaction.message.content,
                   embeds: [embed],
