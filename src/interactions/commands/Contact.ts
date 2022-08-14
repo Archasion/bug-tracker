@@ -99,7 +99,7 @@ export default class ContactCommand extends Command {
 
             const modal = new ModalBuilder()
                   .setTitle("Contact Form")
-                  .setCustomId(`contact-form-${enquiry}`);
+                  .setCustomId(`contact-${enquiry}`);
 
             switch (enquiry) {
                   case "bugs": {
