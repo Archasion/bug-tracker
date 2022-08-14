@@ -110,6 +110,9 @@ export default class WipeCommand extends Command {
                                     auto: {
                                           roles: [],
                                           delete: [],
+							dm: {
+								status: false
+							},
                                           threads: {
                                                 bugs: false,
                                                 suggestions: false
