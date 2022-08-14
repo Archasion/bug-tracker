@@ -49,7 +49,7 @@ export default class SuggestCommand extends Command {
             const actionRow = new ActionRowBuilder().addComponents(suggestionInput) as ActionRowBuilder<TextInputBuilder>;
 
             const modal = new ModalBuilder()
-                  .setCustomId("suggestion-form")
+                  .setCustomId("suggest")
                   .setTitle("Submit Suggestion")
                   .addComponents(actionRow);
 
