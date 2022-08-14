@@ -1,7 +1,7 @@
 import Button from "../../modules/interactions/buttons/Button";
 import PermissionUtils from "../../utils/PermissionUtils";
 import Properties from "../../data/Properties";
-import Guilds from "../../db/models/Guilds";
+import Guild from "../../db/models/Guild.model";
 import Bot from "../../Bot";
 
 import { 
@@ -48,7 +48,7 @@ export default class DiscussionThreadButton extends Button {
 
             const type = (embed.title ? embed.title.split(" ")[0].toLowerCase() + "s" : "suggestions") as "bugs" | "suggestions";
 
-            const guildConfig = await Guilds.findOne(
+            const guildConfig = await Guild.findOne(
                   { id: interaction.guildId }, 
                   { 
                         ["auto.dm.status"]: 1,

@@ -1,5 +1,5 @@
 import Command from "../../modules/interactions/commands/Command";
-import Guilds from "../../db/models/Guilds";
+import Guild from "../../db/models/Guild.model";
 import Bot from "../../Bot";
 
 import { 
@@ -96,19 +96,19 @@ export default class RoleCommand extends Command {
 
             switch (action) {
                   case "set": {
-                        await Guilds.updateOne({ id: interaction.guildId }, { $set: { [`roles.${type}`]: role?.id } });
+                        await Guild.updateOne({ id: interaction.guildId }, { $set: { [`roles.${type}`]: role?.id } });
                         interaction.editReply(`The **${type}** role has been set to ${role}.`);
                         break;
                   }
 
                   case "reset": {
-                        await Guilds.updateOne({ id: interaction.guildId }, { $set: { [`roles.${type}`]: null } });
+                        await Guild.updateOne({ id: interaction.guildId }, { $set: { [`roles.${type}`]: null } });
                         interaction.editReply(`The **${type}** role has been reset.`);
                         break;
                   }
 
                   case "view": {
-                        const guildConfig = await Guilds.findOne(
+                        const guildConfig = await Guild.findOne(
                               { id: interaction.guildId }, 
                               { roles: 1, _id: 0 }
                         );

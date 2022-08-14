@@ -1,6 +1,6 @@
 import Command from "../../modules/interactions/commands/Command";
 import PermissionUtils from "../../utils/PermissionUtils";
-import Guilds from "../../db/models/Guilds";
+import Guild from "../../db/models/Guild.model";
 import Bot from "../../Bot";
 
 import { 
@@ -128,19 +128,19 @@ export default class ChannelCommand extends Command {
 
                         if (!hasPerms) return;
 
-                        await Guilds.updateOne({ id: interaction.guildId }, { $set: { [`channels.${type}`]: channel?.id } });
+                        await Guild.updateOne({ id: interaction.guildId }, { $set: { [`channels.${type}`]: channel?.id } });
                         interaction.editReply(`The **${type}** channel has been set to ${channel}.`);
                         break;
                   }
 
                   case "reset": {
-                        await Guilds.updateOne({ id: interaction.guildId }, { $set: { [`channels.${type}`]: null } });
+                        await Guild.updateOne({ id: interaction.guildId }, { $set: { [`channels.${type}`]: null } });
                         interaction.editReply(`The **${type}** channel has been reset.`);
                         break;
                   }
 
                   case "view": {
-                        const guildConfig = await Guilds.findOne(
+                        const guildConfig = await Guild.findOne(
                               { id: interaction.guildId }, 
                               { channels: 1, _id: 0 }
                         );

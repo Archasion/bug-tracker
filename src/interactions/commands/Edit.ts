@@ -1,5 +1,5 @@
 import Command from "../../modules/interactions/commands/Command";
-import Guilds from "../../db/models/Guilds";
+import Guild from "../../db/models/Guild.model";
 import Bot from "../../Bot";
 
 import { 
@@ -63,7 +63,7 @@ export default class EditCommand extends Command {
             const type = interaction.options.getString("type") as string;
             const id = interaction.options.getNumber("id") as number;
 
-            const channelConfig = await Guilds.findOne(
+            const channelConfig = await Guild.findOne(
                   { id: interaction.guildId }, 
                   { [`channels.${type}`]: 1, _id: 0 }
             );
@@ -77,7 +77,7 @@ export default class EditCommand extends Command {
                   return;
             }
 
-            const reportConfig = await Guilds.findOne(
+            const reportConfig = await Guild.findOne(
                   { id: interaction.guildId },
                   { [type]: 1, _id: 0 }
             );

@@ -1,5 +1,5 @@
 import Command from "../../modules/interactions/commands/Command";
-import Guilds from "../../db/models/Guilds";
+import Guild from "../../db/models/Guild.model";
 import Bot from "../../Bot";
 
 import { 
@@ -67,12 +67,12 @@ export default class WipeCommand extends Command {
             
             const isType = (typeInput: string) => type === typeInput || type === "all";
 
-		if (isType("bug")) await Guilds.updateOne({ id: interaction.guildId }, { $set: { bugs: [] } });
-		if (isType("report")) await Guilds.updateOne({ id: interaction.guildId }, { $set: { reports: [] } });
-		if (isType("suggestion"))await Guilds.updateOne({ id: interaction.guildId }, { $set: { suggestions: [] } });
+		if (isType("bug")) await Guild.updateOne({ id: interaction.guildId }, { $set: { bugs: [] } });
+		if (isType("report")) await Guild.updateOne({ id: interaction.guildId }, { $set: { reports: [] } });
+		if (isType("suggestion"))await Guild.updateOne({ id: interaction.guildId }, { $set: { suggestions: [] } });
 
 		if (isType("channel")) {
-			await Guilds.updateOne(
+			await Guild.updateOne(
 				{ id: interaction.guildId },
 				{
                               $set: {
@@ -89,7 +89,7 @@ export default class WipeCommand extends Command {
 		}
 
 		if (isType("role")) {
-			await Guilds.updateOne(
+			await Guild.updateOne(
 				{ id: interaction.guildId },
 				{
                               $set: {
@@ -103,7 +103,7 @@ export default class WipeCommand extends Command {
 		}
 
 		if (isType("auto")) {
-			await Guilds.updateOne(
+			await Guild.updateOne(
 				{ id: interaction.guildId },
 				{
                               $set: {

@@ -1,6 +1,6 @@
 import Command from "../../modules/interactions/commands/Command";
 import Properties from "../../data/Properties";
-import Guilds from "../../db/models/Guilds";
+import Guild from "../../db/models/Guild.model";
 import Bot from "../../Bot";
 
 import { 
@@ -159,7 +159,7 @@ export default class StatusCommand extends Command {
             const type = interaction.options.getString("type") as SubmissionType;
             const id = interaction.options.getNumber("id") as number;
 
-            const guildConfig = await Guilds.findOne(
+            const guildConfig = await Guild.findOne(
                   { id: interaction.guildId }, 
                   { 
                         [`channels.${type}`]: 1,

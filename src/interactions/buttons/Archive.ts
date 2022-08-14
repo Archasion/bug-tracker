@@ -1,6 +1,6 @@
 import Button from "../../modules/interactions/buttons/Button";
 import PermissionUtils from "../../utils/PermissionUtils";
-import Guilds from "../../db/models/Guilds";
+import Guild from "../../db/models/Guild.model";
 import Bot from "../../Bot";
 
 import { ButtonInteraction, TextChannel, NewsChannel } from "discord.js";
@@ -37,7 +37,7 @@ export default class ArchiveButton extends Button {
                   }
             }
 
-            const guildConfig = await Guilds.findOne(
+            const guildConfig = await Guild.findOne(
                   { id: interaction.guildId },
                   {
                         ["channels.archive"]: 1,

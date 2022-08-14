@@ -1,7 +1,7 @@
 import Command from "../../modules/interactions/commands/Command";
 import PermissionUtils from "../../utils/PermissionUtils";
 import Properties from "../../data/Properties";
-import Guilds from "../../db/models/Guilds";
+import Guild from "../../db/models/Guild.model";
 import Bot from "../../Bot";
 
 import { 
@@ -141,7 +141,7 @@ export default class AutoCommand extends Command {
 	async execute(interaction: ChatInputCommandInteraction): Promise<void> {
 		const subCommand = interaction.options.getSubcommand();
             
-            const guildConfig = await Guilds.findOne(
+            const guildConfig = await Guild.findOne(
                   { id: interaction.guildId },
                   { [`auto.${subCommand}`]: 1, _id: 0 }
             );
@@ -155,7 +155,7 @@ export default class AutoCommand extends Command {
                         return;
                   }
 
-                  await Guilds.updateOne(
+                  await Guild.updateOne(
                         { id: interaction.guildId },
                         { $set: { [`auto.threads.${type}`]: enabled } }
                   );
@@ -173,7 +173,7 @@ export default class AutoCommand extends Command {
                         return;
                   }
 
-                  await Guilds.updateOne(
+                  await Guild.updateOne(
                         { id: interaction.guildId },
                         { $set: { [`auto.dm.${type}`]: enabled } }
                   );
@@ -229,7 +229,7 @@ export default class AutoCommand extends Command {
                               return;
                         }
 
-                        await Guilds.updateOne(
+                        await Guild.updateOne(
                               { id: interaction.guildId },
                               { $push: { ["auto.roles"]: role.id } }
                         );
@@ -246,7 +246,7 @@ export default class AutoCommand extends Command {
                               return;
                         }
 
-                        await Guilds.updateOne(
+                        await Guild.updateOne(
                               { id: interaction.guildId },
                               { $pull: { ["auto.roles"]: role.id } }
                         );
@@ -300,7 +300,7 @@ export default class AutoCommand extends Command {
 
                         if (!await PermissionUtils.botHasPermissions(interaction, [PermissionFlagsBits.ManageMessages, PermissionFlagsBits.ViewChannel], channel)) return;
 
-                        await Guilds.updateOne(
+                        await Guild.updateOne(
                               { id: interaction.guildId },
                               { $push: { ["auto.delete"]: channel.id } }
                         );
@@ -315,7 +315,7 @@ export default class AutoCommand extends Command {
                               return;
                         }
 
-                        await Guilds.updateOne(
+                        await Guild.updateOne(
                               { id: interaction.guildId },
                               { $pull: { ["auto.delete"]: channel.id } }
                         );

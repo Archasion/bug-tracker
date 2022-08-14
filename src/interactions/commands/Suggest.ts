@@ -1,5 +1,5 @@
 import Command from "../../modules/interactions/commands/Command";
-import Guilds from "../../db/models/Guilds";
+import Guild from "../../db/models/Guild.model";
 import Bot from "../../Bot";
 
 import { 
@@ -29,7 +29,7 @@ export default class SuggestCommand extends Command {
 	 * @returns {Promise<void>}
 	 */
 	async execute(interaction: ChatInputCommandInteraction): Promise<void> {
-            const submissionChannel = await Guilds.findOne({ id: interaction.guildId }, { ["channels.suggestions"]: 1, _id: 0 });
+            const submissionChannel = await Guild.findOne({ id: interaction.guildId }, { ["channels.suggestions"]: 1, _id: 0 });
 
             if (!submissionChannel) {
                   interaction.reply("There is no submission channel set for suggestion, an `Administrator` is able to set one using `/channel set Suggestion Submissions`");

@@ -1,5 +1,5 @@
 import Properties from "../data/Properties";
-import Guilds from "../db/models/Guilds";
+import Guild from "../db/models/Guild.model";
 
 import { GuildMember } from "discord.js";
 
@@ -46,7 +46,7 @@ export default class RestrictionUtils {
       }
 
       // public static async isReviewer(member: GuildMember): Promise<boolean> {
-      //       const guildSettings = await Guilds.findOne({ id: member.guild.id });
+      //       const guildSettings = await Guild.findOne({ id: member.guild.id });
       //       const reviewerRole = guildSettings?.roles.reviewer;
             
       //       if (reviewerRole && member.roles.cache.has(reviewerRole))return true;
@@ -55,7 +55,7 @@ export default class RestrictionUtils {
       // }
 
       public static async isModerator(member: GuildMember): Promise<boolean> {
-            const guildConfig = await Guilds.findOne(
+            const guildConfig = await Guild.findOne(
                   { id: member.guild.id }, 
                   { roles: 1, _id: 0 }
             );
@@ -71,7 +71,7 @@ export default class RestrictionUtils {
       }
 
       public static async isAdministrator(member: GuildMember): Promise<boolean> {
-            const guildConfig = await Guilds.findOne(
+            const guildConfig = await Guild.findOne(
                   { id: member.guild.id }, 
                   { roles: 1, _id: 0 }
             );

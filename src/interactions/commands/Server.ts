@@ -1,6 +1,6 @@
 import Command from "../../modules/interactions/commands/Command";
 import Properties from "../../data/Properties";
-import Guilds from "../../db/models/Guilds";
+import Guild from "../../db/models/Guild.model";
 import Bot from "../../Bot";
 
 import { 
@@ -47,7 +47,7 @@ export default class EvalCommand extends Command {
 			.setFooter({ text: `Server ID: ${interaction.guild?.id}` })
 			.setTimestamp();
 		
-		const guildConfig = await Guilds.findOne(
+		const guildConfig = await Guild.findOne(
 			{ id: interaction.guild?.id },
 			{
 				channels: 1,
