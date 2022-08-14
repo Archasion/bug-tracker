@@ -35,7 +35,7 @@ export default class CommandHandler {
                   modal.name :
                   Object.values(modal.name)[0];
 
-            console.log(`%s Registered command: "${modalName}"`, Properties.cli.modules.modals);
+            console.log(`%s Registered modal: "${modalName}"`, Properties.cli.modules.modals);
       }
 
       public async handle(interaction: ModalSubmitInteraction) {
