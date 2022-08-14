@@ -106,7 +106,7 @@ export default class ContactCommand extends Command {
                         modalComponents.push(
                               new ActionRowBuilder().addComponents(
                                     new TextInputBuilder()
-                                          .setCustomId("bug-reproduction")
+                                          .setCustomId("reproduction-steps")
                                           .setStyle(TextInputStyle.Paragraph)
                                           .setLabel("Steps to reproduce the bug (if applicable)")
                                           .setPlaceholder("- Step 1: ...\n- Step 2: ...\n- Step 3: ...")
