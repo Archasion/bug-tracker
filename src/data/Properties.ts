@@ -31,13 +31,12 @@ export default class Properties {
 
       public static readonly users = {
             developers: [
-                  "556206370429599755", // Archasion
-                  // "697765709580599406" // Archasion 2
+                  "556206370429599755" // Archasion
             ]
       };
 
       public static readonly channels = {
-            bot: { // Channels related to the development / usage of the bot
+            bot: {
                   support: "996440036205666344", // #support
                   suggestions: "996440053557514261", // #suggestions
                   bugs: "996440087921426512", // #bugs
