@@ -1,0 +1,135 @@
+import Modal from "../../modules/interactions/modals/Modal";
+import Guild from "../../db/models/Guild.model";
+import Properties from "../../data/Properties";
+import Bot from "../../Bot";
+
+import { 
+      ModalSubmitInteraction, 
+      ActionRowBuilder, 
+      ButtonComponent, 
+      ButtonBuilder, 
+      EmbedBuilder, 
+      ButtonStyle,
+      TextChannel, 
+      ActionRow
+} from "discord.js";
+
+import { RestrictionLevel } from "../../utils/RestrictionUtils";
+
+export default class SuggestModal extends Modal {
+      constructor(client: Bot) {
+            super(client, {
+                  name: "suggest",
+                  restriction: RestrictionLevel.Public
+            });
+      }
+
+      
+      /**
+       * @param  {ModalSubmitInteraction} interaction
+       * @returns {Promise<void>}
+       */
+      async execute(interaction: ModalSubmitInteraction): Promise<void> {
+            const suggestion = interaction.fields.getTextInputValue("suggestion");
+
+            const guildConfig = await Guild.findOne(
+                  { id: interaction.guildId },
+                  { 
+                        ["auto.threads.suggestions"]: 1,
+                        ["channels.suggestions"]: 1,
+                        suggestions: 1,
+                        _id: 0 
+                  }
+            );
+
+            const submissionChannelId = guildConfig?.channels.suggestions;
+
+            if (!submissionChannelId) {
+                  interaction.reply({
+                        content: "There is no submission channel set for suggestions, an administrator is able to set one using `/channel set`",
+                        ephemeral: true,
+                  });
+                  return;
+            }
+
+            const submissionChannel = interaction.guild?.channels.cache.get(submissionChannelId) as TextChannel;
+
+            if (!submissionChannel) {
+                  interaction.reply({
+                        content: "The set submission channel does not exist, an administrator is able to set one using `/channel set`",
+                        ephemeral: true
+                  });
+                  return;
+            }
+
+            const embed = new EmbedBuilder()
+                  .setColor(Properties.colors.default)
+                  .setTitle("Suggestion")
+                  .setDescription(suggestion)
+                  .setThumbnail(interaction.user.displayAvatarURL())
+                  .setFooter({ text: `#${guildConfig?.suggestions.length + 1}` })
+                  .setTimestamp();
+
+            const approveButton = new ButtonBuilder()
+                  .setCustomId("approve")
+                  .setLabel("Approve")
+                  .setStyle(ButtonStyle.Success);
+
+            const rejectButton = new ButtonBuilder()
+                  .setCustomId("reject")
+                  .setLabel("Reject")
+                  .setStyle(ButtonStyle.Danger);
+
+            const discussionThreadButton = new ButtonBuilder()
+                  .setCustomId("discussion-thread")
+                  .setLabel("Discussion Thread")
+                  .setStyle(ButtonStyle.Secondary);
+
+            const archiveButton = new ButtonBuilder()
+                  .setCustomId("archive")
+                  .setLabel("Archive")
+                  .setStyle(ButtonStyle.Secondary);
+
+            const actionRow = new ActionRowBuilder().setComponents(
+                  approveButton, 
+                  rejectButton, 
+                  discussionThreadButton, 
+                  archiveButton
+            );
+
+            submissionChannel.send({
+                  content: `${interaction.user} (\`${interaction.user.id}\`)`,
+                  embeds: [embed],
+                  components: [actionRow.toJSON() as ActionRow<ButtonComponent>]
+            }).then(async (message) => {
+                  await Guild.updateOne(
+                        { id: interaction.guildId },
+                        { 
+                              $push: {
+                                    suggestions: {
+                                          number: guildConfig?.suggestions.length + 1,
+                                          messageId: message.id,
+                                          author: interaction.user.id,
+                                          suggestion
+                                    }
+                              } 
+                        }
+                  );
+
+                  if (guildConfig?.auto.threads.suggestions) {
+                        message.startThread({
+                              name: suggestion.length > 97 ? `${suggestion.substring(0, 97)}...` : suggestion,
+                              autoArchiveDuration: 10080, // 1 week
+                              reason: "Submission discussion thread"
+                        });
+                  }
+
+                  interaction.reply({
+                        content: "Your suggestion has been submitted",
+                        ephemeral: true
+                  });
+            });
+
+            return;
+      }
+}
