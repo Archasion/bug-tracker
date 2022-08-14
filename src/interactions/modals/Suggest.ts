@@ -1,4 +1,5 @@
 import Modal from "../../modules/interactions/modals/Modal";
+import PermissionUtils from "../../utils/PermissionUtils";
 import Guild from "../../db/models/Guild.model";
 import Properties from "../../data/Properties";
 import Bot from "../../Bot";
@@ -62,6 +63,16 @@ export default class SuggestModal extends Modal {
                   return;
             }
 
+            if (!await PermissionUtils.botHasPermissions(interaction, [
+                  "CreatePublicThreads",
+                  "UseExternalEmojis", 
+                  "ManageThreads",
+                  "SendMessages",
+                  "AddReactions",
+                  "ViewChannel",
+                  "EmbedLinks"
+            ], submissionChannel)) return;
+
             const embed = new EmbedBuilder()
                   .setColor(Properties.colors.default)
                   .setTitle("Suggestion")
@@ -115,6 +126,9 @@ export default class SuggestModal extends Modal {
                               } 
                         }
                   );
+
+                  message.react(Properties.emojis.approve);
+                  message.react(Properties.emojis.reject);
 
                   if (guildConfig?.auto.threads.suggestions) {
                         message.startThread({
