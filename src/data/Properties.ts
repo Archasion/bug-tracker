@@ -44,4 +44,9 @@ export default class Properties {
                   other: "1002882056994439169" // #other
             }
       };
+
+      public static readonly emojis = {
+            approve: "968494477524213821",
+            reject: "968494477369016400"
+      };
 }
