@@ -11,7 +11,7 @@ type SubmissionType = "bugs" | "reports" | "suggestions";
 export default class ArchiveButton extends Button {
       constructor(client: Bot) {
             super(client, {
-                  name: "archive-report", // TODO Change to "archive"
+                  name: "archive",
                   restriction: RestrictionLevel.Moderator
             });
       }

@@ -19,7 +19,7 @@ import { RestrictionLevel } from "../../utils/RestrictionUtils";
 export default class DiscussionThreadButton extends Button {
       constructor(client: Bot) {
             super(client, {
-                  name: "report-discussion-thread", // TODO Change to "discussion-thread"
+                  name: "discussion-thread",
                   restriction: RestrictionLevel.Moderator
             });
       }

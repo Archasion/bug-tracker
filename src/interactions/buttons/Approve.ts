@@ -21,7 +21,7 @@ type SubmissionType = "bugs" | "reports" | "suggestions";
 export default class ApproveButton extends Button {
       constructor(client: Bot) {
             super(client, {
-                  name: "approve-report", // TODO Change to "approve"
+                  name: "approve",
                   restriction: RestrictionLevel.Moderator
             });
       }
