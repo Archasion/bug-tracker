@@ -50,7 +50,6 @@ export default class CommandHandler {
 		});
 
             if (!modal) return;
-            if (!modal.modalResponse) await interaction.deferReply({ ephemeral: true });
 
             const modalName = typeof modal.name === "string" ?
                   modal.name :
