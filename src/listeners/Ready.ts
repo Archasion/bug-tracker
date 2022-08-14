@@ -14,6 +14,7 @@ module.exports = class ReadyEventListener extends EventListener {
             console.log(clc.green(`(EVENTS) ${client.user?.tag} is online!`));
 
             client.buttons.load();
+            client.modals.load();
 
             client.commands.load();
             client.commands.publish();
