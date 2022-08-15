@@ -16,7 +16,8 @@ import {
       ButtonStyle,
       TextChannel,
       NewsChannel,
-      ActionRow
+      ActionRow,
+      Message
 } from "discord.js";
 
 import { RestrictionLevel } from "../../utils/RestrictionUtils";
@@ -184,10 +185,15 @@ export default class StatusCommand extends Command {
             }
 
             const submissionChannel = interaction.guild?.channels.cache.get(submissionChannelId) as TextChannel | NewsChannel;
-            const submission = await submissionChannel.messages.fetch(submissionData.messageId);
+            let submission: Message;
+            try {
+                  submission = await submissionChannel.messages.fetch(submissionData.messageId);
+            } catch {
+                  interaction.reply({ 
+                        content: "Unable to retrieve report/suggestion, it may have been removed.",
+                        ephemeral: true
+                  });
 
-            if (!submission) {
-                  interaction.editReply(`Could not find submission with the ID \`#${id}\`. It may have been archived or deleted.`);
                   return;
             }
 
