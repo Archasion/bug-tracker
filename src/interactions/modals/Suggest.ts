@@ -66,6 +66,7 @@ export default class SuggestModal extends Modal {
 
             if (!await PermissionUtils.botHasPermissions(interaction, [
                   "CreatePublicThreads",
+                  "ReadMessageHistory",
                   "UseExternalEmojis", 
                   "ManageThreads",
                   "SendMessages",
