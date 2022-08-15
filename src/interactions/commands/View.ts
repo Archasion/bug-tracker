@@ -104,6 +104,12 @@ export default class ViewCommand extends Command {
 					}
 				]);
 
+				if (submission.reproduction)
+					embed.data.fields?.push({
+						name: "Reproduction Steps",
+						value: submission.reproduction
+					});
+
 				if (submission.specs)
 					embed.data.fields?.push({
 						name: "System Specs",
