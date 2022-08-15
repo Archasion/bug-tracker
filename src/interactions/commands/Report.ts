@@ -53,11 +53,7 @@ export default class GuideCommand extends Command {
                                                 {
                                                       name: "High",
                                                       value: "high"
-                                                },
-                                                {
-                                                      name: "Critical",
-                                                      value: "critical"
-                                                },
+                                                }
                                           ]
                                     }
                               ]
