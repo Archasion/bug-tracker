@@ -73,12 +73,14 @@ export default class SuggestModal extends Modal {
                   "EmbedLinks"
             ], submissionChannel)) return;
 
+            const submissionId = guildConfig?.suggestions.length + 1;
+
             const embed = new EmbedBuilder()
                   .setColor(Properties.colors.default)
                   .setTitle("Suggestion")
                   .setDescription(suggestion)
                   .setThumbnail(interaction.user.displayAvatarURL())
-                  .setFooter({ text: `#${guildConfig?.suggestions.length + 1}` })
+                  .setFooter({ text: `#${submissionId}` })
                   .setTimestamp();
 
             const approveButton = new ButtonBuilder()
@@ -118,7 +120,7 @@ export default class SuggestModal extends Modal {
                         { 
                               $push: {
                                     suggestions: {
-                                          number: guildConfig?.suggestions.length + 1,
+                                          number: submissionId,
                                           messageId: message.id,
                                           author: interaction.user.id,
                                           suggestion
