@@ -71,12 +71,12 @@ export default class GuideCommand extends Command {
 	 * @returns {Promise<void>}
 	 */
 	async execute(interaction: ChatInputCommandInteraction): Promise<void> {
-            const priority = interaction.options.getString("priority");
+            const priority = interaction.options.getString("priority") ?? "none";
             const type = interaction.options.getSubcommand();
             const modalComponenets: ActionRowBuilder<TextInputBuilder>[] = [];
 
             const report = new ModalBuilder()
-                  .setCustomId(`${type}-report${priority ? `-${priority}` : ""}`)
+                  .setCustomId(`${type}-report${type === "bug" ? `-${priority}` : ""}`)
                   .setTitle("Report Form");
 
             switch (type) {
