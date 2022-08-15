@@ -1,5 +1,6 @@
 import Modal from "../../modules/interactions/modals/Modal";
 import PermissionUtils from "../../utils/PermissionUtils";
+import StringUtils from "../../utils/StringUtils";
 import Guild from "../../db/models/Guild.model";
 import Properties from "../../data/Properties";
 import Bot from "../../Bot";
@@ -134,7 +135,7 @@ export default class SuggestModal extends Modal {
 
                   if (guildConfig?.auto.threads.suggestions) {
                         message.startThread({
-                              name: suggestion.length > 97 ? `${suggestion.substring(0, 97)}...` : suggestion,
+                              name: StringUtils.elipsify(suggestion, 100),
                               autoArchiveDuration: 10080, // 1 week
                               reason: "Submission discussion thread"
                         });

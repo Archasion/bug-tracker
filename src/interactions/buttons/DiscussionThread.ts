@@ -1,7 +1,8 @@
 import Button from "../../modules/interactions/buttons/Button";
 import PermissionUtils from "../../utils/PermissionUtils";
-import Properties from "../../data/Properties";
+import StringUtils from "../../utils/StringUtils";
 import Guild from "../../db/models/Guild.model";
+import Properties from "../../data/Properties";
 import Bot from "../../Bot";
 
 import { 
@@ -37,9 +38,14 @@ export default class DiscussionThreadButton extends Button {
             if (!await PermissionUtils.botHasPermissions(interaction, ["CreatePublicThreads", "ViewChannel"])) return;
 
             const [embed] = interaction.message.embeds;
-            let threadName = embed.fields[0].value;
+            
+            let threadName;
 
-            threadName = threadName.length > 97 ? threadName.substring(0, 97) + "..." : threadName;
+            if (embed.fields.length === 0 || embed.fields[0]?.name === "Reason") {
+                  threadName = StringUtils.elipsify(embed.description as string, 100);
+            } else {
+                  threadName = StringUtils.elipsify(embed.fields[0].value, 100);
+            }
 
             if (!threadName) {
                   interaction.editReply("Unable to retrieve the submission summary.");
