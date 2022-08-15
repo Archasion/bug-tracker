@@ -189,11 +189,7 @@ export default class StatusCommand extends Command {
             try {
                   submission = await submissionChannel.messages.fetch(submissionData.messageId);
             } catch {
-                  interaction.reply({ 
-                        content: "Unable to retrieve report/suggestion, it may have been removed.",
-                        ephemeral: true
-                  });
-
+                  interaction.editReply("Unable to retrieve report/suggestion, it may have been removed.");
                   return;
             }
 
