@@ -14,6 +14,7 @@ export default class ContactModal extends Modal {
                   restriction: RestrictionLevel.Public
             });
       }
+      
       /**
        * @param  {ModalSubmitInteraction} interaction
        * @returns {Promise<void>}

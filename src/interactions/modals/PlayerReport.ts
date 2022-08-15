@@ -24,7 +24,6 @@ export default class ReportPlayerModal extends Modal {
                   restriction: RestrictionLevel.Public
             });
       }
-
       
       /**
        * @param  {ModalSubmitInteraction} interaction

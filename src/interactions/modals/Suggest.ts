@@ -25,7 +25,6 @@ export default class SuggestModal extends Modal {
                   restriction: RestrictionLevel.Public
             });
       }
-
       
       /**
        * @param  {ModalSubmitInteraction} interaction
