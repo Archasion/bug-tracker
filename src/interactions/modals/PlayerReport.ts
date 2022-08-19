@@ -58,7 +58,7 @@ export default class ReportPlayerModal extends Modal {
 
             if (!submissionChannel) {
                   interaction.reply({
-                        content: ErrorMessages.ChannelDoesntExist,
+                        content: ErrorMessages.ChannelNotFound,
                         ephemeral: true
                   });
                   return;

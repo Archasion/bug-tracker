@@ -59,7 +59,7 @@ export default class SuggestModal extends Modal {
 
             if (!submissionChannel) {
                   interaction.reply({
-                        content: ErrorMessages.ChannelDoesntExist,
+                        content: ErrorMessages.ChannelNotFound,
                         ephemeral: true
                   });
                   return;
