@@ -143,7 +143,7 @@ export default class EditCommand extends Command {
                         modalComponents.push(
                               new ActionRowBuilder().addComponents(
                                     new TextInputBuilder()
-                                          .setCustomId(field.name.toLowerCase().replaceAll(" ", "-"))
+                                          .setCustomId(field.name.replaceAll(" ", "-"))
                                           .setLabel(field.name)
                                           .setMinLength(12)
                                           .setMaxLength(1024)
