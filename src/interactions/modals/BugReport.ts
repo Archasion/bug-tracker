@@ -8,6 +8,7 @@ import Bot from "../../Bot";
 
 import { 
       ModalSubmitInteraction, 
+      PermissionFlagsBits,
       AttachmentBuilder,
       ActionRowBuilder, 
       ButtonComponent, 
@@ -81,13 +82,13 @@ export default class BugReportModal extends Modal {
             }
 
             if (!await PermissionUtils.botHasPermissions(interaction, [
-                  "CreatePublicThreads",
-                  "ReadMessageHistory",
-                  "ManageThreads",
-                  "AddReactions",
-                  "SendMessages",
-                  "ViewChannel",
-                  "EmbedLinks"
+                  PermissionFlagsBits.CreatePublicThreads,
+                  PermissionFlagsBits.ReadMessageHistory,
+                  PermissionFlagsBits.ManageThreads,
+                  PermissionFlagsBits.AddReactions,
+                  PermissionFlagsBits.SendMessages,
+                  PermissionFlagsBits.ViewChannel,
+                  PermissionFlagsBits.EmbedLinks
             ], submissionChannel)) return;
 
             const submissionId = guildConfig?.bugs.length + 1;

@@ -298,7 +298,10 @@ export default class AutoCommand extends Command {
                               return;
                         }
 
-                        if (!await PermissionUtils.botHasPermissions(interaction, [PermissionFlagsBits.ManageMessages, PermissionFlagsBits.ViewChannel], channel)) return;
+                        if (!await PermissionUtils.botHasPermissions(interaction, [
+                              PermissionFlagsBits.ManageMessages, 
+                              PermissionFlagsBits.ViewChannel
+                        ], channel)) return;
 
                         await Guild.updateOne(
                               { id: interaction.guildId },

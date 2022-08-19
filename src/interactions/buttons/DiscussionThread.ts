@@ -6,6 +6,7 @@ import Properties from "../../data/Properties";
 import Bot from "../../Bot";
 
 import { 
+      PermissionFlagsBits,
       ButtonInteraction, 
       ActionRowBuilder, 
       ButtonComponent,
@@ -35,7 +36,10 @@ export default class DiscussionThreadButton extends Button {
                   return;
             }
 
-            if (!await PermissionUtils.botHasPermissions(interaction, ["CreatePublicThreads", "ViewChannel"])) return;
+            if (!await PermissionUtils.botHasPermissions(interaction, [
+                  PermissionFlagsBits.CreatePublicThreads, 
+                  PermissionFlagsBits.ViewChannel
+            ])) return;
 
             const [embed] = interaction.message.embeds;
             

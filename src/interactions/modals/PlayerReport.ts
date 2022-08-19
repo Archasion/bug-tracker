@@ -7,6 +7,7 @@ import Bot from "../../Bot";
 
 import { 
       ModalSubmitInteraction, 
+      PermissionFlagsBits,
       ActionRowBuilder, 
       ButtonComponent, 
       ButtonBuilder, 
@@ -65,10 +66,10 @@ export default class ReportPlayerModal extends Modal {
             }
 
             if (!await PermissionUtils.botHasPermissions(interaction, [
-                  "ReadMessageHistory",
-                  "SendMessages",
-                  "ViewChannel",
-                  "EmbedLinks"
+                  PermissionFlagsBits.ReadMessageHistory,
+                  PermissionFlagsBits.SendMessages,
+                  PermissionFlagsBits.ViewChannel,
+                  PermissionFlagsBits.EmbedLinks
             ], submissionChannel)) return;
 
             const submissionId = guildConfig?.reports.length + 1;

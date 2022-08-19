@@ -4,7 +4,7 @@ import ErrorMessages from "../../data/ErrorMessages";
 import Guild from "../../db/models/Guild.model";
 import Bot from "../../Bot";
 
-import { ButtonInteraction, TextChannel, NewsChannel } from "discord.js";
+import { ButtonInteraction, TextChannel, NewsChannel, PermissionFlagsBits } from "discord.js";
 import { RestrictionLevel } from "../../utils/RestrictionUtils";
 
 type SubmissionType = "bugs" | "reports" | "suggestions";
@@ -63,8 +63,15 @@ export default class ArchiveButton extends Button {
 
             const archiveChannel = interaction.guild?.channels.cache.get(archiveChannelId) as TextChannel | NewsChannel;
 
-            if (!await PermissionUtils.botHasPermissions(interaction, ["SendMessages", "ViewChannel"], archiveChannel)) return;
-            if (!await PermissionUtils.botHasPermissions(interaction, ["ManageMessages", "ViewChannel"])) return;
+            if (!await PermissionUtils.botHasPermissions(interaction, [
+                  PermissionFlagsBits.SendMessages, 
+                  PermissionFlagsBits.ViewChannel
+            ], archiveChannel)) return;
+
+            if (!await PermissionUtils.botHasPermissions(interaction, [
+                  PermissionFlagsBits.ManageMessages, 
+                  PermissionFlagsBits.ViewChannel
+            ])) return;
 
             if (interaction.message.hasThread) {
 			await interaction.message.thread?.edit({

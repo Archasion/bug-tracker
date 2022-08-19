@@ -138,14 +138,14 @@ export default class EditCommand extends Command {
 
             const modalComponents: ActionRowBuilder<TextInputBuilder>[] = [];
 
-            embed.data.fields?.forEach(field => {
+            embed.fields?.forEach(field => {
                   if (!field.name.includes("Reason")) {
                         modalComponents.push(
                               new ActionRowBuilder().addComponents(
                                     new TextInputBuilder()
                                           .setCustomId(field.name.toLowerCase().replaceAll(" ", "-"))
                                           .setLabel(field.name)
-                                          // .setMinLength(12)
+                                          .setMinLength(12)
                                           .setMaxLength(1024)
                                           .setValue(field.value)
                                           .setPlaceholder(`${field.name}...`)
@@ -155,6 +155,22 @@ export default class EditCommand extends Command {
                         );
                   }
             });
+
+            if (modalComponents.length === 0) {
+                  modalComponents.push(
+                        new ActionRowBuilder().addComponents(
+                              new TextInputBuilder()
+                                    .setCustomId("suggestion")
+                                    .setLabel("Suggestion")
+                                    .setMinLength(12)
+                                    .setMaxLength(4000)
+                                    .setPlaceholder("Suggestion...")
+                                    .setValue(embed.description as string)
+                                    .setRequired(true)
+                                    .setStyle(TextInputStyle.Paragraph)
+                        ) as ActionRowBuilder<TextInputBuilder>
+                  );
+            }
 
             modal.addComponents(modalComponents);
             interaction.showModal(modal);

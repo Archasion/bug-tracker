@@ -8,6 +8,7 @@ import Bot from "../../Bot";
 
 import { 
       ModalSubmitInteraction, 
+      PermissionFlagsBits,
       ActionRowBuilder, 
       ButtonComponent, 
       ButtonBuilder, 
@@ -66,14 +67,14 @@ export default class SuggestModal extends Modal {
             }
 
             if (!await PermissionUtils.botHasPermissions(interaction, [
-                  "CreatePublicThreads",
-                  "ReadMessageHistory",
-                  "UseExternalEmojis", 
-                  "ManageThreads",
-                  "SendMessages",
-                  "AddReactions",
-                  "ViewChannel",
-                  "EmbedLinks"
+                  PermissionFlagsBits.CreatePublicThreads,
+                  PermissionFlagsBits.ReadMessageHistory,
+                  PermissionFlagsBits.UseExternalEmojis,
+                  PermissionFlagsBits.ManageThreads,
+                  PermissionFlagsBits.SendMessages,
+                  PermissionFlagsBits.AddReactions,
+                  PermissionFlagsBits.ViewChannel,
+                  PermissionFlagsBits.EmbedLinks
             ], submissionChannel)) return;
 
             const submissionId = guildConfig?.suggestions.length + 1;
