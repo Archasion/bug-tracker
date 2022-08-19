@@ -2,7 +2,7 @@ import Modal from "../../modules/interactions/modals/Modal";
 import Properties from "../../data/Properties";
 import Bot from "../../Bot";
 
-import { ModalSubmitInteraction, TextChannel, EmbedBuilder } from "discord.js";
+import { ModalSubmitInteraction, TextChannel, NewsChannel, EmbedBuilder } from "discord.js";
 import { RestrictionLevel } from "../../utils/RestrictionUtils";
 
 type ContactType = "support" | "suggestions" | "bugs" | "feedback" | "other";
@@ -24,7 +24,7 @@ export default class ContactModal extends Modal {
             const enquiry = interaction.customId.split("-")[1] as ContactType;
             const channelId = Properties.channels.bot[enquiry];
 
-            const channel = this.client.channels.cache.get(channelId) as TextChannel;
+            const channel = this.client.channels.cache.get(channelId) as TextChannel | NewsChannel;
             
             const embed = new EmbedBuilder()
                   .setColor(Properties.colors.default)

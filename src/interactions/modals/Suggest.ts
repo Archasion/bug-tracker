@@ -13,6 +13,7 @@ import {
       EmbedBuilder, 
       ButtonStyle,
       TextChannel, 
+      NewsChannel,
       ActionRow
 } from "discord.js";
 
@@ -53,7 +54,7 @@ export default class SuggestModal extends Modal {
                   return;
             }
 
-            const submissionChannel = interaction.guild?.channels.cache.get(submissionChannelId) as TextChannel;
+            const submissionChannel = interaction.guild?.channels.cache.get(submissionChannelId) as TextChannel | NewsChannel;
 
             if (!submissionChannel) {
                   interaction.reply({

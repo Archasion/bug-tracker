@@ -11,7 +11,8 @@ import {
       ButtonBuilder, 
       EmbedBuilder, 
       ButtonStyle,
-      TextChannel, 
+      TextChannel,
+      NewsChannel,
       ActionRow
 } from "discord.js";
 
@@ -52,7 +53,7 @@ export default class ReportPlayerModal extends Modal {
                   return;
             }
 
-            const submissionChannel = interaction.guild?.channels.cache.get(submissionChannelId) as TextChannel;
+            const submissionChannel = interaction.guild?.channels.cache.get(submissionChannelId) as TextChannel | NewsChannel;
 
             if (!submissionChannel) {
                   interaction.reply({
