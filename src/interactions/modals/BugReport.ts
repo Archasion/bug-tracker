@@ -1,5 +1,6 @@
 import Modal from "../../modules/interactions/modals/Modal";
 import PermissionUtils from "../../utils/PermissionUtils";
+import ErrorMessages from "../../data/ErrorMessages";
 import StringUtils from "../../utils/StringUtils";
 import Guild from "../../db/models/Guild.model";
 import Properties from "../../data/Properties";
@@ -63,7 +64,7 @@ export default class BugReportModal extends Modal {
 
             if (!submissionChannelId) {
                   interaction.reply({
-                        content: "There is no submission channel set for bug reports, an administrator is able to set one using `/channel set`",
+                        content: ErrorMessages.ChannelNotConfigured,
                         ephemeral: true,
                   });
                   return;
@@ -73,7 +74,7 @@ export default class BugReportModal extends Modal {
 
             if (!submissionChannel) {
                   interaction.reply({
-                        content: "The set submission channel does not exist, an administrator is able to set one using `/channel set`",
+                        content: ErrorMessages.ChannelDoesntExist,
                         ephemeral: true
                   });
                   return;

@@ -1,5 +1,6 @@
 import Command from "../../modules/interactions/commands/Command";
 import PermissionUtils from "../../utils/PermissionUtils";
+import ErrorMessages from "../../data/ErrorMessages";
 import Guild from "../../db/models/Guild.model";
 import Bot from "../../Bot";
 
@@ -148,7 +149,7 @@ export default class ChannelCommand extends Command {
                         const channelId = guildConfig?.channels[type];
 
                         if (!channelId) {
-                              interaction.editReply("There is no channel set for this type.\nYou can set one using `/channel set`");
+                              interaction.editReply(ErrorMessages.ChannelNotConfigured);
                               return;
                         }
 

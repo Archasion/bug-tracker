@@ -1,6 +1,7 @@
 import Command from "../../modules/interactions/commands/Command";
-import Properties from "../../data/Properties";
+import ErrorMessages from "../../data/ErrorMessages";
 import Guild from "../../db/models/Guild.model";
+import Properties from "../../data/Properties";
 import Bot from "../../Bot";
 
 import { 
@@ -180,7 +181,7 @@ export default class StatusCommand extends Command {
             const submissionChannelId: string = guildConfig?.channels[type];
 
             if (!submissionChannelId) {
-                  interaction.editReply("There is no channel set for these types of submissions.\nAn `Administrator` is able to set one using `/channel set`");
+                  interaction.editReply(ErrorMessages.ChannelNotConfigured);
                   return;
             }
 

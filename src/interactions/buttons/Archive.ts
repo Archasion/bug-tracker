@@ -1,5 +1,6 @@
 import Button from "../../modules/interactions/buttons/Button";
 import PermissionUtils from "../../utils/PermissionUtils";
+import ErrorMessages from "../../data/ErrorMessages";
 import Guild from "../../db/models/Guild.model";
 import Bot from "../../Bot";
 
@@ -56,7 +57,7 @@ export default class ArchiveButton extends Button {
             const archiveChannelId = guildConfig?.channels.archive;
 
             if (!archiveChannelId) {
-                  interaction.editReply("There is no archive channel set. A moderator is able to set one using `/channel set`");
+                  interaction.editReply(ErrorMessages.ChannelNotConfigured);
                   return;
             }
 

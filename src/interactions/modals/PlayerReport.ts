@@ -1,5 +1,6 @@
 import Modal from "../../modules/interactions/modals/Modal";
 import PermissionUtils from "../../utils/PermissionUtils";
+import ErrorMessages from "../../data/ErrorMessages";
 import Guild from "../../db/models/Guild.model";
 import Properties from "../../data/Properties";
 import Bot from "../../Bot";
@@ -47,7 +48,7 @@ export default class ReportPlayerModal extends Modal {
 
             if (!submissionChannelId) {
                   interaction.reply({
-                        content: "There is no submission channel set for player reports, an administrator is able to set one using `/channel set`",
+                        content: ErrorMessages.ChannelNotConfigured,
                         ephemeral: true,
                   });
                   return;
@@ -57,7 +58,7 @@ export default class ReportPlayerModal extends Modal {
 
             if (!submissionChannel) {
                   interaction.reply({
-                        content: "The set submission channel does not exist, an administrator is able to set one using `/channel set`",
+                        content: ErrorMessages.ChannelDoesntExist,
                         ephemeral: true
                   });
                   return;

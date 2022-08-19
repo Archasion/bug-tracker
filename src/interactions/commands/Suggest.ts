@@ -1,4 +1,5 @@
 import Command from "../../modules/interactions/commands/Command";
+import ErrorMessages from "../../data/ErrorMessages";
 import Guild from "../../db/models/Guild.model";
 import Bot from "../../Bot";
 
@@ -32,7 +33,7 @@ export default class SuggestCommand extends Command {
             const submissionChannel = await Guild.findOne({ id: interaction.guildId }, { ["channels.suggestions"]: 1, _id: 0 });
 
             if (!submissionChannel) {
-                  interaction.reply("There is no submission channel set for suggestion, an `Administrator` is able to set one using `/channel set Suggestion Submissions`");
+                  interaction.reply(ErrorMessages.ChannelNotConfigured);
                   return;
             }
 

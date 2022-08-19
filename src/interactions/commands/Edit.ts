@@ -1,4 +1,5 @@
 import Command from "../../modules/interactions/commands/Command";
+import ErrorMessages from "../../data/ErrorMessages";
 import Guild from "../../db/models/Guild.model";
 import Bot from "../../Bot";
 
@@ -70,7 +71,7 @@ export default class EditCommand extends Command {
 
             if (!channelConfig?.channels[type]) {
                   interaction.reply({ 
-                        content: "There is no channel set for these submissions, an `Administrator` can set one using `/channel set`",
+                        content: ErrorMessages.ChannelNotConfigured,
                         ephemeral: true
                   });
 
