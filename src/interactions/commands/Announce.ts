@@ -29,7 +29,7 @@ export default class AnnounceCommand extends Command {
 	 */
 	async execute(interaction: ChatInputCommandInteraction): Promise<void> {
             const announcement = new ModalBuilder()
-                  .setCustomId("bot-update-announcement")
+                  .setCustomId("bot-announcement")
                   .setTitle("Bot Update Announcement")
                   .setComponents([
                         new ActionRowBuilder().addComponents(
