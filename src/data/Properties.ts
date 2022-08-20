@@ -7,6 +7,11 @@ export default class Properties {
                   buttons: clc.magenta("(BUTTONS)"),
                   modals: clc.red("(MODALS)")
             },
+            listeners: {
+                  ready: clc.green("(READY)"),
+                  guildCreate: clc.green("(GUILD CREATE)"),
+                  guildDelete: clc.red("(GUILD DELETE)")
+            },    
             db: clc.cyan("(DATABASE)")
       };
 
