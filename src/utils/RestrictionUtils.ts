@@ -14,8 +14,8 @@ export enum RestrictionLevel {
 
 export default class RestrictionUtils {
       public static async getRestrictionLabel(member: GuildMember ): Promise<string> {
-            if (await this.isDeveloper(member)) return "Developer";
-            if (await this.isOwner(member)) return "Owner";
+            if (this.isDeveloper(member.id)) return "Developer";
+            if (this.isOwner(member)) return "Owner";
             if (await this.isAdministrator(member)) return "Administrator";
             if (await this.isModerator(member)) return "Moderator";
             // if (await this.isReviewer(member)) return "Reviewer";
@@ -24,8 +24,8 @@ export default class RestrictionUtils {
       }
 
       public static async getRestrictionLevel(member: GuildMember ): Promise<number> {
-            if (await this.isDeveloper(member)) return RestrictionLevel.Developer;
-            if (await this.isOwner(member)) return RestrictionLevel.Owner;
+            if (this.isDeveloper(member.id)) return RestrictionLevel.Developer;
+            if (this.isOwner(member)) return RestrictionLevel.Owner;
             if (await this.isAdministrator(member)) return RestrictionLevel.Administrator;
             if (await this.isModerator(member)) return RestrictionLevel.Moderator;
             // if (await this.isReviewer(member)) return RestrictionLevel.Reviewer;
@@ -39,8 +39,8 @@ export default class RestrictionUtils {
                   // case RestrictionLevel.Reviewer: return await this.isReviewer(member);
                   case RestrictionLevel.Moderator: return await this.isModerator(member);
                   case RestrictionLevel.Administrator: return await this.isAdministrator(member);
-                  case RestrictionLevel.Owner: return await this.isOwner(member);
-                  case RestrictionLevel.Developer: return await this.isDeveloper(member);
+                  case RestrictionLevel.Owner: return this.isOwner(member);
+                  case RestrictionLevel.Developer: return this.isDeveloper(member.id);
                   default: return false;
             }
       }
@@ -83,14 +83,14 @@ export default class RestrictionUtils {
                   member.permissions.has("Administrator")
             ) return true;
 
-            return await this.isOwner(member);
+            return this.isOwner(member);
       }
 
-      public static async isOwner(member: GuildMember): Promise<boolean> {
-            return member.id === member.guild.ownerId || await this.isDeveloper(member);
+      public static isOwner(member: GuildMember): boolean {
+            return member.id === member.guild.ownerId || this.isDeveloper(member.id);
       }
 
-      public static async isDeveloper(member: GuildMember): Promise<boolean> {
-            return Properties.users.developers.includes(member.id);
+      public static isDeveloper(memberId: string): boolean {
+            return Properties.users.developers.includes(memberId);
       }
 }
