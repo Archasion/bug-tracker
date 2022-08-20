@@ -1,5 +1,5 @@
 import EventListener from "../modules/listeners/Listener";
-import clc from "cli-color";
+import Properties from "../data/Properties";
 import Bot from "../Bot";
 
 module.exports = class ReadyEventListener extends EventListener {
@@ -11,7 +11,7 @@ module.exports = class ReadyEventListener extends EventListener {
       }
 
       public async execute(client: Bot) {
-            console.log(clc.green(`(EVENTS) ${client.user?.tag} is online!`));
+            console.log("%s %s is online!", Properties.cli.listeners.ready, client.user?.tag);
 
             client.buttons.load();
             client.modals.load();
