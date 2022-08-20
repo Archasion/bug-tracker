@@ -5,10 +5,7 @@ import { Interaction, InteractionType } from "discord.js";
 
 module.exports = class InteractionCreateEventListener extends EventListener {
       constructor(client: Bot) {
-            super(client, {
-                  name: "interactionCreate",
-                  once: false
-            });
+            super(client, { name: "interactionCreate" });
       }
 
       public async execute(interaction: Interaction) {
