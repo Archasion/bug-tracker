@@ -88,6 +88,7 @@ export default class ViewCommand extends Command {
 
 		const embed = new EmbedBuilder()
 			.setColor(Properties.colors.default)
+			.setThumbnail(interaction.guild?.iconURL() as string | null)
 			.setFooter({ text: `#${id}` });
 
 		switch (type) {
@@ -134,12 +135,8 @@ export default class ViewCommand extends Command {
 			}
 
 			case "suggestions": {
-				embed.setFields([
-					{
-						name: "Suggestion",
-						value: submission.suggestion
-					}
-				]);
+				embed.setTitle("Suggestion");
+				embed.setDescription(submission.suggestion);
 				break;
 			}
 		}
