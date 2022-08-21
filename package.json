@@ -4,6 +4,7 @@
   "description": "A bug tracking utility for developers",
   "main": "dist/Bot.js",
   "scripts": {
+    "build": "tsc",
     "test": "tsc; node dist/Bot.js"
   },
   "repository": {
