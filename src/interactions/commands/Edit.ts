@@ -165,7 +165,7 @@ export default class EditCommand extends Command {
                                     .setMinLength(12)
                                     .setMaxLength(4000)
                                     .setPlaceholder("Suggestion...")
-                                    .setValue(embed.description as string)
+                                    .setValue(embed.description as string || embed.fields?.[0].value as string)
                                     .setRequired(true)
                                     .setStyle(TextInputStyle.Paragraph)
                         ) as ActionRowBuilder<TextInputBuilder>
