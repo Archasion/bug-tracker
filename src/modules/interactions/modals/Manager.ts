@@ -5,8 +5,9 @@ import Properties from "../../../data/Properties";
 import Bot from "../../../Bot";
 import Modal from "./Modal";
 import clc from "cli-color";
-import path from "path";
-import fs from "fs";
+
+import { readdirSync } from "fs";
+import { join } from "path";
 
 export default class CommandHandler {
       client: Bot;
@@ -18,12 +19,12 @@ export default class CommandHandler {
       }
 
       public async load() {
-            const files = fs.readdirSync(path.join(__dirname, "../../../interactions/modals"))
+            const files = readdirSync(join(__dirname, "../../../interactions/modals"))
                   .filter(file => file.endsWith(".js"));
 
             for (const file of files) {
                   // eslint-disable-next-line @typescript-eslint/no-var-requires
-                  const modal = require(path.join(__dirname, "../../../interactions/modals", file)).default;
+                  const modal = require(join(__dirname, "../../../interactions/modals", file)).default;
                   new modal(this.client);
             }
       }

@@ -1,6 +1,7 @@
 import Bot from "../../Bot";
-import path from "path";
-import fs from "fs";
+
+import { readdirSync } from "fs";
+import { join } from "path";
 
 export default class ListenerLoader {
       client: Bot;
@@ -10,11 +11,11 @@ export default class ListenerLoader {
       }
 
       public async load() {
-            const files = fs.readdirSync(path.join(__dirname, "../../listeners")).filter(file => file.endsWith(".js"));
+            const files = readdirSync(join(__dirname, "../../listeners")).filter(file => file.endsWith(".js"));
 
             for (const file of files) {
                   // eslint-disable-next-line @typescript-eslint/no-var-requires
-                  const EventListener = require(path.join(__dirname, "../../listeners", file));
+                  const EventListener = require(join(__dirname, "../../listeners", file));
                   const listener = new EventListener(this.client);
 
                   if (listener.once) {
