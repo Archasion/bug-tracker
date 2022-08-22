@@ -12,12 +12,13 @@ module.exports = class GuildDeleteEventListener extends EventListener {
       }
 
       public async execute(guild: DiscordGuild) {
-            try {
-                  await Guild.deleteOne({ id: guild.id })
-                        .then(() => console.log("%s Removed guild configuration %s", Properties.cli.listeners.guildDelete, clc.blackBright(`("${guild.name}" • ${guild.id})`)));
-            } catch (err) {
-                  console.log("%s Failed to remove guild configuration %s", Properties.cli.listeners.guildDelete, clc.blackBright(`("${guild.name}" • ${guild.id})`));
-                  console.error(err);
-            }
+            if (!guild) return;
+            
+            await Guild.deleteOne({ id: guild.id })
+                  .then(() => console.log("%s Removed guild configuration %s", Properties.cli.listeners.guildDelete, clc.blackBright(`("${guild.name}" • ${guild.id})`)))
+                  .catch(err => {
+                        console.log("%s Failed to remove guild configuration %s", Properties.cli.listeners.guildDelete, clc.blackBright(`("${guild.name}" • ${guild.id})`));
+                        console.error(err);
+                  });
       }
 };
