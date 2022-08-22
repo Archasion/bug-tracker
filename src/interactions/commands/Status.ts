@@ -186,10 +186,9 @@ export default class StatusCommand extends Command {
             }
 
             const submissionChannel = interaction.guild?.channels.cache.get(submissionChannelId) as TextChannel | NewsChannel;
-            let submission: Message;
-            try {
-                  submission = await submissionChannel.messages.fetch(submissionData.messageId);
-            } catch {
+            const submission = await submissionChannel.messages.fetch(submissionData.messageId);
+
+            if (!submission) {
                   interaction.editReply("Unable to retrieve report/suggestion, it may have been removed.");
                   return;
             }
