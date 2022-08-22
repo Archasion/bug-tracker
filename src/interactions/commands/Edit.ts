@@ -16,6 +16,7 @@ import {
 } from "discord.js";
 
 import { RestrictionLevel } from "../../utils/RestrictionUtils";
+import { SubmissionType } from "../../data/Types";
 
 export default class EditCommand extends Command {
 	constructor(client: Bot) {
@@ -78,14 +79,12 @@ export default class EditCommand extends Command {
                   return;
             }
 
-            const reportConfig = await Guild.findOne(
+            const guildConfig = await Guild.findOne(
                   { id: interaction.guildId },
                   { [type]: 1, _id: 0 }
             );
 
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            const report = reportConfig?.[type].find(item => item.number === id);
+            const report = guildConfig?.[type as SubmissionType].find(item => item.number === id);
 
             if (!report) {
                   interaction.reply({ 

@@ -21,8 +21,7 @@ import {
 } from "discord.js";
 
 import { RestrictionLevel } from "../../utils/RestrictionUtils";
-
-type BugPriority = "none" | "low" | "medium" | "high";
+import { BugPriority } from "../../data/Types";
 
 const priorityImage = {
       medium: new AttachmentBuilder("assets/priority/Medium.png", { name: "medium.png" }),

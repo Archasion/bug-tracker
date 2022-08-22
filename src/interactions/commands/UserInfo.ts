@@ -104,9 +104,7 @@ export default class UserInfoCommand extends Command {
 					inline: true
 				},
 				{
-                              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                              // @ts-ignore
-					name: `Roles (${member._roles.length})`,
+					name: `Roles (${member.roles.cache.size})`,
 					value: roles,
 					inline: false
 				},

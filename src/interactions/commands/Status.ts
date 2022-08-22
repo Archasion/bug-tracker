@@ -20,6 +20,13 @@ import {
       ActionRow
 } from "discord.js";
 
+import { 
+      SubmissionStatus,
+      SubmissionType, 
+      BugPriority, 
+      BugStatus
+} from "../../data/Types";
+
 import { RestrictionLevel } from "../../utils/RestrictionUtils";
 
 const priorityImage = {
@@ -35,12 +42,6 @@ const statusImage = {
 	rejected: new AttachmentBuilder("assets/status/Rejected.png", { name: "rejected.png" }),
 	fixed: new AttachmentBuilder("assets/status/Fixed.png", { name: "fixed.png" })
 };
-
-type BugStatus = "approved" | "rejected" | "fixed" | "considered";
-type SubmissionStatus = BugStatus | "implemented";
-
-type SubmissionType = "bugs" | "reports" | "suggestions";
-type BugPriority = "none" | "low" | "medium" | "high";
 
 const forbiddenStatuses = {
       reports: ["implemented", "fixed"],

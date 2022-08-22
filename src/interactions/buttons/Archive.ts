@@ -6,8 +6,7 @@ import Bot from "../../Bot";
 
 import { ButtonInteraction, TextChannel, NewsChannel, PermissionFlagsBits } from "discord.js";
 import { RestrictionLevel } from "../../utils/RestrictionUtils";
-
-type SubmissionType = "bugs" | "reports" | "suggestions";
+import { SubmissionType } from "../../data/Types";
 
 export default class ArchiveButton extends Button {
       constructor(client: Bot) {

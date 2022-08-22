@@ -15,8 +15,7 @@ import {
 } from "discord.js";
 
 import { RestrictionLevel } from "../../utils/RestrictionUtils";
-
-type SubmissionType = "bugs" | "reports" | "suggestions";
+import { SubmissionType } from "../../data/Types";
 
 export default class ApproveButton extends Button {
       constructor(client: Bot) {

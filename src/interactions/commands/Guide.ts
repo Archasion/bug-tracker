@@ -12,6 +12,8 @@ import {
       GuildMember
 } from "discord.js";
 
+import { Guide } from "../../data/Types";
+
 import RestrictionUtils, { RestrictionLevel } from "../../utils/RestrictionUtils";
 import PermissionUtils from "../../utils/PermissionUtils";
 
@@ -60,9 +62,7 @@ export default class GuideCommand extends Command {
             const sendPublicly = interaction.options.getBoolean("public");
             const topic = interaction.options.getString("topic");
 
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            const { title, description, example, attachmentName, attachmentFile } = Guides[topic];
+            const { title, description, example, attachmentName, attachmentFile } = Guides[topic as Guide];
 
             const embed = new EmbedBuilder()
                   .setColor(Properties.colors.default)

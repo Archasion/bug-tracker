@@ -4,8 +4,7 @@ import Bot from "../../Bot";
 
 import { ModalSubmitInteraction, TextChannel, NewsChannel, EmbedBuilder } from "discord.js";
 import { RestrictionLevel } from "../../utils/RestrictionUtils";
-
-type ContactType = "support" | "suggestions" | "bugs" | "feedback" | "other";
+import { ContactEnquiry } from "../../data/Types";
 
 export default class ContactModal extends Modal {
       constructor(client: Bot) {
@@ -21,7 +20,7 @@ export default class ContactModal extends Modal {
        */
       async execute(interaction: ModalSubmitInteraction): Promise<void> {
             const description = interaction.fields.getTextInputValue("description");
-            const enquiry = interaction.customId.split("-")[1] as ContactType;
+            const enquiry = interaction.customId.split("-")[1] as ContactEnquiry;
             const channelId = Properties.channels.bot[enquiry];
 
             const channel = this.client.channels.cache.get(channelId) as TextChannel | NewsChannel;

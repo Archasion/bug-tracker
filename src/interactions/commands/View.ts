@@ -12,6 +12,7 @@ import {
 } from "discord.js";
 
 import { RestrictionLevel } from "../../utils/RestrictionUtils";
+import { SubmissionType } from "../../data/Types";
 
 const idOption: ApplicationCommandNumericOptionData[] = [
 	{
@@ -77,9 +78,7 @@ export default class ViewCommand extends Command {
                   { [type]: 1, _id: 0 }
             );
 
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-		const submission = guildConfig?.[type].find(item => item.number === id);
+		const submission = guildConfig?.[type as SubmissionType].find(item => item.number === id);
 
 		if (!submission) {
 			interaction.editReply(`There are no **${type}** with the ID of \`${id}\``);
