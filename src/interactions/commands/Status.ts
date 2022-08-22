@@ -17,8 +17,7 @@ import {
       ButtonStyle,
       TextChannel,
       NewsChannel,
-      ActionRow,
-      Message
+      ActionRow
 } from "discord.js";
 
 import { RestrictionLevel } from "../../utils/RestrictionUtils";
