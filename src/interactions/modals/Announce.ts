@@ -17,7 +17,7 @@ export default class AnnounceModal extends Modal {
       constructor(client: Bot) {
             super(client, {
                   name: "bot-announcement",
-                  restriction: RestrictionLevel.Public
+                  restriction: RestrictionLevel.Developer
             });
       }
       
