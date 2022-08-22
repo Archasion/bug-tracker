@@ -47,38 +47,26 @@ export default class SuggestModal extends Modal {
             const submission = guildConfig?.[type].find(item => item.messageId === messageId);
 
             if (!submission) {
-                  interaction.reply({
-                        content: ErrorMessages.SubmissionNotFound,
-                        ephemeral: true
-                  });
+                  interaction.editReply(ErrorMessages.SubmissionNotFound);
                   return;
             }
 
             if (submission.author !== interaction.user.id) {
-                  interaction.reply({
-                        content: "Only the author of the submission can edit it.",
-                        ephemeral: true
-                  });
+                  interaction.editReply("Only the author of the submission can edit it.");
                   return;
             }
 
             const submissionChannelId = guildConfig?.channels[type];
 
             if (!submissionChannelId) {
-                  interaction.reply({
-                        content: ErrorMessages.ChannelNotConfigured,
-                        ephemeral: true
-                  });
+                  interaction.editReply(ErrorMessages.ChannelNotConfigured);
                   return;
             }
 
             const submissionChannel = interaction.guild?.channels.cache.get(submissionChannelId) as TextChannel | NewsChannel;
 
             if (!submissionChannel) {
-                  interaction.reply({
-                        content: ErrorMessages.ChannelNotFound,
-                        ephemeral: true
-                  });
+                  interaction.editReply(ErrorMessages.ChannelNotFound);
                   return;
             }
 
@@ -89,10 +77,7 @@ export default class SuggestModal extends Modal {
 
             const message = await submissionChannel.messages.fetch(messageId)
                   .catch(() => {
-                        interaction.reply({
-                              content: ErrorMessages.SubmissionNotFound,
-                              ephemeral: true
-                        });
+                        interaction.editReply(ErrorMessages.SubmissionNotFound);
                         return;
                   }) as Message;
             
@@ -118,10 +103,7 @@ export default class SuggestModal extends Modal {
                   embeds: [newEmbed],
                   files: []
             }).then(() => {
-                  interaction.reply({
-                        content: "Successfully edited your submission!",
-                        ephemeral: true
-                  });
+                  interaction.editReply("Successfully edited your submission!");
             });
 
             return;

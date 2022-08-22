@@ -53,10 +53,7 @@ export default class AnnounceModal extends Modal {
                         .catch(() => console.log(clc.blackBright(`Unable to send messages in "${channel.guild.name}"`)));
             });
 
-            interaction.reply({
-                  content: `Trying to publish the announcement to **${guildConfig.length}** guilds...`,
-                  ephemeral: true
-            });
+            interaction.editReply(`Trying to publish the announcement to **${guildConfig.length}** guilds...`);
             
             return;
       }

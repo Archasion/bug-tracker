@@ -56,6 +56,8 @@ export default class CommandHandler {
                   modal.name :
                   Object.values(modal.name)[0];
 
+            await interaction.deferReply({ ephemeral: true });
+
             if (!await RestrictionUtils.verifyAccess(modal.restriction, interaction.member as GuildMember)) {
                   interaction.editReply({
                         content:

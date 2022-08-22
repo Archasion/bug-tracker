@@ -49,20 +49,14 @@ export default class SuggestModal extends Modal {
             const submissionChannelId = guildConfig?.channels.suggestions;
 
             if (!submissionChannelId) {
-                  interaction.reply({
-                        content: ErrorMessages.ChannelNotConfigured,
-                        ephemeral: true,
-                  });
+                  interaction.editReply(ErrorMessages.ChannelNotConfigured);
                   return;
             }
 
             const submissionChannel = interaction.guild?.channels.cache.get(submissionChannelId) as TextChannel | NewsChannel;
 
             if (!submissionChannel) {
-                  interaction.reply({
-                        content: ErrorMessages.ChannelNotFound,
-                        ephemeral: true
-                  });
+                  interaction.editReply(ErrorMessages.ChannelNotFound);
                   return;
             }
 
@@ -144,10 +138,7 @@ export default class SuggestModal extends Modal {
                         });
                   }
 
-                  interaction.reply({
-                        content: "Your suggestion has been submitted",
-                        ephemeral: true
-                  });
+                  interaction.editReply("Your suggestion has been submitted");
             });
 
             return;

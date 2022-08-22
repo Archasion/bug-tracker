@@ -70,10 +70,7 @@ export default class ContactModal extends Modal {
                   content: `<@${Properties.users.developers[0]}>`,
                   embeds: [embed]
             }).then(() => {
-                  interaction.reply({
-                        content: "Your enquiry has been sent.",
-                        ephemeral: true
-                  });
+                  interaction.editReply("Your enquiry has been sent.");
             });
             
             return;

@@ -64,20 +64,14 @@ export default class BugReportModal extends Modal {
             const submissionChannelId = guildConfig?.channels.bugs;
 
             if (!submissionChannelId) {
-                  interaction.reply({
-                        content: ErrorMessages.ChannelNotConfigured,
-                        ephemeral: true,
-                  });
+                  interaction.editReply(ErrorMessages.ChannelNotConfigured);
                   return;
             }
 
             const submissionChannel = interaction.guild?.channels.cache.get(submissionChannelId) as TextChannel | NewsChannel;
 
             if (!submissionChannel) {
-                  interaction.reply({
-                        content: ErrorMessages.ChannelNotFound,
-                        ephemeral: true
-                  });
+                  interaction.editReply(ErrorMessages.ChannelNotFound);
                   return;
             }
 
@@ -188,10 +182,7 @@ export default class BugReportModal extends Modal {
                   message.react(Properties.emojis.approve);
                   message.react(Properties.emojis.reject);
 
-                  interaction.reply({
-                        content: "Your bug report has been submitted",
-                        ephemeral: true
-                  });
+                  interaction.editReply("Your bug report has been submitted");
             });
 
             return;
