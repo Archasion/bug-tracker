@@ -47,7 +47,7 @@ export default class GuideCommand extends Command {
 				},
                         {
                               name: "public",
-                              description: "Send the guide publicly? (Reviewer+)",
+                              description: "Send the guide publicly? (Moderator+)",
                               type: ApplicationCommandOptionType.Boolean
                         }
 			]
