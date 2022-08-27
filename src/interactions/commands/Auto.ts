@@ -238,8 +238,6 @@ export default class AutoCommand extends Command {
                         return;
                   }
 
-                  // TODO: Complete removal
-
                   if (action === "remove") {
                         if (!guildConfig?.auto.roles.includes(role.id)) {
                               interaction.editReply(`${role} is already not being given on join.`);
