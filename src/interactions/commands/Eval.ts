@@ -63,7 +63,7 @@ export default class EvalCommand extends Command {
 
 		await interaction.editReply({
 			embeds: [embed]
-            });
+		});
             
             return;
 	}

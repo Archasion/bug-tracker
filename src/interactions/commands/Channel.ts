@@ -115,7 +115,7 @@ export default class ChannelCommand extends Command {
                               channel?.type !== ChannelType.GuildText &&
                               channel?.type !== ChannelType.GuildNews
                         ) {
-                              interaction.editReply("You must select either a text or a news channel.");
+                              await interaction.editReply("You must select either a text or a news channel.");
                               return;
                         }
 
@@ -130,13 +130,13 @@ export default class ChannelCommand extends Command {
                         if (!hasPerms) return;
 
                         await Guild.updateOne({ id: interaction.guildId }, { $set: { [`channels.${type}`]: channel?.id } });
-                        interaction.editReply(`The **${type}** channel has been set to ${channel}.`);
+                        await interaction.editReply(`The **${type}** channel has been set to ${channel}.`);
                         break;
                   }
 
                   case "reset": {
                         await Guild.updateOne({ id: interaction.guildId }, { $set: { [`channels.${type}`]: null } });
-                        interaction.editReply(`The **${type}** channel has been reset.`);
+                        await interaction.editReply(`The **${type}** channel has been reset.`);
                         break;
                   }
 
@@ -149,11 +149,11 @@ export default class ChannelCommand extends Command {
                         const channelId = guildConfig?.channels[type];
 
                         if (!channelId) {
-                              interaction.editReply(ErrorMessages.ChannelNotConfigured);
+                              await interaction.editReply(ErrorMessages.ChannelNotConfigured);
                               return;
                         }
 
-                        interaction.editReply(`The **${type.replace(/_/g, " ")}** channel is set to <#${channelId}>.`);
+                        await interaction.editReply(`The **${type.replace(/_/g, " ")}** channel is set to <#${channelId}>.`);
                         break;
                   }
             }

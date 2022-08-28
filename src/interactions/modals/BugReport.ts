@@ -63,14 +63,14 @@ export default class BugReportModal extends Modal {
             const submissionChannelId = guildConfig?.channels.bugs;
 
             if (!submissionChannelId) {
-                  interaction.editReply(ErrorMessages.ChannelNotConfigured);
+                  await interaction.editReply(ErrorMessages.ChannelNotConfigured);
                   return;
             }
 
             const submissionChannel = interaction.guild?.channels.cache.get(submissionChannelId) as TextChannel | NewsChannel;
 
             if (!submissionChannel) {
-                  interaction.editReply(ErrorMessages.ChannelNotFound);
+                  await interaction.editReply(ErrorMessages.ChannelNotFound);
                   return;
             }
 
@@ -171,7 +171,7 @@ export default class BugReportModal extends Modal {
                   );
 
                   if (guildConfig?.auto.threads.bugs) {
-                        message.startThread({
+                        await message.startThread({
                               name: StringUtils.elipsify(summary, 100),
                               autoArchiveDuration: 10080, // 1 week
                               reason: "Submission discussion thread"
@@ -181,7 +181,7 @@ export default class BugReportModal extends Modal {
                   message.react(Properties.emojis.approve);
                   message.react(Properties.emojis.reject);
 
-                  interaction.editReply("Your bug report has been submitted");
+                  await interaction.editReply("Your bug report has been submitted");
             });
 
             return;

@@ -48,14 +48,14 @@ export default class ReportPlayerModal extends Modal {
             const submissionChannelId = guildConfig?.channels.reports;
 
             if (!submissionChannelId) {
-                  interaction.editReply(ErrorMessages.ChannelNotConfigured);
+                  await interaction.editReply(ErrorMessages.ChannelNotConfigured);
                   return;
             }
 
             const submissionChannel = interaction.guild?.channels.cache.get(submissionChannelId) as TextChannel | NewsChannel;
 
             if (!submissionChannel) {
-                  interaction.editReply(ErrorMessages.ChannelNotFound);
+                  await interaction.editReply(ErrorMessages.ChannelNotFound);
                   return;
             }
 
@@ -129,7 +129,7 @@ export default class ReportPlayerModal extends Modal {
                   message.react(Properties.emojis.approve);
                   message.react(Properties.emojis.reject);
 
-                  interaction.editReply("Your player report has been submitted");
+                  await interaction.editReply("Your player report has been submitted");
             });
 
             return;

@@ -33,7 +33,7 @@ export default class SuggestCommand extends Command {
             const submissionChannel = await Guild.findOne({ id: interaction.guildId }, { ["channels.suggestions"]: 1, _id: 0 });
 
             if (!submissionChannel) {
-                  interaction.reply(ErrorMessages.ChannelNotConfigured);
+                  await interaction.reply(ErrorMessages.ChannelNotConfigured);
                   return;
             }
 
@@ -54,7 +54,7 @@ export default class SuggestCommand extends Command {
                   .setTitle("Submit Suggestion")
                   .addComponents(actionRow);
 
-            interaction.showModal(modal);
+            await interaction.showModal(modal);
             return;
 	}
 }

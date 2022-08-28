@@ -81,7 +81,7 @@ export default class ViewCommand extends Command {
 		const submission = guildConfig?.[type as SubmissionType].find(item => item.number === id);
 
 		if (!submission) {
-			interaction.editReply(`There are no **${type}** with the ID of \`${id}\``);
+			await interaction.editReply(`There are no **${type}** with the ID of \`${id}\``);
 			return;
 		}
 
@@ -140,7 +140,7 @@ export default class ViewCommand extends Command {
 			}
 		}
 
-		interaction.editReply({
+		await interaction.editReply({
 			content: `<@${submission.author}> (\`${submission.author}\`)`,
 			embeds: [embed]
 		});

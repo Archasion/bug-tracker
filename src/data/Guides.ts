@@ -1,7 +1,7 @@
 import { AttachmentBuilder } from "discord.js";
 
 export default class Guides {
-            public static readonly bugreports = {
+            public static readonly bug_reports = {
                   title: "How to Report Bugs",
                   description: "Want to report a bug? Here's how to do it!\n\nAll you need to do is use the command provided in the example, fill out the form and submit the bug report!",
                   example: "report bug (optional: priority)",
@@ -9,7 +9,7 @@ export default class Guides {
                   attachmentFile: [new AttachmentBuilder("assets/guide/BugReports.png", { name: "BugReportForm.png" })]
             };
 
-            public static readonly playerreports = {
+            public static readonly player_reports = {
                   title: "How to Report Players",
                   description: "Want to report a player? Here's how to do it!\n\nAll you need to do is use the command provided in the example, fill out the form and submit the player report!",
                   example: "report player",

@@ -22,7 +22,7 @@ module.exports = class MessageCreateEventListener extends EventListener {
             );
 
             const autoDeleteChannels = guildConfig?.auto.delete;
-            if (autoDeleteChannels.includes(message.channelId) && !message.author.bot) message.delete();
+            if (autoDeleteChannels.includes(message.channelId) && !message.author.bot) await message.delete();
 
             if (
 			RestrictionUtils.isDeveloper(message.author.id) &&
@@ -54,9 +54,9 @@ module.exports = class MessageCreateEventListener extends EventListener {
 				await referenceAuthor?.send({ embeds: [response, referenceEmbed] });
 
 				reference?.delete();
-				message.delete();
+				await message.delete();
 			} catch {
-				message.react("❌");
+				await message.react("❌");
 			}
 		}
       }

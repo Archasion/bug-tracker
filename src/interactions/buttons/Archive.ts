@@ -49,14 +49,14 @@ export default class ArchiveButton extends Button {
             const isValid = guildConfig?.[type].some(report => report.messageId === interaction.message.id);
 
             if (!isValid) {
-                  interaction.editReply(`This ${type.slice(0, -1)} is not located in the database.`);
+                  await interaction.editReply(`This ${type.slice(0, -1)} is not located in the database.`);
                   return;
             }
 
             const archiveChannelId = guildConfig?.channels.archive;
 
             if (!archiveChannelId) {
-                  interaction.editReply(ErrorMessages.ChannelNotConfigured);
+                  await interaction.editReply(ErrorMessages.ChannelNotConfigured);
                   return;
             }
 
@@ -83,9 +83,9 @@ export default class ArchiveButton extends Button {
                   content: interaction.message.content,
                   embeds: [embed],
                   files: []
-            }).then(() => {
-                  interaction.message.delete();
-                  interaction.editReply(`The ${type.slice(0, -1)} with the ID of \`${embed.footer?.text}\` has been archived.`);
+            }).then(async () => {
+                  await interaction.message.delete();
+                  await interaction.editReply(`The ${type.slice(0, -1)} with the ID of \`${embed.footer?.text}\` has been archived.`);
             });
 
             return;

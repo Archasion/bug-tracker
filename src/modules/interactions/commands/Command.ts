@@ -28,6 +28,7 @@ export default class Command {
             this.options = data.options ?? [];
 
             try {
+                  // noinspection JSIgnoredPromiseFromCall
                   this.client.commands.register(this);
             } catch (err) {
                   console.error(err);

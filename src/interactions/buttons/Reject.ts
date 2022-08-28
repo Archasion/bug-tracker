@@ -59,7 +59,7 @@ export default class RejectButton extends Button {
             const isValid = guildConfig?.[type].some(report => report.messageId === interaction.message.id);
 
             if (!isValid) {
-                  interaction.editReply(`This ${type.slice(0, -1)} is not located in the database.`);
+                  await interaction.editReply(`This ${type.slice(0, -1)} is not located in the database.`);
                   return;
             }
 
@@ -91,7 +91,7 @@ export default class RejectButton extends Button {
                   files: thumbnailFile,
                   components: [actionRow.toJSON() as ActionRow<ButtonComponent>]
             }).then(async () => {
-                  interaction.editReply(`Set the status of **${type.slice(0, -1)}** \`${embed.footer?.text}\` to **rejected**.`);
+                  await interaction.editReply(`Set the status of **${type.slice(0, -1)}** \`${embed.footer?.text}\` to **rejected**.`);
 
                   if (guildConfig?.auto.dm.status) {
                         const submissionAuthor = await interaction.guild?.members.fetch(submissionData.author);

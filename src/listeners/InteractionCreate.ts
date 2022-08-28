@@ -10,15 +10,15 @@ module.exports = class InteractionCreateEventListener extends EventListener {
 
       public async execute(interaction: Interaction) {
             if (interaction.isChatInputCommand()) {
-                  this.client.commands.handle(interaction);
+                  await this.client.commands.handle(interaction);
             }
 
             if (interaction.isButton()) {
-                  this.client.buttons.handle(interaction);
+                  await this.client.buttons.handle(interaction);
             }
 
             if (interaction.type === InteractionType.ModalSubmit) {
-                  this.client.modals.handle(interaction);
+                  await this.client.modals.handle(interaction);
             }
       }
 };

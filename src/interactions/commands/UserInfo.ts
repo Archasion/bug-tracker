@@ -122,7 +122,7 @@ export default class UserInfoCommand extends Command {
 			.setURL(member.displayAvatarURL())
             ) as ActionRowBuilder<ButtonBuilder>;
 
-		interaction.editReply({
+		await interaction.editReply({
 			content: `${member}`,
 			embeds: [info],
 			components: [actionRow]

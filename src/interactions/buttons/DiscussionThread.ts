@@ -32,7 +32,7 @@ export default class DiscussionThreadButton extends Button {
 	 */
       async execute(interaction: ButtonInteraction): Promise<void> {
             if (interaction.message.hasThread) {
-                  interaction.editReply("This message already has a thread attached.");
+                  await interaction.editReply("This message already has a thread attached.");
                   return;
             }
 
@@ -52,7 +52,7 @@ export default class DiscussionThreadButton extends Button {
             }
 
             if (!threadName) {
-                  interaction.editReply("Unable to retrieve the submission summary.");
+                  await interaction.editReply("Unable to retrieve the submission summary.");
                   return;
             }
 
@@ -70,7 +70,7 @@ export default class DiscussionThreadButton extends Button {
             const isValid = guildConfig?.[type].some(report => report.messageId === interaction.message.id);
 
             if (!isValid) {
-                  interaction.editReply(`This ${type.slice(0, -1)} is not located in the database.`);
+                  await interaction.editReply(`This ${type.slice(0, -1)} is not located in the database.`);
                   return;
             }
 
@@ -81,7 +81,7 @@ export default class DiscussionThreadButton extends Button {
                   autoArchiveDuration: 10080, // 1 week
                   reason: "Submission discussion thread"
             }).then(async (thread) => {
-                  interaction.editReply(`Started a discussion thread for **${type.slice(0, -1)}** \`${embed.footer?.text}\`.`);
+                  await interaction.editReply(`Started a discussion thread for **${type.slice(0, -1)}** \`${embed.footer?.text}\`.`);
 
                   if (guildConfig?.auto.dm.status) {
                         const author = await interaction.guild?.members.fetch(submission.author);

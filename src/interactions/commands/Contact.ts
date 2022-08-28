@@ -121,7 +121,7 @@ export default class ContactCommand extends Command {
             }
             
             modal.addComponents(modalComponents);
-            interaction.showModal(modal);
+            await interaction.showModal(modal);
             return;
 	}
 }

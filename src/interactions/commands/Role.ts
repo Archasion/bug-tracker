@@ -97,13 +97,13 @@ export default class RoleCommand extends Command {
             switch (action) {
                   case "set": {
                         await Guild.updateOne({ id: interaction.guildId }, { $set: { [`roles.${type}`]: role?.id } });
-                        interaction.editReply(`The **${type}** role has been set to ${role}.`);
+                        await interaction.editReply(`The **${type}** role has been set to ${role}.`);
                         break;
                   }
 
                   case "reset": {
                         await Guild.updateOne({ id: interaction.guildId }, { $set: { [`roles.${type}`]: null } });
-                        interaction.editReply(`The **${type}** role has been reset.`);
+                        await interaction.editReply(`The **${type}** role has been reset.`);
                         break;
                   }
 
@@ -116,11 +116,11 @@ export default class RoleCommand extends Command {
                         const roleId = guildConfig?.roles[type];
 
                         if (!roleId) {
-                              interaction.editReply("There is no role set for this rank.\nYou can set one using `/role set`");
+                              await interaction.editReply("There is no role set for this rank.\nYou can set one using `/role set`");
                               return;
                         }
 
-                        interaction.editReply(`The **${type.replace(/_/g, " ")}** role is set to <@&${roleId}>.`);
+                        await interaction.editReply(`The **${type.replace(/_/g, " ")}** role is set to <@&${roleId}>.`);
                         break;
                   }
 
@@ -168,7 +168,7 @@ export default class RoleCommand extends Command {
                                     }
                               ]);
 
-                              interaction.editReply({ embeds: [embed] });
+                              await interaction.editReply({ embeds: [embed] });
                         break;
                   }
             }

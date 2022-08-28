@@ -71,7 +71,7 @@ export default class EditCommand extends Command {
             );
 
             if (!channelConfig?.channels[type]) {
-                  interaction.reply({ 
+                  await interaction.reply({ 
                         content: ErrorMessages.ChannelNotConfigured,
                         ephemeral: true
                   });
@@ -87,7 +87,7 @@ export default class EditCommand extends Command {
             const report = guildConfig?.[type as SubmissionType].find(item => item.number === id);
 
             if (!report) {
-                  interaction.reply({ 
+                  await interaction.reply({ 
                         content: `Unable to find report \`#${id}\``,
                         ephemeral: true
                   });
@@ -98,7 +98,7 @@ export default class EditCommand extends Command {
             const { messageId, author } = report;
 
             if (author !== interaction.user.id) {
-                  interaction.reply({ 
+                  await interaction.reply({ 
                         content: "You must be the author of the report in order to edit its content.",
                         ephemeral: true
                   });
@@ -109,7 +109,7 @@ export default class EditCommand extends Command {
             const submissionChannel = interaction.guild?.channels.cache.get(channelConfig?.channels[type]) as TextChannel | NewsChannel;
 
             if (!submissionChannel) {
-                  interaction.reply({ 
+                  await interaction.reply({ 
                         content: "The submission channel has either been removed or I no longer have access to it.", 
                         ephemeral: true 
                   });
@@ -121,7 +121,7 @@ export default class EditCommand extends Command {
             try {
                   reportMessage = await submissionChannel.messages.fetch(messageId);
             } catch {
-                  interaction.reply({ 
+                  await interaction.reply({ 
                         content: "Unable to retrieve report/suggestion, it may have been removed.",
                         ephemeral: true
                   });
@@ -172,6 +172,6 @@ export default class EditCommand extends Command {
             }
 
             modal.addComponents(modalComponents);
-            interaction.showModal(modal);
+            await interaction.showModal(modal);
 	}
 }

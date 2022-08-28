@@ -44,7 +44,7 @@ export default class CommandHandler {
             if (!button.modalResponse) await interaction.deferReply({ ephemeral: true });
 
             if (!await RestrictionUtils.verifyAccess(button.restriction, interaction.member as GuildMember)) {
-                  interaction.editReply({
+                  await interaction.editReply({
                         content:
                               `You are **below** the required restriction level for this button: \`${RestrictionLevel[button.restriction]}\`\n`
                               + `Your restriction level: \`${await RestrictionUtils.getRestrictionLabel(interaction.member as GuildMember)}\``,

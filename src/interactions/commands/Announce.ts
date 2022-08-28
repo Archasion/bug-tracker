@@ -54,7 +54,7 @@ export default class AnnounceCommand extends Command {
                         ) as ActionRowBuilder<TextInputBuilder>
                   ]);
 
-            interaction.showModal(announcement);
+            await interaction.showModal(announcement);
             return;
 	}
 }

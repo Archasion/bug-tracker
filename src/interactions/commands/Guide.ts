@@ -33,11 +33,11 @@ export default class GuideCommand extends Command {
                               choices: [
                                     {
                                           name: "How to Report Bugs",
-                                          value: "bugreports"
+                                          value: "bug_reports"
                                     },
                                     {
                                           name: "How to Report Players",
-                                          value: "playerreports"
+                                          value: "player_reports"
                                     },
                                     {
                                           name: "How to Submit Suggestions",
@@ -87,11 +87,11 @@ export default class GuideCommand extends Command {
                         files: attachmentFile
                   });
 
-                  interaction.editReply("Sent the guide!");
+                  await interaction.editReply("Sent the guide!");
                   return;
             }
 
-            interaction.editReply({ 
+            await interaction.editReply({ 
                   embeds: [embed],
                   files: attachmentFile
             });

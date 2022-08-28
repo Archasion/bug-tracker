@@ -151,7 +151,7 @@ export default class AutoCommand extends Command {
                   const type = interaction.options.getString("type") as string;
 
                   if (guildConfig?.auto.threads[type] === enabled) {
-                        interaction.editReply(`Automatic discussion thread creation is **already ${enabled ? "enabled" : "disabled"}** for these submissions.`);
+                        await interaction.editReply(`Automatic discussion thread creation is **already ${enabled ? "enabled" : "disabled"}** for these submissions.`);
                         return;
                   }
 
@@ -160,7 +160,7 @@ export default class AutoCommand extends Command {
                         { $set: { [`auto.threads.${type}`]: enabled } }
                   );
 
-                  interaction.editReply(`Automatic discussion thread creation has been **${enabled ? "enabled" : "disabled"}** for these submissions.`);
+                  await interaction.editReply(`Automatic discussion thread creation has been **${enabled ? "enabled" : "disabled"}** for these submissions.`);
                   return;
             }
 
@@ -169,7 +169,7 @@ export default class AutoCommand extends Command {
                   const type = interaction.options.getString("type") as string;
 
                   if (guildConfig?.auto.dm[type] === enabled) {
-                        interaction.editReply(`These DM confirmations are **already ${enabled ? "enabled" : "disabled"}**.`);
+                        await interaction.editReply(`These DM confirmations are **already ${enabled ? "enabled" : "disabled"}**.`);
                         return;
                   }
 
@@ -178,7 +178,7 @@ export default class AutoCommand extends Command {
                         { $set: { [`auto.dm.${type}`]: enabled } }
                   );
 
-                  interaction.editReply(`DM confirmations for this task have been **${enabled ? "enabled" : "disabled"}**.`);
+                  await interaction.editReply(`DM confirmations for this task have been **${enabled ? "enabled" : "disabled"}**.`);
                   return;
             }
 
@@ -187,7 +187,7 @@ export default class AutoCommand extends Command {
 
                   if (action === "view") {
                         if (guildConfig?.auto.roles.length === 0) {
-                              interaction.editReply("No roles are configured to be added on join.");
+                              await interaction.editReply("No roles are configured to be added on join.");
                               return;
                         }
 
@@ -201,31 +201,31 @@ export default class AutoCommand extends Command {
                                     }
                               ]);
 
-                        interaction.editReply({ embeds: [embed] });
+                        await interaction.editReply({ embeds: [embed] });
                         return;
                   }
 
                   const role = interaction.options.getRole("role") as Role;
 
                   if (!role) {
-                        interaction.editReply("Please specify a channel to perform the action on.");
+                        await interaction.editReply("Please specify a channel to perform the action on.");
                         return;
                   }
 
                   
                   if (action === "add") {
                         if (!interaction.guild?.members.me?.permissions.has(PermissionFlagsBits.ManageRoles)) {
-                              interaction.editReply("I need the `ManageRoles` permission for this task.");
+                              await interaction.editReply("I need the `ManageRoles` permission for this task.");
                               return;
                         }
 
                         if (role.comparePositionTo(interaction.guild.members.me.roles.highest) >= 0) {
-                              interaction.editReply("I cannot add a role that is above than/is my highest role.");
+                              await interaction.editReply("I cannot add a role that is above than/is my highest role.");
                               return;
                         }
 
                         if (guildConfig?.auto.roles.includes(role.id)) {
-                              interaction.editReply(`${role} is already being given on join.`);
+                              await interaction.editReply(`${role} is already being given on join.`);
                               return;
                         }
 
@@ -234,13 +234,13 @@ export default class AutoCommand extends Command {
                               { $push: { ["auto.roles"]: role.id } }
                         );
 
-                        interaction.editReply(`${role} will now be given on join.`);
+                        await interaction.editReply(`${role} will now be given on join.`);
                         return;
                   }
 
                   if (action === "remove") {
                         if (!guildConfig?.auto.roles.includes(role.id)) {
-                              interaction.editReply(`${role} is already not being given on join.`);
+                              await interaction.editReply(`${role} is already not being given on join.`);
                               return;
                         }
 
@@ -249,7 +249,7 @@ export default class AutoCommand extends Command {
                               { $pull: { ["auto.roles"]: role.id } }
                         );
 
-                        interaction.editReply(`${role} will no longer be given on join.`);
+                        await interaction.editReply(`${role} will no longer be given on join.`);
                         return;
                   }
                   
@@ -260,7 +260,7 @@ export default class AutoCommand extends Command {
 
                   if (action === "view") {
                         if (guildConfig?.auto.delete.length === 0) {
-                              interaction.editReply("No channels are configured for automatic message deletion.");
+                              await interaction.editReply("No channels are configured for automatic message deletion.");
                               return;
                         }
 
@@ -274,25 +274,25 @@ export default class AutoCommand extends Command {
                                     }
                               ]);
 
-                        interaction.editReply({ embeds: [embed] });
+                        await interaction.editReply({ embeds: [embed] });
                         return;
                   }
 
                   const channel = interaction.options.getChannel("channel") as TextChannel | NewsChannel;
 
                   if (!channel) {
-                        interaction.editReply("Please specify a channel to perform the action on.");
+                        await interaction.editReply("Please specify a channel to perform the action on.");
                         return;
                   }
 
                   if (channel.type !== ChannelType.GuildText && channel.type !== ChannelType.GuildNews) {
-                        interaction.editReply("You must specify either a text or announcement channel.");
+                        await interaction.editReply("You must specify either a text or announcement channel.");
                         return;
                   }
 
                   if (action === "add") {
                         if (guildConfig?.auto.delete.includes(channel.id)) {
-                              interaction.editReply(`Automatic message deletion for ${channel} is **already enabled**.`);
+                              await interaction.editReply(`Automatic message deletion for ${channel} is **already enabled**.`);
                               return;
                         }
 
@@ -306,13 +306,13 @@ export default class AutoCommand extends Command {
                               { $push: { ["auto.delete"]: channel.id } }
                         );
 
-                        interaction.editReply(`Automatic message deletion for ${channel} has been **enabled**.`);
+                        await interaction.editReply(`Automatic message deletion for ${channel} has been **enabled**.`);
                         return;
                   }
 
                   if (action === "remove") {
                         if (!guildConfig?.auto.delete.includes(channel.id)) {
-                              interaction.editReply(`Automatic message deletion for ${channel} is **already disabled**.`);
+                              await interaction.editReply(`Automatic message deletion for ${channel} is **already disabled**.`);
                               return;
                         }
 
@@ -321,7 +321,7 @@ export default class AutoCommand extends Command {
                               { $pull: { ["auto.delete"]: channel.id } }
                         );
 
-                        interaction.editReply(`Automatic message deletion for ${channel} has been **disabled**.`);
+                        await interaction.editReply(`Automatic message deletion for ${channel} has been **disabled**.`);
                         return;
                   }
                   

@@ -123,7 +123,7 @@ export default class WipeCommand extends Command {
 			);
 		}
 
-		interaction.editReply(`Successfully wiped all${type !== "all" ? ` ${type}` : ""} data from the database!`);
+		await interaction.editReply(`Successfully wiped all${type !== "all" ? ` ${type}` : ""} data from the database!`);
 
             return;
 	}

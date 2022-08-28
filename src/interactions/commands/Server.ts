@@ -199,7 +199,7 @@ export default class EvalCommand extends Command {
 			]);
 		}
 
-		interaction.editReply({ embeds: [embed] });
+		await interaction.editReply({ embeds: [embed] });
 		return;
 	}
 }

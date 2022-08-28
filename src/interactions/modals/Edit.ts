@@ -46,26 +46,26 @@ export default class SuggestModal extends Modal {
             const submission = guildConfig?.[type].find(item => item.messageId === messageId);
 
             if (!submission) {
-                  interaction.editReply(ErrorMessages.SubmissionNotFound);
+                  await interaction.editReply(ErrorMessages.SubmissionNotFound);
                   return;
             }
 
             if (submission.author !== interaction.user.id) {
-                  interaction.editReply("Only the author of the submission can edit it.");
+                  await interaction.editReply("Only the author of the submission can edit it.");
                   return;
             }
 
             const submissionChannelId = guildConfig?.channels[type];
 
             if (!submissionChannelId) {
-                  interaction.editReply(ErrorMessages.ChannelNotConfigured);
+                  await interaction.editReply(ErrorMessages.ChannelNotConfigured);
                   return;
             }
 
             const submissionChannel = interaction.guild?.channels.cache.get(submissionChannelId) as TextChannel | NewsChannel;
 
             if (!submissionChannel) {
-                  interaction.editReply(ErrorMessages.ChannelNotFound);
+                  await interaction.editReply(ErrorMessages.ChannelNotFound);
                   return;
             }
 
@@ -75,8 +75,8 @@ export default class SuggestModal extends Modal {
             ], submissionChannel)) return;
 
             const message = await submissionChannel.messages.fetch(messageId)
-                  .catch(() => {
-                        interaction.editReply(ErrorMessages.SubmissionNotFound);
+                  .catch(async () => {
+                        await interaction.editReply(ErrorMessages.SubmissionNotFound);
                         return;
                   }) as Message;
             
@@ -101,8 +101,8 @@ export default class SuggestModal extends Modal {
             message.edit({
                   embeds: [newEmbed],
                   files: []
-            }).then(() => {
-                  interaction.editReply("Successfully edited your submission!");
+            }).then(async () => {
+                  await interaction.editReply("Successfully edited your submission!");
             });
 
             return;

@@ -69,7 +69,7 @@ export default class GuideCommand extends Command {
 	async execute(interaction: ChatInputCommandInteraction): Promise<void> {
             const priority = interaction.options.getString("priority") ?? "none";
             const type = interaction.options.getSubcommand();
-            const modalComponenets: ActionRowBuilder<TextInputBuilder>[] = [];
+            const modalComponents: ActionRowBuilder<TextInputBuilder>[] = [];
 
             const report = new ModalBuilder()
                   .setCustomId(`${type}-report${type === "bug" ? `-${priority}` : ""}`)
@@ -77,7 +77,7 @@ export default class GuideCommand extends Command {
 
             switch (type) {
                   case "player": {
-                        modalComponenets.push(
+                        modalComponents.push(
                               new ActionRowBuilder().addComponents(
                                     new TextInputBuilder()
                                           .setCustomId("player")
@@ -107,7 +107,7 @@ export default class GuideCommand extends Command {
                   }
 
                   case "bug": {
-                        modalComponenets.push(
+                        modalComponents.push(
                               new ActionRowBuilder().addComponents(
                                     new TextInputBuilder()
                                           .setCustomId("summary")
@@ -161,8 +161,8 @@ export default class GuideCommand extends Command {
                   }
             }
 
-            report.addComponents(modalComponenets);
-            interaction.showModal(report);
+            report.addComponents(modalComponents);
+            await interaction.showModal(report);
             return;
 	}
 }

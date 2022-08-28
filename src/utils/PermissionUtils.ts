@@ -6,9 +6,9 @@ export default class PermissionUtils {
             const missingPermissions = permissions.filter(permission => !client.permissionsIn(channel).has(permission));
 
             if (missingPermissions.length > 0) {
-                  interaction.editReply(`I need the following permissions in ${channel} (\`${channel.id}\`):\n\`${missingPermissions.join("` `")}\``)
-                  .catch(() => {
-                        interaction.reply({
+                  await interaction.editReply(`I need the following permissions in ${channel} (\`${channel.id}\`):\n\`${missingPermissions.join("` `")}\``)
+                  .catch(async () => {
+                        await interaction.reply({
                               content: `I need the following permissions in ${channel} (\`${channel.id}\`):\n\`${missingPermissions.join("` `")}\``,
                               ephemeral: true
                         });

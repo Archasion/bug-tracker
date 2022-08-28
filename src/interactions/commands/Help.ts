@@ -46,8 +46,8 @@ export default class HelpCommand extends Command {
             commandList.data.fields = commandList.data.fields?.filter(field => field.value !== "\u200b");
 
 		await interaction.editReply({
-			embeds: [commandList]
-            });
+            embeds: [commandList]
+        });
             
             return;
       }

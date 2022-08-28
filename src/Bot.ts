@@ -42,9 +42,9 @@ export default class Bot extends Client {
                   this.modals = new ModalHandler(this);
 
                   const listeners = new ListenerLoader(this);
-                  listeners.load();
+                  await listeners.load();
                   
-                  this.login(process.env.BOT_TOKEN);
+                  await this.login(process.env.BOT_TOKEN);
             })();
       }
 }

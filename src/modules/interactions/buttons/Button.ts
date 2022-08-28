@@ -14,6 +14,7 @@ export default class Button {
             this.name = data.name;
 
             try {
+                  // noinspection JSIgnoredPromiseFromCall
                   this.client.buttons.register(this);
             } catch (err) {
                   console.error(err);

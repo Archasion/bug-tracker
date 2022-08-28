@@ -59,7 +59,7 @@ export default class CommandHandler {
             await interaction.deferReply({ ephemeral: true });
 
             if (!await RestrictionUtils.verifyAccess(modal.restriction, interaction.member as GuildMember)) {
-                  interaction.editReply({
+                  await interaction.editReply({
                         content:
                               `You are **below** the required restriction level for this modal: \`${RestrictionLevel[modal.restriction]}\`\n`
                               + `Your restriction level: \`${await RestrictionUtils.getRestrictionLabel(interaction.member as GuildMember)}\``,

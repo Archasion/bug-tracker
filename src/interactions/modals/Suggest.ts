@@ -49,14 +49,14 @@ export default class SuggestModal extends Modal {
             const submissionChannelId = guildConfig?.channels.suggestions;
 
             if (!submissionChannelId) {
-                  interaction.editReply(ErrorMessages.ChannelNotConfigured);
+                  await interaction.editReply(ErrorMessages.ChannelNotConfigured);
                   return;
             }
 
             const submissionChannel = interaction.guild?.channels.cache.get(submissionChannelId) as TextChannel | NewsChannel;
 
             if (!submissionChannel) {
-                  interaction.editReply(ErrorMessages.ChannelNotFound);
+                  await interaction.editReply(ErrorMessages.ChannelNotFound);
                   return;
             }
 
@@ -131,14 +131,14 @@ export default class SuggestModal extends Modal {
                   message.react(Properties.emojis.reject);
 
                   if (guildConfig?.auto.threads.suggestions) {
-                        message.startThread({
+                        await message.startThread({
                               name: StringUtils.elipsify(suggestion, 100),
                               autoArchiveDuration: 10080, // 1 week
                               reason: "Submission discussion thread"
                         });
                   }
 
-                  interaction.editReply("Your suggestion has been submitted");
+                  await interaction.editReply("Your suggestion has been submitted");
             });
 
             return;

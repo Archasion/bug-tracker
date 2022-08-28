@@ -16,6 +16,7 @@ export default class Modal {
             this.name = data.name;
 
             try {
+                  // noinspection JSIgnoredPromiseFromCall
                   this.client.modals.register(this);
             } catch (err) {
                   console.error(err);

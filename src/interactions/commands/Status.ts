@@ -174,14 +174,14 @@ export default class StatusCommand extends Command {
             const submissionData = guildConfig?.[type].find(doc => doc.number === id);
 
             if (!submissionData) {
-                  interaction.editReply(`Could not find submission with the ID \`#${id}\`.`);
+                  await interaction.editReply(`Could not find submission with the ID \`#${id}\`.`);
                   return;
             }
 
             const submissionChannelId: string = guildConfig?.channels[type];
 
             if (!submissionChannelId) {
-                  interaction.editReply(ErrorMessages.ChannelNotConfigured);
+                  await interaction.editReply(ErrorMessages.ChannelNotConfigured);
                   return;
             }
 
@@ -189,7 +189,7 @@ export default class StatusCommand extends Command {
             const submission = await submissionChannel.messages.fetch(submissionData.messageId);
 
             if (!submission) {
-                  interaction.editReply("Unable to retrieve report/suggestion, it may have been removed.");
+                  await interaction.editReply("Unable to retrieve report/suggestion, it may have been removed.");
                   return;
             }
 
@@ -207,7 +207,7 @@ export default class StatusCommand extends Command {
 
             if (action === "remove") {
                   if (!embed.author?.name.includes("Status")) {
-                        interaction.editReply("This submission does not have a status.");
+                        await interaction.editReply("This submission does not have a status.");
                         return;
                   }
 
@@ -236,8 +236,8 @@ export default class StatusCommand extends Command {
                         embeds: [embed],
                         files: thumbnailFile,
                         components: [actionRow.toJSON() as ActionRow<ButtonComponent>]
-                  }).then(() => {
-                        interaction.editReply(`Removed status from **${type.slice(0, -1)}** \`#${id}\`.`);
+                  }).then(async () => {
+                        await interaction.editReply(`Removed status from **${type.slice(0, -1)}** \`#${id}\`.`);
                   });
 
                   return;
@@ -247,17 +247,17 @@ export default class StatusCommand extends Command {
 
             if (action === "reason") {
                   if (!embed.author?.name.includes("Status")) {
-                        interaction.editReply("This submission does not have a status.");
+                        await interaction.editReply("This submission does not have a status.");
                         return;
                   }
 
                   if (!hasReasonField && !reason) {
-                        interaction.editReply("You must provide a reason for the status.");
+                        await interaction.editReply("You must provide a reason for the status.");
                         return;
                   }
 
                   if (hasReasonField && reasonField?.value === reason) {
-                        interaction.editReply("The reason is already set to this value.");
+                        await interaction.editReply("The reason is already set to this value.");
                         return;
                   } 
 
@@ -269,14 +269,14 @@ export default class StatusCommand extends Command {
                         components: submission.components
                   });
 
-                  interaction.editReply(`Updated the reason for ${type.slice(0, -1)} \`#${id}\`.`);
+                  await interaction.editReply(`Updated the reason for ${type.slice(0, -1)} \`#${id}\`.`);
                   return;
             }
 
             const status = interaction.options.getString("status") as SubmissionStatus;
 
             if (embed.author?.name.includes(status.toUpperCase())) {
-                  interaction.editReply(`This submission has already been ${status}.`);
+                  await interaction.editReply(`This submission has already been ${status}.`);
                   return;
             }
 
@@ -301,7 +301,7 @@ export default class StatusCommand extends Command {
             }
 
             if (forbiddenStatuses[type].includes(status)) {
-                  interaction.editReply(`You cannot set the status of **${type}** to **${status}**.`);
+                  await interaction.editReply(`You cannot set the status of **${type}** to **${status}**.`);
                   return;
             }
 
@@ -323,7 +323,7 @@ export default class StatusCommand extends Command {
                   files: thumbnailFile,
                   components: [actionRow.toJSON() as ActionRow<ButtonComponent>]
             }).then(async () => {
-                  interaction.editReply(`Set the status of **${type.slice(0, -1)}** \`#${id}\` to **${status}**.`);
+                  await interaction.editReply(`Set the status of **${type.slice(0, -1)}** \`#${id}\` to **${status}**.`);
 
                   if (guildConfig?.auto.dm.status) {
                         const submissionAuthor = await interaction.guild?.members.fetch(submissionData.author);

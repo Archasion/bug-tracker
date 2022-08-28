@@ -68,8 +68,8 @@ export default class ContactModal extends Modal {
             channel.send({
                   content: `<@${Properties.users.developers[0]}>`,
                   embeds: [embed]
-            }).then(() => {
-                  interaction.editReply("Your enquiry has been sent.");
+            }).then(async () => {
+                  await interaction.editReply("Your enquiry has been sent.");
             });
             
             return;
