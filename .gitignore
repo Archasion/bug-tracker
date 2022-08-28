@@ -1,8 +1,7 @@
 # Files
 .env
-*.todo
 
 # Directories
 node_modules/
+.idea/
 dist/
-todo/
