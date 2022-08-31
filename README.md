@@ -16,7 +16,21 @@ npm i
 ```
 
 Follow the instructions in `example.env`, once you've added values to the environmental variables, rename `example.env` to `.env`.
-<script src="https://gist.github.com/Archasion/cc39f51962b00c4e4d858cabed9328c8.js"></script>
+```shell
+# DATABASE (MongoDB)
+
+# You can retrieve your Mongo URI by clicking "Connect" on your cluster followed by clicking
+# "Connect your Application" and copying the displayed Mongo URI
+
+MONGO_URI='Your Mongo URI goes here'
+
+# TOKENS
+
+# The token of bot can be found at https://discord.com/developers/applications/[CLIENT_ID]/bot
+# Replace [CLIENT_ID] with your bot's user ID
+
+BOT_TOKEN='Your bot token goes here'
+```
 
 Finally, build and run the code:
 ```shell
