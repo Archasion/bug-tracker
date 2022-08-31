@@ -1,4 +1,14 @@
-# Self-hosting
+<br>
+<p align="center"><img src="https://user-images.githubusercontent.com/59822256/187733633-1fea1bf4-1b0a-4a1d-a10a-1af4ff0525cc.png" width="200"></p>
+<h3 align="center">BUG TRACKER</h3>
+<p align="center">A bug tracking bot created to assist developers.</p>
+
+
+![image](https://user-images.githubusercontent.com/59822256/187736036-09c4672f-aa4d-4e9c-859e-76305c413b54.png)
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/59822256/187736846-4f1d5512-2c3e-4dcd-a261-6451ac2c6c1e.png" width="120">
 
 Create a local copy of the project
 ```git
