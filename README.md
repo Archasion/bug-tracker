@@ -2,12 +2,12 @@
 
 Create a local copy of the project
 ```git
-git clone https://github.com/Archasion/BugTracker.ts.git
+git clone https://github.com/Archasion/bug-tracker.git
 ```
 
 Navigate to the local project folder
 ```shell
-cd BugTracker.ts
+cd bug-tracker
 ```
 
 Install the dependencies
