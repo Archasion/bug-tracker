@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Archasion/BugTracker.ts.git"
+    "url": "git+https://github.com/Archasion/bug-tracker.git"
   },
   "author": "Archasion",
   "license": "ISC",
