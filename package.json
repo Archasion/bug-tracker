@@ -5,6 +5,7 @@
   "main": "dist/Bot.js",
   "scripts": {
     "build": "tsc",
+    "start": "node dist/Bot.js",
     "test": "tsc; node dist/Bot.js"
   },
   "repository": {
