@@ -14,9 +14,9 @@
   "author": "Archasion",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Archasion/BugTracker.ts/issues"
+    "url": "https://github.com/Archasion/bug-tracker/issues"
   },
-  "homepage": "https://github.com/Archasion/BugTracker.ts#readme",
+  "homepage": "https://github.com/Archasion/bug-tracker#readme",
   "dependencies": {
     "cli-color": "^2.0.3",
     "discord.js": "^14.0.0-dev.1657757514-fe34f48",
