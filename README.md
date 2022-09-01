@@ -45,5 +45,5 @@ BOT_TOKEN='Your bot token goes here'
 Finally, build and run the code:
 ```shell
 npm run build
-node dist/Bot.ts
+npm run start
 ```
