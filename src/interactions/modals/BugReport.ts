@@ -119,15 +119,10 @@ export default class BugReportModal extends Modal {
                   });
             }
 
-            const approveButton = new ButtonBuilder()
-                  .setCustomId("approve")
-                  .setLabel("Approve")
-                  .setStyle(ButtonStyle.Success);
-
-            const rejectButton = new ButtonBuilder()
-                  .setCustomId("reject")
-                  .setLabel("Reject")
-                  .setStyle(ButtonStyle.Danger);
+            const setStatusButton = new ButtonBuilder()
+                  .setCustomId("set-status")
+                  .setLabel("Set Status")
+                  .setStyle(ButtonStyle.Primary);
 
             const discussionThreadButton = new ButtonBuilder()
                   .setCustomId("discussion-thread")
@@ -140,8 +135,7 @@ export default class BugReportModal extends Modal {
                   .setStyle(ButtonStyle.Secondary);
 
             const actionRow = new ActionRowBuilder().setComponents(
-                  approveButton, 
-                  rejectButton,
+                  setStatusButton,
                   discussionThreadButton,
                   archiveButton
             );
@@ -178,8 +172,8 @@ export default class BugReportModal extends Modal {
                         });
                   }
 
-                  message.react(Properties.emojis.approve);
-                  message.react(Properties.emojis.reject);
+                  message.react(Properties.emojis.thumbsUp);
+                  message.react(Properties.emojis.thumbsDown);
 
                   await interaction.editReply("Your bug report has been submitted");
             });

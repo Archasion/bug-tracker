@@ -85,15 +85,10 @@ export default class ReportPlayerModal extends Modal {
                   .setFooter({ text: `#${submissionId}` })
                   .setTimestamp();
 
-            const approveButton = new ButtonBuilder()
-                  .setCustomId("approve")
-                  .setLabel("Approve")
-                  .setStyle(ButtonStyle.Success);
-
-            const rejectButton = new ButtonBuilder()
-                  .setCustomId("reject")
-                  .setLabel("Reject")
-                  .setStyle(ButtonStyle.Danger);
+            const setStatusButton = new ButtonBuilder()
+                  .setCustomId("set-status")
+                  .setLabel("Set Status")
+                  .setStyle(ButtonStyle.Primary);
 
             const archiveButton = new ButtonBuilder()
                   .setCustomId("archive")
@@ -101,8 +96,7 @@ export default class ReportPlayerModal extends Modal {
                   .setStyle(ButtonStyle.Secondary);
 
             const actionRow = new ActionRowBuilder().setComponents(
-                  approveButton, 
-                  rejectButton,
+                  setStatusButton,
                   archiveButton
             );
 
@@ -126,8 +120,8 @@ export default class ReportPlayerModal extends Modal {
                         }
                   );
 
-                  message.react(Properties.emojis.approve);
-                  message.react(Properties.emojis.reject);
+                  message.react(Properties.emojis.thumbsUp);
+                  message.react(Properties.emojis.thumbsDown);
 
                   await interaction.editReply("Your player report has been submitted");
             });

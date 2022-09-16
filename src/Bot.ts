@@ -1,3 +1,4 @@
+import SelectMenuHandler from "./modules/interactions/select_menus/Manager";
 import CommandHandler from "./modules/interactions/commands/Manager";
 import ButtonHandler from "./modules/interactions/buttons/Manager";
 import ModalHandler from "./modules/interactions/modals/Manager";
@@ -16,6 +17,7 @@ process.on("unhandledRejection", (error: Error) => {
 });
 
 export default class Bot extends Client {
+      select_menus!: SelectMenuHandler;
       commands!: CommandHandler;
       buttons!: ButtonHandler;
       modals!: ModalHandler;
@@ -37,6 +39,7 @@ export default class Bot extends Client {
             });
 
             (async () => {
+                  this.select_menus = new SelectMenuHandler(this);
                   this.commands = new CommandHandler(this);
                   this.buttons = new ButtonHandler(this);
                   this.modals = new ModalHandler(this);
