@@ -13,6 +13,7 @@ module.exports = class ReadyEventListener extends EventListener {
       public async execute(client: Bot) {
             console.log("%s %s is online!", Properties.cli.listeners.ready, client.user?.tag);
 
+            await client.select_menus.load();
             await client.buttons.load();
             await client.modals.load();
 
