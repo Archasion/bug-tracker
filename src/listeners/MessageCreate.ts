@@ -13,6 +13,8 @@ module.exports = class MessageCreateEventListener extends EventListener {
       }
 
       public async execute(message: Message) {
+		if (!message.guild) return;
+
             const guildConfig = await Guild.findOne(
                   { id: message.guildId }, 
                   { 
