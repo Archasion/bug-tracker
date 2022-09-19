@@ -12,6 +12,11 @@ module.exports = class GuildCreateEventListener extends EventListener {
       }
 
       public async execute(guild: DiscordGuild) {
+            if (process.env.BLACKLISTED_GUILDS?.split(" ").includes(guild.id)) {
+                  await guild.leave();
+                  return;
+            }
+
             const guildConfig = await Guild.findOne({ id: guild.id });
 
             if (!guildConfig) {
