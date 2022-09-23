@@ -7,6 +7,8 @@ import {
       ButtonInteraction,
       SelectMenuBuilder,
       ActionRowBuilder,
+      ButtonBuilder,
+      ButtonStyle,
       ActionRow
 } from "discord.js";
 
@@ -128,13 +130,19 @@ export default class ApproveButton extends Button {
                   .setPlaceholder("Select the new submission status...")
                   .setOptions(submissionOptions);
 
-            const actionRow = new ActionRowBuilder().setComponents(statusOptions);
+            const setReasonButton = new ButtonBuilder()
+                  .setCustomId(`set-reason-${interaction.message.id}`)
+                  .setLabel("Set Reason")
+                  .setStyle(ButtonStyle.Secondary);
+
+            const selectMenuActionRow = new ActionRowBuilder().setComponents(statusOptions);
+            const buttonActionRow = new ActionRowBuilder().setComponents(setReasonButton);
 
             await interaction.editReply({
                   content: "Use the selection menu below to choose a new status:",
                   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                   // @ts-ignore
-                  components: [actionRow.toJSON() as ActionRow<SelectMenuComponent>]
+                  components: [selectMenuActionRow.toJSON(), buttonActionRow.toJSON()]
             });
             return;
       }
