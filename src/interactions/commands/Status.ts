@@ -261,6 +261,7 @@ export default class StatusCommand extends Command {
                         return;
                   } 
 
+                  if (!embed.fields) embed.fields = [];
                   if (reason) embed.fields?.push({ name: "Reason", value: reason });
 
                   submission.edit({ 
