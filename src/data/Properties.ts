@@ -53,13 +53,16 @@ export default class Properties {
       };
 
       public static readonly emojis = {
-            thumbsUp: "968494477524213821",
-            thumbsDown: "968494477369016400",
+            thumbsUp: "1022924035530694666",
+            thumbsDown: "1022924034322731090",
             approve: "1020437240578592831",
             reject: "1020431776667160647",
             implemented: "1020437244210843661",
             considered: "1020437241853648938",
             fixed: "1020437242977714196",
-            none: "1020448503484395592"
+            none: "1020448503484395592",
+            edit: "1022926850412003401",
+            inbox: "1022919621919121498",
+            thread: "1022919624750280824"
       };
 }
