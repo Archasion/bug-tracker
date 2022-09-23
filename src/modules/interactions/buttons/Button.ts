@@ -5,9 +5,9 @@ export default class Button {
       client: Bot;
       restriction: RestrictionLevel;
       modalResponse?: boolean;
-      name: string;
+      name: string | { startsWith: string } | { endsWith: string } | { includes: string };
 
-      constructor(client: Bot, data: { restriction: RestrictionLevel; modalResponse?: boolean; name: string; }) {
+      constructor(client: Bot, data: { restriction: RestrictionLevel; modalResponse?: boolean; name: string | { startsWith: string; } | { endsWith: string; } | { includes: string; } }) {
             this.client = client;
             this.restriction = data.restriction;
             this.modalResponse = data.modalResponse ?? false;

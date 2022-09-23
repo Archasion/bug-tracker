@@ -11,7 +11,7 @@ import { join } from "path";
 
 export default class CommandHandler {
       client: Bot;
-      buttons: Collection<string, Button>;
+      buttons: Collection<string | { startsWith: string } | { endsWith: string } | { includes: string }, Button>;
 
       constructor(client: Bot) {
             this.client = client;
@@ -31,15 +31,32 @@ export default class CommandHandler {
 
       public async register(button: Button) {
             this.buttons.set(button.name, button);
-            console.log(`%s Registered button: "${button.name}"`, Properties.cli.modules.buttons);
+
+            const buttonName = typeof button.name === "string" ?
+                  button.name :
+                  Object.values(button.name)[0];
+
+            console.log(`%s Registered button: "${buttonName}"`, Properties.cli.modules.buttons);
       }
 
       public async handle(interaction: ButtonInteraction) {
-            const button = this.buttons.get(interaction.customId);
+            const button = this.buttons.find(b => {
+                  if (typeof b.name === "string") return b.name === interaction.customId;
+
+                  if ((b.name as { startsWith: string }).startsWith) return interaction.customId.startsWith((b.name as { startsWith: string }).startsWith);
+                  if ((b.name as { endsWith: string }).endsWith) return interaction.customId.endsWith((b.name as { endsWith: string }).endsWith);
+                  if ((b.name as { includes: string }).includes) return interaction.customId.includes((b.name as { includes: string }).includes);
+
+                  return false;
+            });
 
             if (!button) {
                   return;
             }
+
+            const buttonName = typeof button.name === "string" ?
+                  button.name :
+                  Object.values(button.name)[0];
 
             if (!button.modalResponse) await interaction.deferReply({ ephemeral: true });
 
@@ -56,9 +73,9 @@ export default class CommandHandler {
                   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                   // @ts-ignore
                   await button.execute(interaction, this.client);
-                  console.log(`%s "${button.name}" executed by ${interaction.user.tag} %s`, Properties.cli.modules.buttons, clc.blackBright(`("${interaction.guild?.name}" • ${interaction.guildId})`));
+                  console.log(`%s "${buttonName}" executed by ${interaction.user.tag} %s`, Properties.cli.modules.buttons, clc.blackBright(`("${interaction.guild?.name}" • ${interaction.guildId})`));
             } catch (err) {
-                  console.log(`Failed to execute button: ${button.name}`);
+                  console.log(`Failed to execute button: ${buttonName}`);
                   console.error(err);
             }
       }
