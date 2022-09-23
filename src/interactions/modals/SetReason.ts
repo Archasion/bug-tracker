@@ -34,7 +34,10 @@ export default class SetReasonModal extends Modal {
             const reason = interaction.fields.getTextInputValue("reason");
             embed.fields?.push({ name: "Reason", value: reason });
 
-            submission.edit({ embeds: [embed] }).then(async () => {
+            submission.edit({
+                  embeds: [embed],
+                  files: []
+            }).then(async () => {
                   await interaction.editReply("Successfully updated the submission status reason!");
             });
             return;
