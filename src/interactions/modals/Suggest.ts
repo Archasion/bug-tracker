@@ -84,16 +84,19 @@ export default class SuggestModal extends Modal {
             const setStatusButton = new ButtonBuilder()
                   .setCustomId("set-status")
                   .setLabel("Set Status")
+                  .setEmoji(Properties.emojis.edit)
                   .setStyle(ButtonStyle.Primary);
 
             const discussionThreadButton = new ButtonBuilder()
                   .setCustomId("discussion-thread")
                   .setLabel("Discussion Thread")
+                  .setEmoji(Properties.emojis.thread)
                   .setStyle(ButtonStyle.Secondary);
 
             const archiveButton = new ButtonBuilder()
                   .setCustomId("archive")
                   .setLabel("Archive")
+                  .setEmoji(Properties.emojis.inbox)
                   .setStyle(ButtonStyle.Secondary);
 
             const actionRow = new ActionRowBuilder().setComponents(

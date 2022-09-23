@@ -88,11 +88,13 @@ export default class ReportPlayerModal extends Modal {
             const setStatusButton = new ButtonBuilder()
                   .setCustomId("set-status")
                   .setLabel("Set Status")
+                  .setEmoji(Properties.emojis.edit)
                   .setStyle(ButtonStyle.Primary);
 
             const archiveButton = new ButtonBuilder()
                   .setCustomId("archive")
                   .setLabel("Archive")
+                  .setEmoji(Properties.emojis.inbox)
                   .setStyle(ButtonStyle.Secondary);
 
             const actionRow = new ActionRowBuilder().setComponents(

@@ -121,16 +121,19 @@ export default class BugReportModal extends Modal {
 
             const setStatusButton = new ButtonBuilder()
                   .setCustomId("set-status")
+                  .setEmoji(Properties.emojis.edit)
                   .setLabel("Set Status")
                   .setStyle(ButtonStyle.Primary);
 
             const discussionThreadButton = new ButtonBuilder()
                   .setCustomId("discussion-thread")
+                  .setEmoji(Properties.emojis.thread)
                   .setLabel("Discussion Thread")
                   .setStyle(ButtonStyle.Secondary);
 
             const archiveButton = new ButtonBuilder()
                   .setCustomId("archive")
+                  .setEmoji(Properties.emojis.inbox)
                   .setLabel("Archive")
                   .setStyle(ButtonStyle.Secondary);
 

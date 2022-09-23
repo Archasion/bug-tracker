@@ -132,6 +132,7 @@ export default class ApproveButton extends Button {
 
             const setReasonButton = new ButtonBuilder()
                   .setCustomId(`set-reason-${interaction.message.id}`)
+                  .setEmoji(Properties.emojis.edit)
                   .setLabel("Set Reason")
                   .setStyle(ButtonStyle.Secondary);
 
