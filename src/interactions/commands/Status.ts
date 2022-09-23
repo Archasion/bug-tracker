@@ -194,7 +194,6 @@ export default class StatusCommand extends Command {
             }
 
             const embed = submission.embeds[0].toJSON();
-            const submissionButtons = submission.components[0].components.map(button => new ButtonBuilder(button.toJSON()));
             const thumbnailFile: AttachmentBuilder[] = [];
 
             const hasReasonField = embed.fields?.some(field => field.name === "Reason");
@@ -213,9 +212,6 @@ export default class StatusCommand extends Command {
                         return;
                   }
 
-                  submissionButtons[0].setDisabled(false);
-                  submissionButtons[1].setDisabled(false);
-
                   if (type !== "bugs") {
                         delete embed.author;
                         embed.color = Properties.colors.default;
@@ -232,12 +228,9 @@ export default class StatusCommand extends Command {
                         thumbnailFile.push(priorityImage[priority]);
                   }
 
-                  const actionRow = new ActionRowBuilder().setComponents(...submissionButtons);
-
                   submission.edit({ 
                         embeds: [embed],
-                        files: thumbnailFile,
-                        components: [actionRow.toJSON() as ActionRow<ButtonComponent>]
+                        files: thumbnailFile
                   }).then(async () => {
                         await interaction.editReply(`Removed status from **${type.slice(0, -1)}** \`#${id}\`.`);
                   });
@@ -282,26 +275,6 @@ export default class StatusCommand extends Command {
                   return;
             }
 
-            switch (status) {
-                  case "approved": {
-                        submissionButtons[0].setDisabled(true);
-                        submissionButtons[1].setDisabled(false);
-                        break;
-                  }
-
-                  case "rejected": {
-                        submissionButtons[0].setDisabled(false);
-                        submissionButtons[1].setDisabled(true);
-                        break;
-                  }
-
-                  default: {
-                        submissionButtons[0].setDisabled(false);
-                        submissionButtons[1].setDisabled(false);
-                        break;
-                  }
-            }
-
             if (forbiddenStatuses[type].includes(status)) {
                   await interaction.editReply(`You cannot set the status of **${type}** to **${status}**.`);
                   return;
@@ -318,12 +291,9 @@ export default class StatusCommand extends Command {
 
             if (reason) embed.fields?.push({ name: "Reason", value: reason });
 
-            const actionRow = new ActionRowBuilder().setComponents(...submissionButtons);
-
             submission.edit({
                   embeds: [embed],
-                  files: thumbnailFile,
-                  components: [actionRow.toJSON() as ActionRow<ButtonComponent>]
+                  files: thumbnailFile
             }).then(async () => {
                   await interaction.editReply(`Set the status of **${type.slice(0, -1)}** \`#${id}\` to **${status}**.`);
 
