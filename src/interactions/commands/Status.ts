@@ -205,6 +205,8 @@ export default class StatusCommand extends Command {
                   embed.fields?.pop();
             }
 
+            if (!embed.fields) embed.fields = [];
+
             if (action === "remove") {
                   if (!embed.author?.name.includes("Status")) {
                         await interaction.editReply("This submission does not have a status.");
@@ -261,7 +263,6 @@ export default class StatusCommand extends Command {
                         return;
                   } 
 
-                  if (!embed.fields) embed.fields = [];
                   if (reason) embed.fields?.push({ name: "Reason", value: reason });
 
                   submission.edit({ 
