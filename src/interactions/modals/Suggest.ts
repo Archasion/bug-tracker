@@ -21,10 +21,10 @@ import {
 
 import { RestrictionLevel } from "../../utils/RestrictionUtils";
 
-export default class SuggestModal extends Modal {
+export default class SuggestionModal extends Modal {
       constructor(client: Bot) {
             super(client, {
-                  name: "suggest",
+                  name: "suggestion",
                   restriction: RestrictionLevel.Public
             });
       }
