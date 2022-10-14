@@ -13,7 +13,7 @@ import {
       ActionRow
 } from "discord.js";
 
-import {SubmissionStatus, SubmissionType} from "../../data/Types";
+import {SubmissionStatus, SubmissionType, BugPriority} from "../../data/Types";
 import { RestrictionLevel } from "../../utils/RestrictionUtils";
 
 import Properties from "../../data/Properties";
@@ -47,7 +47,7 @@ export default class SetStatusSelectMenu extends SelectMenu {
       async execute(interaction: SelectMenuInteraction): Promise<void> {
             const messageId = interaction.customId.split("-")[2];
             const message = await interaction.channel?.messages.fetch(messageId);
-            const [status] = interaction.values;
+            const status = interaction.values[0] as SubmissionStatus;
 
             if (!message) {
                   await interaction.editReply("Unable to retrieve original message.");
@@ -94,9 +94,10 @@ export default class SetStatusSelectMenu extends SelectMenu {
 
 
             if (type === "bugs" && status === "none") {
-                  const priority = submissionData.priority.toLowerCase();
+                  const priority = submissionData.priority.toLowerCase() as BugPriority;
 
                   embed.author = { name: `Priority: ${priority.toUpperCase()}` };
+                  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                   embed.thumbnail!.url = `attachment://${priority}.png`;
                   embed.color = Properties.colors.priority[priority];
 
@@ -112,7 +113,10 @@ export default class SetStatusSelectMenu extends SelectMenu {
                   embed.color = Properties.colors.status[status as SubmissionStatus];
 
                   if (type === "bugs") {
+                        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                         embed.thumbnail!.url = `attachment://${status}.png`;
+                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                        // @ts-ignore
                         thumbnailFile.push(statusImage[status]);
                   }
             } else {
@@ -134,7 +138,7 @@ export default class SetStatusSelectMenu extends SelectMenu {
 
                         const dmEmbed = new EmbedBuilder()
                               .setColor(Properties.colors.status[status])
-                              .setTitle(`Your ${type.slice(0, -1)} with the ID of #${submissionData.number} has been ${status}`)
+                              .setTitle(`Your ${type?.slice(0, -1)} with the ID of #${submissionData.number} has been ${status}`)
                               .setDescription(`The status of your submission has been updated by ${interaction.user} (\`${interaction.user.id}\`).`)
                               .setTimestamp();
 

@@ -283,6 +283,8 @@ export default class StatusCommand extends Command {
             if (type === "bugs") {
                   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                   embed.thumbnail!.url = `attachment://${status}.png`;
+                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                  // @ts-ignore
                   thumbnailFile.push(statusImage[status as BugStatus]);
             }
 
