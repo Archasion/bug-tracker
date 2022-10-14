@@ -20,7 +20,7 @@ export default class CommandHandler {
 
       public async load() {
             const files = readdirSync(join(__dirname, "../../../interactions/select_menus"))
-                  .filter(file => file.endsWith(".ts"));
+                  .filter(file => file.endsWith(".js"));
 
             for (const file of files) {
                   // eslint-disable-next-line @typescript-eslint/no-var-requires

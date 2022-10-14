@@ -11,7 +11,7 @@ export default class ListenerLoader {
       }
 
       public async load() {
-            const files = readdirSync(join(__dirname, "../../listeners")).filter(file => file.endsWith(".ts"));
+            const files = readdirSync(join(__dirname, "../../listeners")).filter(file => file.endsWith(".js"));
 
             for (const file of files) {
                   // eslint-disable-next-line @typescript-eslint/no-var-requires
