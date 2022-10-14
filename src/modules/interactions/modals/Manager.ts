@@ -20,7 +20,7 @@ export default class CommandHandler {
 
       public async load() {
             const files = readdirSync(join(__dirname, "../../../interactions/modals"))
-                  .filter(file => file.endsWith(".js"));
+                  .filter(file => file.endsWith(".ts"));
 
             for (const file of files) {
                   // eslint-disable-next-line @typescript-eslint/no-var-requires
