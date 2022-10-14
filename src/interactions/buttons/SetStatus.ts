@@ -3,13 +3,11 @@ import Bot from "../../Bot";
 
 import {
       ComponentEmojiResolvable,
-      SelectMenuComponent,
       ButtonInteraction,
       SelectMenuBuilder,
       ActionRowBuilder,
       ButtonBuilder,
-      ButtonStyle,
-      ActionRow
+      ButtonStyle
 } from "discord.js";
 
 import { RestrictionLevel } from "../../utils/RestrictionUtils";
