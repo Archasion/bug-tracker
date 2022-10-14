@@ -1,5 +1,4 @@
 import Command from "../../modules/interactions/commands/Command";
-import Properties from "../../data/Properties";
 import Bot from "../../Bot";
 
 import {
