@@ -2,7 +2,7 @@
   "name": "bug-tracker",
   "version": "1.0.0",
   "description": "A bug tracking utility for developers",
-  "main": "dist/Bot.js",
+  "main": "src/Bot.ts",
   "scripts": {
     "build": "tsc",
     "start": "ts-node src/Bot.ts"
