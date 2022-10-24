@@ -16,6 +16,10 @@ process.on("unhandledRejection", (error: Error) => {
       console.error(clc.red(error.stack));
 });
 
+process.on("uncaughtException", (error: Error) => {
+   console.error(clc.red(error.stack));
+});
+
 export default class Bot extends Client {
       select_menus!: SelectMenuHandler;
       commands!: CommandHandler;
