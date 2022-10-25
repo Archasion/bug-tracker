@@ -12,7 +12,8 @@ export default class PermissionUtils {
     public static async botHasPermissions(
         interaction: Exclude<Interaction, AutocompleteInteraction>,
         permissions: PermissionResolvable[],
-        channel: TextChannel | NewsChannel = interaction.channel as TextChannel | NewsChannel
+        channel: TextChannel | NewsChannel = interaction.channel as TextChannel | NewsChannel,
+        replyType: "Update" | "Reply" | "EditReply" = "EditReply"
     ): Promise<boolean> {
         const client = interaction.guild?.members.me as GuildMember;
         const missingPermissionsBits = permissions.filter(permission => !client.permissionsIn(channel).has(permission));
@@ -23,13 +24,30 @@ export default class PermissionUtils {
         // @ts-ignore
         const missingPermissions = new PermissionsBitField(missingPermissionsBits.reduce((a, b) => a + b)).toArray();
 
-        await interaction.editReply(`I need the following permissions in ${channel} (\`${channel.id}\`):\n\`${missingPermissions.join("` `")}\``)
-            .catch(async () => {
+        switch (replyType) {
+            case "EditReply": {
+                await interaction.editReply(`I need the following permissions in ${channel} (\`${channel.id}\`):\n\`${missingPermissions.join("` `")}\``);
+                break;
+            }
+
+            case "Reply": {
                 await interaction.reply({
                     content: `I need the following permissions in ${channel} (\`${channel.id}\`):\n\`${missingPermissions.join("` `")}\``,
                     ephemeral: true
                 });
-            });
+                break;
+            }
+
+            case "Update": {
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                await interaction.update({
+                    content: `I need the following permissions in ${channel} (\`${channel.id}\`):\n\`${missingPermissions.join("` `")}\``,
+                    components: [],
+                    files: []
+                });
+            }
+        }
 
         return false;
     }
