@@ -36,7 +36,8 @@ export default class SetStatusSelectMenu extends SelectMenu {
       constructor(client: Bot) {
             super(client, {
                   name: { startsWith: "set-status" },
-                  restriction: RestrictionLevel.Moderator
+                  restriction: RestrictionLevel.Moderator,
+                  modalResponse: true
             });
       }
 
@@ -50,14 +51,20 @@ export default class SetStatusSelectMenu extends SelectMenu {
             const status = interaction.values[0] as SubmissionStatus;
 
             if (!message) {
-                  await interaction.editReply("Unable to retrieve original message.");
+                  await interaction.reply({
+                      content: "Unable to retrieve original message.",
+                      ephemeral: true
+                  });
                   return;
             }
 
             const embed = message.embeds[0].toJSON();
 
             if (embed.author?.name.includes(status.toUpperCase())) {
-                  await interaction.editReply(`This submission's status has already been set to **${status}**`);
+                  await interaction.reply({
+                      content: `This submission's status has already been set to **${status}**`,
+                      ephemeral: true
+                  });
                   return;
             }
 
@@ -130,7 +137,10 @@ export default class SetStatusSelectMenu extends SelectMenu {
                   embeds: [embed],
                   files: thumbnailFile
             }).then(async () => {
-                  await interaction.editReply(`The submission status has successfully been set to **${status}**`);
+                  await interaction.update({
+                      content: `The submission status has successfully been set to **${status}**`,
+                      components: []
+                  });
 
                   if (guildConfig?.auto.dm.status && status !== "none") {
                         const submissionAuthor = await interaction.guild?.members.fetch(submissionData.author);
