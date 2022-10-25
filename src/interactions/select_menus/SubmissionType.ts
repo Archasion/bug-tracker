@@ -1,14 +1,18 @@
 import SelectMenu from "../../modules/interactions/select_menus/SelectMenu";
+import PermissionUtils from "../../utils/PermissionUtils";
 import ErrorMessages from "../../data/ErrorMessages";
 import Guild from "../../db/models/Guild.model";
 import Bot from "../../Bot";
 
 import {
     SelectMenuInteraction,
+    PermissionFlagsBits,
     SelectMenuBuilder,
     ActionRowBuilder,
     TextInputBuilder,
     TextInputStyle,
+    TextChannel,
+    NewsChannel,
     ModalBuilder
 } from "discord.js";
 
@@ -32,12 +36,28 @@ export default class SubmissionTypeSelectMenu extends SelectMenu {
         const modalComponents = [];
 
         if (submissionType === "bug-report") {
-            const submissionChannel = await Guild.findOne({id: interaction.guildId}, {["channels.bugs"]: 1, _id: 0});
+            const guildConfig = await Guild.findOne({id: interaction.guildId}, {["channels.bugs"]: 1, _id: 0});
 
-            if (!submissionChannel) {
-                await interaction.reply(ErrorMessages.ChannelNotConfigured);
+            if (!guildConfig?.channels.bugs) {
+                await interaction.update({
+                    content: ErrorMessages.ChannelNotConfigured,
+                    components: []
+                });
                 return;
             }
+
+            const submissionChannel = interaction.guild?.channels.cache.get(guildConfig?.channels.bugs) as TextChannel | NewsChannel;
+
+            if (!await PermissionUtils.botHasPermissions(interaction, [
+                PermissionFlagsBits.CreatePublicThreads,
+                PermissionFlagsBits.ReadMessageHistory,
+                PermissionFlagsBits.UseExternalEmojis,
+                PermissionFlagsBits.ManageThreads,
+                PermissionFlagsBits.SendMessages,
+                PermissionFlagsBits.AddReactions,
+                PermissionFlagsBits.ViewChannel,
+                PermissionFlagsBits.EmbedLinks
+            ], submissionChannel, "Update")) return;
 
             const bugPriority = new SelectMenuBuilder()
                 .setCustomId("bug-priority")
@@ -78,15 +98,28 @@ export default class SubmissionTypeSelectMenu extends SelectMenu {
         }
 
         if (submissionType === "suggestion") {
-            const submissionChannel = await Guild.findOne({id: interaction.guildId}, {
-                ["channels.suggestions"]: 1,
-                _id: 0
-            });
+            const guildConfig = await Guild.findOne({id: interaction.guildId}, {["channels.suggestions"]: 1, _id: 0});
 
-            if (!submissionChannel) {
-                await interaction.reply(ErrorMessages.ChannelNotConfigured);
+            if (!guildConfig?.channels.suggestions) {
+                await interaction.update({
+                    content: ErrorMessages.ChannelNotConfigured,
+                    components: []
+                });
                 return;
             }
+
+            const submissionChannel = interaction.guild?.channels.cache.get(guildConfig?.channels.suggestions) as TextChannel | NewsChannel;
+
+            if (!await PermissionUtils.botHasPermissions(interaction, [
+                PermissionFlagsBits.CreatePublicThreads,
+                PermissionFlagsBits.ReadMessageHistory,
+                PermissionFlagsBits.UseExternalEmojis,
+                PermissionFlagsBits.ManageThreads,
+                PermissionFlagsBits.SendMessages,
+                PermissionFlagsBits.AddReactions,
+                PermissionFlagsBits.ViewChannel,
+                PermissionFlagsBits.EmbedLinks
+            ], submissionChannel, "Update")) return;
 
             const suggestionInput = new TextInputBuilder()
                 .setCustomId("suggestion")
@@ -102,12 +135,24 @@ export default class SubmissionTypeSelectMenu extends SelectMenu {
         }
 
         if (submissionType === "player-report") {
-            const submissionChannel = await Guild.findOne({id: interaction.guildId}, {["channels.reports"]: 1, _id: 0});
+            const guildConfig = await Guild.findOne({id: interaction.guildId}, {["channels.reports"]: 1, _id: 0});
 
-            if (!submissionChannel) {
-                await interaction.reply(ErrorMessages.ChannelNotConfigured);
+            if (!guildConfig?.channels.reports) {
+                await interaction.update({
+                    content: ErrorMessages.ChannelNotConfigured,
+                    components: []
+                });
                 return;
             }
+
+            const submissionChannel = interaction.guild?.channels.cache.get(guildConfig?.channels.reports) as TextChannel | NewsChannel;
+
+            if (!await PermissionUtils.botHasPermissions(interaction, [
+                PermissionFlagsBits.ReadMessageHistory,
+                PermissionFlagsBits.SendMessages,
+                PermissionFlagsBits.ViewChannel,
+                PermissionFlagsBits.EmbedLinks
+            ], submissionChannel, "Update")) return;
 
             modalComponents.push(
                 new ActionRowBuilder().addComponents(
