@@ -5,15 +5,15 @@ import Guild from "../../db/models/Guild.model";
 import Properties from "../../data/Properties";
 import Bot from "../../Bot";
 
-import { 
-      PermissionFlagsBits,
-      ButtonInteraction, 
-      ActionRowBuilder, 
-      ButtonComponent,
-      ButtonBuilder, 
-      EmbedBuilder, 
-      ButtonStyle, 
-      ActionRow
+import {
+    PermissionFlagsBits,
+    ButtonInteraction,
+    ActionRowBuilder,
+    ButtonComponent,
+    ButtonBuilder,
+    EmbedBuilder,
+    ButtonStyle,
+    ActionRow, PermissionsBitField,
 } from "discord.js";
 
 import { RestrictionLevel } from "../../utils/RestrictionUtils";
@@ -22,7 +22,7 @@ export default class DiscussionThreadButton extends Button {
       constructor(client: Bot) {
             super(client, {
                   name: "discussion-thread",
-                  restriction: RestrictionLevel.Moderator
+                  restriction: RestrictionLevel.Public
             });
       }
 
@@ -31,6 +31,11 @@ export default class DiscussionThreadButton extends Button {
 	 * @returns {Promise<void>}
 	 */
       async execute(interaction: ButtonInteraction): Promise<void> {
+            if (!(interaction.member?.permissions as Readonly<PermissionsBitField>).has(PermissionFlagsBits.CreatePublicThreads)) {
+                await interaction.editReply("You must have the `CreatePublicThreads` permission to use this interaction");
+                return;
+            }
+
             if (interaction.message.hasThread) {
                   await interaction.editReply("This message already has a thread attached.");
                   return;
