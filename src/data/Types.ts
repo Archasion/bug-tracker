@@ -8,12 +8,12 @@ type SubmissionType = "bugs" | "reports" | "suggestions";
 type BugPriority = "none" | "low" | "medium" | "high";
 
 export {
-      PlayerReportStatus,
-      SubmissionStatus,
-      SuggestionStatus,
-      SubmissionType,
-      ContactEnquiry,
-      BugPriority, 
-      BugStatus,
-      Guide
+    PlayerReportStatus,
+    SubmissionStatus,
+    SuggestionStatus,
+    SubmissionType,
+    ContactEnquiry,
+    BugPriority,
+    BugStatus,
+    Guide
 };
