@@ -61,6 +61,7 @@ export default class SuggestModal extends Modal {
         }
 
         if (!await PermissionUtils.botHasPermissions(interaction, [
+            PermissionFlagsBits.SendMessagesInThreads,
             PermissionFlagsBits.CreatePublicThreads,
             PermissionFlagsBits.ReadMessageHistory,
             PermissionFlagsBits.UseExternalEmojis,

@@ -43,6 +43,7 @@ export default class DiscussionThreadButton extends Button {
         }
 
         if (!await PermissionUtils.botHasPermissions(interaction, [
+            PermissionFlagsBits.SendMessagesInThreads,
             PermissionFlagsBits.CreatePublicThreads,
             PermissionFlagsBits.ViewChannel
         ])) return;
@@ -88,6 +89,20 @@ export default class DiscussionThreadButton extends Button {
             reason: "Submission discussion thread"
         }).then(async (thread) => {
             await interaction.editReply(`Started a discussion thread for **${type.slice(0, -1)}** \`${embed.footer?.text}\`.`);
+
+            const threadAuthorEmbed = new EmbedBuilder()
+                .setColor(Properties.colors.default)
+                .setTitle("Discussion Thread")
+                .setAuthor({
+                    name: interaction.user.tag,
+                    iconURL: interaction.user.displayAvatarURL()
+                })
+                .setDescription(`This is the place to discuss anything related to the submission above, this thread was created by ${interaction.member}`)
+                .setFooter({ text: `ID: ${interaction.user.id}` });
+
+            setTimeout(() => {
+                thread.send({ embeds: [threadAuthorEmbed] });
+            }, 500);
 
             if (guildConfig?.auto.dm.status) {
                 const author = await interaction.guild?.members.fetch(submission.author);

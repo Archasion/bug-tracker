@@ -49,6 +49,7 @@ export default class SubmissionTypeSelectMenu extends SelectMenu {
             const submissionChannel = interaction.guild?.channels.cache.get(guildConfig?.channels.bugs) as TextChannel | NewsChannel;
 
             if (!await PermissionUtils.botHasPermissions(interaction, [
+                PermissionFlagsBits.SendMessagesInThreads,
                 PermissionFlagsBits.CreatePublicThreads,
                 PermissionFlagsBits.ReadMessageHistory,
                 PermissionFlagsBits.UseExternalEmojis,
@@ -111,6 +112,7 @@ export default class SubmissionTypeSelectMenu extends SelectMenu {
             const submissionChannel = interaction.guild?.channels.cache.get(guildConfig?.channels.suggestions) as TextChannel | NewsChannel;
 
             if (!await PermissionUtils.botHasPermissions(interaction, [
+                PermissionFlagsBits.SendMessagesInThreads,
                 PermissionFlagsBits.CreatePublicThreads,
                 PermissionFlagsBits.ReadMessageHistory,
                 PermissionFlagsBits.UseExternalEmojis,

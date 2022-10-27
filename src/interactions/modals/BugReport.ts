@@ -75,6 +75,7 @@ export default class BugReportModal extends Modal {
         }
 
         if (!await PermissionUtils.botHasPermissions(interaction, [
+            PermissionFlagsBits.SendMessagesInThreads,
             PermissionFlagsBits.CreatePublicThreads,
             PermissionFlagsBits.ReadMessageHistory,
             PermissionFlagsBits.UseExternalEmojis,
