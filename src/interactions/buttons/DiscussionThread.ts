@@ -7,13 +7,16 @@ import Bot from "../../Bot";
 
 import {
     PermissionFlagsBits,
+    PermissionsBitField,
     ButtonInteraction,
     ActionRowBuilder,
     ButtonComponent,
     ButtonBuilder,
     EmbedBuilder,
+    TextChannel,
+    NewsChannel,
     ButtonStyle,
-    ActionRow, PermissionsBitField,
+    ActionRow,
 } from "discord.js";
 
 import {RestrictionLevel} from "../../utils/RestrictionUtils";
@@ -42,11 +45,16 @@ export default class DiscussionThreadButton extends Button {
             return;
         }
 
-        if (!await PermissionUtils.botHasPermissions(interaction, [
-            PermissionFlagsBits.SendMessagesInThreads,
-            PermissionFlagsBits.CreatePublicThreads,
-            PermissionFlagsBits.ViewChannel
-        ])) return;
+        if (!await PermissionUtils.botHasPermissions({
+            interaction,
+            permissions: [
+                PermissionFlagsBits.SendMessagesInThreads,
+                PermissionFlagsBits.CreatePublicThreads,
+                PermissionFlagsBits.ViewChannel
+            ],
+            channel: interaction.channel as TextChannel | NewsChannel,
+            replyType: "EditReply"
+        })) return;
 
         const [embed] = interaction.message.embeds;
 

@@ -59,12 +59,17 @@ export default class ReportPlayerModal extends Modal {
             return;
         }
 
-        if (!await PermissionUtils.botHasPermissions(interaction, [
-            PermissionFlagsBits.ReadMessageHistory,
-            PermissionFlagsBits.SendMessages,
-            PermissionFlagsBits.ViewChannel,
-            PermissionFlagsBits.EmbedLinks
-        ], submissionChannel)) return;
+        if (!await PermissionUtils.botHasPermissions({
+            interaction,
+            permissions: [
+                PermissionFlagsBits.ReadMessageHistory,
+                PermissionFlagsBits.SendMessages,
+                PermissionFlagsBits.ViewChannel,
+                PermissionFlagsBits.EmbedLinks
+            ],
+            channel: submissionChannel,
+            replyType: "EditReply"
+        })) return;
 
         const submissionId = guildConfig?.reports.length + 1;
 

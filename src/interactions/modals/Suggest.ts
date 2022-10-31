@@ -60,17 +60,22 @@ export default class SuggestModal extends Modal {
             return;
         }
 
-        if (!await PermissionUtils.botHasPermissions(interaction, [
-            PermissionFlagsBits.SendMessagesInThreads,
-            PermissionFlagsBits.CreatePublicThreads,
-            PermissionFlagsBits.ReadMessageHistory,
-            PermissionFlagsBits.UseExternalEmojis,
-            PermissionFlagsBits.ManageThreads,
-            PermissionFlagsBits.SendMessages,
-            PermissionFlagsBits.AddReactions,
-            PermissionFlagsBits.ViewChannel,
-            PermissionFlagsBits.EmbedLinks
-        ], submissionChannel)) return;
+        if (!await PermissionUtils.botHasPermissions({
+            interaction,
+            permissions: [
+                PermissionFlagsBits.SendMessagesInThreads,
+                PermissionFlagsBits.CreatePublicThreads,
+                PermissionFlagsBits.ReadMessageHistory,
+                PermissionFlagsBits.UseExternalEmojis,
+                PermissionFlagsBits.ManageThreads,
+                PermissionFlagsBits.SendMessages,
+                PermissionFlagsBits.AddReactions,
+                PermissionFlagsBits.ViewChannel,
+                PermissionFlagsBits.EmbedLinks
+            ],
+            channel: submissionChannel,
+            replyType: "EditReply"
+        })) return;
 
         const submissionId = guildConfig?.suggestions.length + 1;
 

@@ -48,17 +48,22 @@ export default class SubmissionTypeSelectMenu extends SelectMenu {
 
             const submissionChannel = interaction.guild?.channels.cache.get(guildConfig?.channels.bugs) as TextChannel | NewsChannel;
 
-            if (!await PermissionUtils.botHasPermissions(interaction, [
-                PermissionFlagsBits.SendMessagesInThreads,
-                PermissionFlagsBits.CreatePublicThreads,
-                PermissionFlagsBits.ReadMessageHistory,
-                PermissionFlagsBits.UseExternalEmojis,
-                PermissionFlagsBits.ManageThreads,
-                PermissionFlagsBits.SendMessages,
-                PermissionFlagsBits.AddReactions,
-                PermissionFlagsBits.ViewChannel,
-                PermissionFlagsBits.EmbedLinks
-            ], submissionChannel, "Update")) return;
+            if (!await PermissionUtils.botHasPermissions({
+                interaction,
+                permissions: [
+                    PermissionFlagsBits.SendMessagesInThreads,
+                    PermissionFlagsBits.CreatePublicThreads,
+                    PermissionFlagsBits.ReadMessageHistory,
+                    PermissionFlagsBits.UseExternalEmojis,
+                    PermissionFlagsBits.ManageThreads,
+                    PermissionFlagsBits.SendMessages,
+                    PermissionFlagsBits.AddReactions,
+                    PermissionFlagsBits.ViewChannel,
+                    PermissionFlagsBits.EmbedLinks
+                ],
+                channel: submissionChannel,
+                replyType: "Update"
+            })) return;
 
             const bugPriority = new SelectMenuBuilder()
                 .setCustomId("bug-priority")
@@ -111,17 +116,22 @@ export default class SubmissionTypeSelectMenu extends SelectMenu {
 
             const submissionChannel = interaction.guild?.channels.cache.get(guildConfig?.channels.suggestions) as TextChannel | NewsChannel;
 
-            if (!await PermissionUtils.botHasPermissions(interaction, [
-                PermissionFlagsBits.SendMessagesInThreads,
-                PermissionFlagsBits.CreatePublicThreads,
-                PermissionFlagsBits.ReadMessageHistory,
-                PermissionFlagsBits.UseExternalEmojis,
-                PermissionFlagsBits.ManageThreads,
-                PermissionFlagsBits.SendMessages,
-                PermissionFlagsBits.AddReactions,
-                PermissionFlagsBits.ViewChannel,
-                PermissionFlagsBits.EmbedLinks
-            ], submissionChannel, "Update")) return;
+            if (!await PermissionUtils.botHasPermissions({
+                interaction,
+                permissions: [
+                    PermissionFlagsBits.SendMessagesInThreads,
+                    PermissionFlagsBits.CreatePublicThreads,
+                    PermissionFlagsBits.ReadMessageHistory,
+                    PermissionFlagsBits.UseExternalEmojis,
+                    PermissionFlagsBits.ManageThreads,
+                    PermissionFlagsBits.SendMessages,
+                    PermissionFlagsBits.AddReactions,
+                    PermissionFlagsBits.ViewChannel,
+                    PermissionFlagsBits.EmbedLinks
+                ],
+                channel: submissionChannel,
+                replyType: "Update"
+            })) return;
 
             const suggestionInput = new TextInputBuilder()
                 .setCustomId("suggestion")
@@ -149,12 +159,17 @@ export default class SubmissionTypeSelectMenu extends SelectMenu {
 
             const submissionChannel = interaction.guild?.channels.cache.get(guildConfig?.channels.reports) as TextChannel | NewsChannel;
 
-            if (!await PermissionUtils.botHasPermissions(interaction, [
-                PermissionFlagsBits.ReadMessageHistory,
-                PermissionFlagsBits.SendMessages,
-                PermissionFlagsBits.ViewChannel,
-                PermissionFlagsBits.EmbedLinks
-            ], submissionChannel, "Update")) return;
+            if (!await PermissionUtils.botHasPermissions({
+                interaction,
+                permissions: [
+                    PermissionFlagsBits.ReadMessageHistory,
+                    PermissionFlagsBits.SendMessages,
+                    PermissionFlagsBits.ViewChannel,
+                    PermissionFlagsBits.EmbedLinks
+                ],
+                channel: submissionChannel,
+                replyType: "Update"
+            })) return;
 
             modalComponents.push(
                 new ActionRowBuilder().addComponents(

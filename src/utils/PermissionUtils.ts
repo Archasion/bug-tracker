@@ -8,13 +8,17 @@ import {
     TextChannel
 } from "discord.js";
 
+interface BotHasPermissionsData {
+    interaction: Exclude<Interaction, AutocompleteInteraction>;
+    permissions: PermissionResolvable[];
+    channel: TextChannel | NewsChannel;
+    replyType: "Update" | "Reply" | "EditReply";
+}
+
 export default class PermissionUtils {
-    public static async botHasPermissions(
-        interaction: Exclude<Interaction, AutocompleteInteraction>,
-        permissions: PermissionResolvable[],
-        channel: TextChannel | NewsChannel = interaction.channel as TextChannel | NewsChannel,
-        replyType: "Update" | "Reply" | "EditReply" = "EditReply"
-    ): Promise<boolean> {
+    public static async botHasPermissions(data: BotHasPermissionsData): Promise<boolean> {
+        const { interaction, permissions, channel, replyType } = data;
+
         const client = interaction.guild?.members.me as GuildMember;
         const missingPermissionsBits = permissions.filter(permission => !client.permissionsIn(channel).has(permission));
 

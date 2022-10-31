@@ -74,17 +74,22 @@ export default class BugReportModal extends Modal {
             return;
         }
 
-        if (!await PermissionUtils.botHasPermissions(interaction, [
-            PermissionFlagsBits.SendMessagesInThreads,
-            PermissionFlagsBits.CreatePublicThreads,
-            PermissionFlagsBits.ReadMessageHistory,
-            PermissionFlagsBits.UseExternalEmojis,
-            PermissionFlagsBits.ManageThreads,
-            PermissionFlagsBits.AddReactions,
-            PermissionFlagsBits.SendMessages,
-            PermissionFlagsBits.ViewChannel,
-            PermissionFlagsBits.EmbedLinks
-        ], submissionChannel)) return;
+        if (!await PermissionUtils.botHasPermissions({
+            interaction,
+            permissions: [
+                PermissionFlagsBits.SendMessagesInThreads,
+                PermissionFlagsBits.CreatePublicThreads,
+                PermissionFlagsBits.ReadMessageHistory,
+                PermissionFlagsBits.UseExternalEmojis,
+                PermissionFlagsBits.ManageThreads,
+                PermissionFlagsBits.AddReactions,
+                PermissionFlagsBits.SendMessages,
+                PermissionFlagsBits.ViewChannel,
+                PermissionFlagsBits.EmbedLinks
+            ],
+            channel: submissionChannel,
+            replyType: "EditReply"
+        })) return;
 
         const submissionId = guildConfig?.bugs.length + 1;
 

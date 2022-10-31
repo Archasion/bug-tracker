@@ -123,9 +123,19 @@ export default class ChannelCommand extends Command {
                 let hasPerms: boolean;
 
                 if (type === "suggestions") {
-                    hasPerms = await PermissionUtils.botHasPermissions(interaction, permissions.setChannel, channel as TextChannel | NewsChannel);
+                    hasPerms = await PermissionUtils.botHasPermissions({
+                        interaction,
+                        permissions: permissions.setChannel,
+                        channel: channel as TextChannel | NewsChannel,
+                        replyType: "EditReply"
+                    });
                 } else {
-                    hasPerms = await PermissionUtils.botHasPermissions(interaction, [...permissions.setChannel, ...permissions.setReportChannel], channel as TextChannel | NewsChannel);
+                    hasPerms = await PermissionUtils.botHasPermissions({
+                        interaction,
+                        permissions: [...permissions.setChannel, ...permissions.setReportChannel],
+                        channel: channel as TextChannel | NewsChannel,
+                        replyType: "EditReply"
+                    });
                 }
 
                 if (!hasPerms) return;

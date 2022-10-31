@@ -9,7 +9,9 @@ import {
     ApplicationCommandType,
     PermissionFlagsBits,
     EmbedBuilder,
-    GuildMember
+    GuildMember,
+    TextChannel,
+    NewsChannel
 } from "discord.js";
 
 import {Guide} from "../../data/Types";
@@ -80,7 +82,12 @@ export default class GuideCommand extends Command {
 
         if (
             await RestrictionUtils.isModerator(interaction.member as GuildMember) &&
-            await PermissionUtils.botHasPermissions(interaction, [PermissionFlagsBits.SendMessages]) &&
+            await PermissionUtils.botHasPermissions({
+                interaction,
+                permissions: [PermissionFlagsBits.SendMessages],
+                channel: interaction.channel as TextChannel | NewsChannel,
+                replyType: "EditReply"
+            }) &&
             sendPublicly
         ) {
             interaction.channel?.send({

@@ -69,10 +69,15 @@ export default class EditModal extends Modal {
             return;
         }
 
-        if (!await PermissionUtils.botHasPermissions(interaction, [
-            PermissionFlagsBits.ViewChannel,
-            PermissionFlagsBits.ReadMessageHistory
-        ], submissionChannel)) return;
+        if (!await PermissionUtils.botHasPermissions({
+            interaction,
+            permissions: [
+                PermissionFlagsBits.ReadMessageHistory,
+                PermissionFlagsBits.ViewChannel
+            ],
+            channel: submissionChannel,
+            replyType: "EditReply"
+        })) return;
 
         const message = await submissionChannel.messages.fetch(messageId)
             .catch(async () => {
