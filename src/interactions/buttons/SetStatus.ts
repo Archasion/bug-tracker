@@ -55,6 +55,16 @@ const bugStatuses: { label: string, value: BugStatus, emoji: ComponentEmojiResol
         emoji: Properties.emojis.reject
     },
     {
+        label: "Known",
+        value: "known",
+        emoji: Properties.emojis.reject // Change emoji
+    },
+    {
+        label: "Not a Bug",
+        value: "nab",
+        emoji: Properties.emojis.reject // Change emoji
+    },
+    {
         label: "Fixed",
         value: "fixed",
         emoji: Properties.emojis.fixed
@@ -81,6 +91,11 @@ const playerReportStatuses: { label: string, value: PlayerReportStatus, emoji: C
         label: "Rejected",
         value: "rejected",
         emoji: Properties.emojis.reject
+    },
+    {
+        label: "Known",
+        value: "known",
+        emoji: Properties.emojis.reject // Change emoji
     },
     {
         label: "Considered",
