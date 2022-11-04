@@ -29,6 +29,8 @@ export default class Properties {
         status: {
             approved: 0x437B4B,
             rejected: 0xC74945,
+            known: 0xC74945,
+            nab: 0xC74945,
             implemented: 0x5d97c9,
             considered: 0xf2e65e,
             fixed: 0x855dc9,
