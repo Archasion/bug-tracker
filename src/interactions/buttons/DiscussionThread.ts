@@ -35,8 +35,8 @@ export default class DiscussionThreadButton extends Button {
      * @returns {Promise<void>}
      */
     async execute(interaction: ButtonInteraction): Promise<void> {
-        if (!(interaction.member?.permissions as Readonly<PermissionsBitField>).has(PermissionFlagsBits.CreatePublicThreads)) {
-            await interaction.editReply("You must have the `CreatePublicThreads` permission to use this interaction");
+        if (!(interaction.member?.permissions as Readonly<PermissionsBitField>).has(PermissionFlagsBits.ManageThreads)) {
+            await interaction.editReply("You must have the `ManageThreads` permission to use this interaction");
             return;
         }
 
