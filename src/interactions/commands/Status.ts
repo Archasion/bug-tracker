@@ -44,8 +44,8 @@ const statusImage = {
 };
 
 const forbiddenStatuses = {
-    reports: ["implemented", "fixed"],
-    suggestions: ["fixed"],
+    reports: ["implemented", "fixed", "nab"],
+    suggestions: ["fixed", "known", "nab"],
     bugs: ["implemented"]
 };
 
@@ -106,6 +106,14 @@ export default class StatusCommand extends Command {
                                 {
                                     name: "Rejected",
                                     value: "rejected"
+                                },
+                                {
+                                    name: "Known",
+                                    value: "known"
+                                },
+                                {
+                                    name: "Not a Bug",
+                                    value: "nab"
                                 },
                                 {
                                     name: "Fixed",

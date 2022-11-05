@@ -29,6 +29,8 @@ export default class Properties {
         status: {
             approved: 0x437B4B,
             rejected: 0xC74945,
+            known: 0xC74945,
+            nab: 0xC74945,
             implemented: 0x5d97c9,
             considered: 0xf2e65e,
             fixed: 0x855dc9,
@@ -57,6 +59,8 @@ export default class Properties {
         thumbsDown: "1022924034322731090",
         approve: "1020437240578592831",
         reject: "1020431776667160647",
+        known: "1038434140892168265",
+        nab: "1038434142418903140",
         implemented: "1020437244210843661",
         considered: "1020437241853648938",
         fixed: "1020437242977714196",
