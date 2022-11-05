@@ -29,6 +29,8 @@ const statusImage = {
     considered: new AttachmentBuilder("assets/status/Considered.png", {name: "considered.png"}),
     approved: new AttachmentBuilder("assets/status/Approved.png", {name: "approved.png"}),
     rejected: new AttachmentBuilder("assets/status/Rejected.png", {name: "rejected.png"}),
+    known: new AttachmentBuilder("assets/status/Rejected.png", {name: "known.png"}),
+    nab: new AttachmentBuilder("assets/status/Rejected.png", {name: "nab.png"}),
     fixed: new AttachmentBuilder("assets/status/Fixed.png", {name: "fixed.png"})
 };
 
