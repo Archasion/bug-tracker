@@ -5,7 +5,7 @@
   "main": "src/Bot.ts",
   "scripts": {
     "build": "tsc",
-    "start": "node dist/Bot.js"
+    "start": "ts-node src/Bot.ts"
   },
   "repository": {
     "type": "git",
