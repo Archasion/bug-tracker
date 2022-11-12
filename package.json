@@ -4,7 +4,7 @@
   "description": "A bug tracking utility for developers",
   "main": "src/Bot.ts",
   "scripts": {
-    "start": "ts-node src/Bot.ts"
+    "build": "ts-node src/Bot.ts"
   },
   "repository": {
     "type": "git",
