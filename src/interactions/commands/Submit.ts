@@ -1,4 +1,5 @@
 import Command from "../../modules/interactions/commands/Command";
+import Guild from "../../db/models/Guild.model";
 import Bot from "../../Bot";
 
 import {
@@ -26,21 +27,39 @@ export default class SubmitCommand extends Command {
      * @returns {Promise<void>}
      */
     async execute(interaction: ChatInputCommandInteraction): Promise<void> {
+        const guildConfig = await Guild.findOne({ id: interaction.guildId }, { channels: 1, _id: 0 });
+        const submissionOptions = [];
+
+        if (guildConfig?.channels.bugs) {
+            submissionOptions.push({
+                label: "Bug Report",
+                value: "bug-report"
+            });
+        }
+
+        if (guildConfig?.channels.reports) {
+            submissionOptions.push({
+                label: "Player Report",
+                value: "player-report"
+            });
+        }
+
+        if (guildConfig?.channels.suggestions) {
+            submissionOptions.push({
+                label: "Suggestions",
+                value: "suggestions"
+            });
+        }
+
+        if (submissionOptions.length === 0) {
+            await interaction.editReply("There are no submission channels set up");
+            return;
+        }
+
         const submissionType = new SelectMenuBuilder()
             .setCustomId("submission-type")
             .setPlaceholder("Select the submission type...")
-            .setOptions({
-                    label: "Bug Report",
-                    value: "bug-report"
-                },
-                {
-                    label: "Player Report",
-                    value: "player-report"
-                },
-                {
-                    label: "Suggestion",
-                    value: "suggestion"
-                });
+            .setOptions(...submissionOptions);
 
         const actionRow = new ActionRowBuilder().setComponents(submissionType);
 
