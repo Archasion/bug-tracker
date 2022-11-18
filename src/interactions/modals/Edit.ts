@@ -32,30 +32,30 @@ export default class EditModal extends Modal {
     async execute(interaction: ModalSubmitInteraction): Promise<void> {
         const args = interaction.customId.split("-");
         const type = args[1] as SubmissionType;
-        const messageId = args[2];
+        const id = args[2];
 
-        const guildConfig = await Guild.findOne(
-            {id: interaction.guildId},
+        const guild = await Guild.findOne(
+            {_id: interaction.guildId},
             {
-                [`channels.${type}`]: 1,
-                [type]: 1,
+                [`channels.submissions.${type}`]: 1,
+                [`submissions.${type}.${id}`]: 1,
                 _id: 0
             }
         );
 
-        const submission = guildConfig?.[type].find(item => item.messageId === messageId);
+        const submission = guild?.submissions[type][id];
 
         if (!submission) {
             await interaction.editReply(ErrorMessages.SubmissionNotFound);
             return;
         }
 
-        if (submission.author !== interaction.user.id) {
+        if (submission.authorId !== interaction.user.id) {
             await interaction.editReply("Only the author of the submission can edit it.");
             return;
         }
 
-        const submissionChannelId = guildConfig?.channels[type];
+        const submissionChannelId = guild?.channels.submissions[type];
 
         if (!submissionChannelId) {
             await interaction.editReply(ErrorMessages.ChannelNotConfigured);
@@ -79,7 +79,7 @@ export default class EditModal extends Modal {
             replyType: "EditReply"
         })) return;
 
-        const message = await submissionChannel.messages.fetch(messageId)
+        const message = await submissionChannel.messages.fetch(submission.messageId)
             .catch(async () => {
                 await interaction.editReply(ErrorMessages.SubmissionNotFound);
                 return;

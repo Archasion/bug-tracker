@@ -39,13 +39,13 @@ export default class AnnounceModal extends Modal {
             .setDescription(description)
             .setTimestamp();
 
-        const guildConfig = await Guild.find(
-            {["channels.bot_updates"]: {$ne: null}},
-            {["channels.bot_updates"]: 1, _id: 0}
+        const guilds = await Guild.find(
+            {["channels.botUpdates"]: {$ne: null}},
+            {["channels.botUpdates"]: 1, _id: 0}
         );
 
-        guildConfig.forEach(guild => {
-            const channel = this.client.channels.cache.get(guild.channels.bot_updates) as TextChannel | NewsChannel;
+        guilds.forEach(guild => {
+            const channel = this.client.channels.cache.get(guild.channels.botUpdates) as TextChannel | NewsChannel;
             if (!channel) return;
 
             channel.send({embeds: [embed]})
@@ -53,7 +53,7 @@ export default class AnnounceModal extends Modal {
                 .catch(() => console.log(clc.blackBright(`Unable to send messages in "${channel.guild.name}"`)));
         });
 
-        await interaction.editReply(`Trying to publish the announcement to **${guildConfig.length}** guilds...`);
+        await interaction.editReply(`Trying to publish the announcement to **${guilds.length}** guilds...`);
 
         return;
     }

@@ -24,10 +24,10 @@ import {RestrictionLevel} from "../../utils/RestrictionUtils";
 import {BugPriority} from "../../data/Types";
 
 const priorityImage = {
-    medium: new AttachmentBuilder("assets/priority/Medium.png", {name: "medium.png"}),
-    none: new AttachmentBuilder("assets/priority/None.png", {name: "none.png"}),
-    high: new AttachmentBuilder("assets/priority/High.png", {name: "high.png"}),
-    low: new AttachmentBuilder("assets/priority/Low.png", {name: "low.png"})
+    High: new AttachmentBuilder("assets/priority/High.png", {name: "High.png"}),
+    Medium: new AttachmentBuilder("assets/priority/Medium.png", {name: "Medium.png"}),
+    Low: new AttachmentBuilder("assets/priority/Low.png", {name: "Low.png"}),
+    None: new AttachmentBuilder("assets/priority/None.png", {name: "None.png"})
 };
 
 export default class BugReportModal extends Modal {
@@ -45,22 +45,22 @@ export default class BugReportModal extends Modal {
     async execute(interaction: ModalSubmitInteraction): Promise<void> {
         const summary = interaction.fields.getTextInputValue("summary");
         const description = interaction.fields.getTextInputValue("description");
-        const reproduction = interaction.fields.getTextInputValue("reproduction");
-        const specs = interaction.fields.getTextInputValue("specs");
+        const reproductionSteps = interaction.fields.getTextInputValue("reproduction");
+        const systemSpecs = interaction.fields.getTextInputValue("specs");
 
         const priority = interaction.customId.split("-")[2] as BugPriority;
 
-        const guildConfig = await Guild.findOne(
-            {id: interaction.guildId},
+        const guild = await Guild.findOne(
+            {_id: interaction.guildId},
             {
-                ["auto.threads.bugs"]: 1,
-                ["channels.bugs"]: 1,
-                bugs: 1,
+                ["settings.threads.bugReports"]: 1,
+                ["channels.submissions.bugReports"]: 1,
+                ["submissions.bugReports"]: 1,
                 _id: 0
             }
         );
 
-        const submissionChannelId = guildConfig?.channels.bugs;
+        const submissionChannelId = guild?.channels.submissions.bugReports;
 
         if (!submissionChannelId) {
             await interaction.editReply(ErrorMessages.ChannelNotConfigured);
@@ -91,11 +91,11 @@ export default class BugReportModal extends Modal {
             replyType: "EditReply"
         })) return;
 
-        const submissionId = guildConfig?.bugs.length + 1;
+        const submissionId = Object.keys(guild?.submissions.bugReports).length + 1;
 
         const embed = new EmbedBuilder()
             .setColor(Properties.colors.priority[priority])
-            .setAuthor({name: `Priority: ${priority.toUpperCase()}`})
+            .setAuthor({name: `Priority: ${priority}`})
             .setTitle("Bug Report")
             .setThumbnail(interaction.user.displayAvatarURL())
             .setFields([
@@ -112,17 +112,17 @@ export default class BugReportModal extends Modal {
             .setFooter({text: `#${submissionId}`})
             .setTimestamp();
 
-        if (reproduction) {
+        if (reproductionSteps) {
             embed.data.fields?.push({
                 name: "Reproduction Steps",
-                value: reproduction
+                value: reproductionSteps
             });
         }
 
-        if (specs) {
+        if (systemSpecs) {
             embed.data.fields?.push({
                 name: "System Specs",
-                value: specs
+                value: systemSpecs
             });
         }
 
@@ -156,25 +156,33 @@ export default class BugReportModal extends Modal {
             files: [priorityImage[priority]],
             components: [actionRow.toJSON() as ActionRow<ButtonComponent>]
         }).then(async (message) => {
-            await Guild.updateOne(
-                {id: interaction.guildId},
-                {
-                    $push: {
-                        bugs: {
-                            number: submissionId,
-                            messageId: message.id,
-                            author: interaction.user.id,
-                            summary,
-                            description,
-                            reproduction,
-                            specs,
-                            priority: priority.toUpperCase()
-                        }
-                    }
+            const submissionData = {
+                number: submissionId,
+                messageId: message.id,
+                authorId: interaction.user.id,
+                priority,
+                content: {
+                    summary,
+                    description,
+                    reproductionSteps,
+                    systemSpecs
                 }
+            };
+
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            if (!submissionData.content.reproductionSteps) delete submissionData.content.reproductionSteps;
+
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            if (!submissionData.content.systemSpecs) delete submissionData.content.systemSpecs;
+
+            await Guild.updateOne(
+                {_id: interaction.guildId},
+                {$set: {[`submissions.bugReports.${submissionId}`]: submissionData}}
             );
 
-            if (guildConfig?.auto.threads.bugs) {
+            if (guild?.settings.threads.bugReports) {
                 await message.startThread({
                     name: StringUtils.elipsify(summary, 100),
                     autoArchiveDuration: 10080, // 1 week

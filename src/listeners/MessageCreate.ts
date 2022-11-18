@@ -15,15 +15,12 @@ module.exports = class MessageCreateEventListener extends EventListener {
     public async execute(message: Message) {
         if (!message.guild) return;
 
-        const guildConfig = await Guild.findOne(
-            {id: message.guildId},
-            {
-                ["auto.delete"]: 1,
-                _id: 0
-            }
+        const guild = await Guild.findOne(
+            {_id: message.guildId},
+            { ["settings.autoDelete"]: 1, _id: 0 }
         );
 
-        const autoDeleteChannels = guildConfig?.auto.delete;
+        const autoDeleteChannels = guild?.settings.autoDelete;
         if (autoDeleteChannels?.includes(message.channelId) && !message.author.bot) await message.delete();
 
         if (

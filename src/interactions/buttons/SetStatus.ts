@@ -18,27 +18,27 @@ import Properties from "../../data/Properties";
 const suggestionStatuses: { label: string, value: SuggestionStatus, emoji: ComponentEmojiResolvable }[] = [
     {
         label: "Approved",
-        value: "approved",
+        value: "Approved",
         emoji: Properties.emojis.approve
     },
     {
         label: "Rejected",
-        value: "rejected",
+        value: "Rejected",
         emoji: Properties.emojis.reject
     },
     {
         label: "Implemented",
-        value: "implemented",
+        value: "Implemented",
         emoji: Properties.emojis.implemented
     },
     {
         label: "Considered",
-        value: "considered",
+        value: "Considered",
         emoji: Properties.emojis.considered
     },
     {
         label: "None",
-        value: "none",
+        value: "None",
         emoji: Properties.emojis.none
     }
 ];
@@ -46,37 +46,37 @@ const suggestionStatuses: { label: string, value: SuggestionStatus, emoji: Compo
 const bugStatuses: { label: string, value: BugStatus, emoji: ComponentEmojiResolvable }[] = [
     {
         label: "Approved",
-        value: "approved",
+        value: "Approved",
         emoji: Properties.emojis.approve
     },
     {
         label: "Rejected",
-        value: "rejected",
+        value: "Rejected",
         emoji: Properties.emojis.reject
     },
     {
         label: "Known",
-        value: "known",
+        value: "Known",
         emoji: Properties.emojis.known
     },
     {
         label: "Not a Bug",
-        value: "nab",
+        value: "NAB",
         emoji: Properties.emojis.nab
     },
     {
         label: "Fixed",
-        value: "fixed",
+        value: "Fixed",
         emoji: Properties.emojis.fixed
     },
     {
         label: "Considered",
-        value: "considered",
+        value: "Considered",
         emoji: Properties.emojis.considered
     },
     {
         label: "None",
-        value: "none",
+        value: "None",
         emoji: Properties.emojis.none
     }
 ];
@@ -84,27 +84,27 @@ const bugStatuses: { label: string, value: BugStatus, emoji: ComponentEmojiResol
 const playerReportStatuses: { label: string, value: PlayerReportStatus, emoji: ComponentEmojiResolvable }[] = [
     {
         label: "Approved",
-        value: "approved",
+        value: "Approved",
         emoji: Properties.emojis.approve
     },
     {
         label: "Rejected",
-        value: "rejected",
+        value: "Rejected",
         emoji: Properties.emojis.reject
     },
     {
         label: "Known",
-        value: "known",
+        value: "Known",
         emoji: Properties.emojis.known
     },
     {
         label: "Considered",
-        value: "considered",
+        value: "Considered",
         emoji: Properties.emojis.considered
     },
     {
         label: "None",
-        value: "none",
+        value: "None",
         emoji: Properties.emojis.none
     }
 ];
@@ -114,7 +114,7 @@ export default class SetStatusButton extends Button {
     constructor(client: Bot) {
         super(client, {
             name: "set-status",
-            restriction: RestrictionLevel.Moderator,
+            restriction: RestrictionLevel.Reviewer,
             defer: true
         });
     }

@@ -30,23 +30,25 @@ import {
 import {RestrictionLevel} from "../../utils/RestrictionUtils";
 
 const priorityImage = {
-    medium: new AttachmentBuilder("assets/priority/Medium.png", {name: "medium.png"}),
-    none: new AttachmentBuilder("assets/priority/None.png", {name: "none.png"}),
-    high: new AttachmentBuilder("assets/priority/High.png", {name: "high.png"}),
-    low: new AttachmentBuilder("assets/priority/Low.png", {name: "low.png"})
+    High: new AttachmentBuilder("assets/priority/High.png", {name: "High.png"}),
+    Medium: new AttachmentBuilder("assets/priority/Medium.png", {name: "Medium.png"}),
+    Low: new AttachmentBuilder("assets/priority/Low.png", {name: "Low.png"}),
+    None: new AttachmentBuilder("assets/priority/None.png", {name: "None.png"})
 };
 
 const statusImage = {
-    considered: new AttachmentBuilder("assets/status/Considered.png", {name: "considered.png"}),
-    approved: new AttachmentBuilder("assets/status/Approved.png", {name: "approved.png"}),
-    rejected: new AttachmentBuilder("assets/status/Rejected.png", {name: "rejected.png"}),
-    fixed: new AttachmentBuilder("assets/status/Fixed.png", {name: "fixed.png"})
+    Considered: new AttachmentBuilder("assets/status/Considered.png", {name: "Considered.png"}),
+    Approved: new AttachmentBuilder("assets/status/Approved.png", {name: "Approved.png"}),
+    Rejected: new AttachmentBuilder("assets/status/Rejected.png", {name: "Rejected.png"}),
+    Known: new AttachmentBuilder("assets/status/Rejected.png", {name: "Known.png"}),
+    NAB: new AttachmentBuilder("assets/status/Rejected.png", {name: "NAB.png"}),
+    Fixed: new AttachmentBuilder("assets/status/Fixed.png", {name: "Fixed.png"})
 };
 
 const forbiddenStatuses = {
-    reports: ["implemented", "fixed", "nab"],
-    suggestions: ["fixed", "known", "nab"],
-    bugs: ["implemented"]
+    playerReports: ["Implemented", "Fixed", "NAB"],
+    suggestions: ["Fixed", "Known", "NAB"],
+    bugReports: ["Implemented"]
 };
 
 const typeAndIdOptions: ApplicationCommandChoicesData[] = [
@@ -58,11 +60,11 @@ const typeAndIdOptions: ApplicationCommandChoicesData[] = [
         choices: [
             {
                 name: "Bug Report",
-                value: "bugs"
+                value: "bugReports"
             },
             {
                 name: "Player Report",
-                value: "reports"
+                value: "playerReports"
             },
             {
                 name: "Suggestion",
@@ -83,7 +85,7 @@ export default class StatusCommand extends Command {
         super(client, {
             name: "status",
             description: "Manage the status of a report or suggestion.",
-            restriction: RestrictionLevel.Moderator,
+            restriction: RestrictionLevel.Reviewer,
             type: ApplicationCommandType.ChatInput,
             defer: true,
             options: [
@@ -170,24 +172,24 @@ export default class StatusCommand extends Command {
         const type = interaction.options.getString("type") as SubmissionType;
         const id = interaction.options.getNumber("id") as number;
 
-        const guildConfig = await Guild.findOne(
-            {id: interaction.guildId},
+        const guild = await Guild.findOne(
+            {_id: interaction.guildId},
             {
-                [`channels.${type}`]: 1,
-                ["auto.dm.status"]: 1,
-                [type]: 1,
+                [`channels.submissions.${type}`]: 1,
+                ["settings.notifyOnStatusChange"]: 1,
+                [`submissions.${type}`]: 1,
                 _id: 0
             }
         );
 
-        const submissionData = guildConfig?.[type].find(doc => doc.number === id);
+        const submissionData = guild?.submissions[type][id];
 
         if (!submissionData) {
             await interaction.editReply(`Could not find submission with the ID \`#${id}\`.`);
             return;
         }
 
-        const submissionChannelId: string = guildConfig?.channels[type];
+        const submissionChannelId: string = guild?.channels.submissions[type];
 
         if (!submissionChannelId) {
             await interaction.editReply(ErrorMessages.ChannelNotConfigured);
@@ -221,11 +223,11 @@ export default class StatusCommand extends Command {
                 return;
             }
 
-            if (type !== "bugs") {
+            if (type !== "bugReports") {
                 delete embed.author;
                 embed.color = Properties.colors.default;
             } else {
-                const priority = submissionData.priority.toLowerCase() as BugPriority;
+                const priority = submissionData.priority as BugPriority;
 
                 embed.author = {name: `Priority: ${priority.toUpperCase()}`};
                 embed.color = Properties.colors.priority[priority];
@@ -287,7 +289,7 @@ export default class StatusCommand extends Command {
             return;
         }
 
-        if (type === "bugs") {
+        if (type === "bugReports") {
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             embed.thumbnail!.url = `attachment://${status}.png`;
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -306,8 +308,8 @@ export default class StatusCommand extends Command {
         }).then(async () => {
             await interaction.editReply(`Set the status of **${type.slice(0, -1)}** \`#${id}\` to **${status}**.`);
 
-            if (guildConfig?.auto.dm.status) {
-                const submissionAuthor = await interaction.guild?.members.fetch(submissionData.author);
+            if (guild?.settings.notifyOnStatusChange) {
+                const submissionAuthor = await interaction.guild?.members.fetch(submissionData.authorId);
                 if (!submissionAuthor) return;
 
                 const dmEmbed = new EmbedBuilder()
@@ -328,7 +330,7 @@ export default class StatusCommand extends Command {
                 submissionAuthor.send({
                     embeds: [dmEmbed],
                     components: [urlActionRow.toJSON() as ActionRow<ButtonComponent>]
-                }).catch(() => console.log("Unable to DM submission author."));
+                }).catch(() => console.log("Unable to notify submission author."));
             }
         });
 

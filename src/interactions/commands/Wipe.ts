@@ -46,8 +46,8 @@ export default class WipeCommand extends Command {
                             value: "role"
                         },
                         {
-                            name: "Automation",
-                            value: "auto"
+                            name: "Settings",
+                            value: "settings"
                         },
                         {
                             name: "Everything",
@@ -65,24 +65,29 @@ export default class WipeCommand extends Command {
      */
     async execute(interaction: ChatInputCommandInteraction): Promise<void> {
         const type = interaction.options.getString("type");
-
         const isType = (typeInput: string) => type === typeInput || type === "all";
 
-        if (isType("bug")) await Guild.updateOne({id: interaction.guildId}, {$set: {bugs: []}});
-        if (isType("report")) await Guild.updateOne({id: interaction.guildId}, {$set: {reports: []}});
-        if (isType("suggestion")) await Guild.updateOne({id: interaction.guildId}, {$set: {suggestions: []}});
+        if (isType("bug")) await Guild.updateOne({_id: interaction.guildId}, {$set: {["submissions.bugReports"]: []}});
+        if (isType("report")) await Guild.updateOne({_id: interaction.guildId}, {$set: {["submissions.playerReports"]: []}});
+        if (isType("suggestion")) await Guild.updateOne({_id: interaction.guildId}, {$set: {["submissions.suggestions"]: []}});
 
         if (isType("channel")) {
             await Guild.updateOne(
-                {id: interaction.guildId},
+                {_id: interaction.guildId},
                 {
                     $set: {
                         channels: {
-                            bugs: null,
-                            reports: null,
-                            suggestions: null,
-                            archive: null,
-                            bot_updates: null
+                            submissions: {
+                                bugReports: null,
+                                playerReports: null,
+                                suggestions: null,
+                                archive: {
+                                    bugReports: null,
+                                    playerReports: null,
+                                    suggestions: null
+                                }
+                            },
+                            botUpdates: null
                         }
                     }
                 }
@@ -91,31 +96,29 @@ export default class WipeCommand extends Command {
 
         if (isType("role")) {
             await Guild.updateOne(
-                {id: interaction.guildId},
+                {_id: interaction.guildId},
                 {
                     $set: {
                         roles: {
-                            moderator: null,
-                            administrator: null
+                            reviewer: null,
+                            admin: null
                         }
                     }
                 }
             );
         }
 
-        if (isType("auto")) {
+        if (isType("settings")) {
             await Guild.updateOne(
-                {id: interaction.guildId},
+                {_id: interaction.guildId},
                 {
                     $set: {
-                        auto: {
-                            roles: [],
-                            delete: [],
-                            dm: {
-                                status: false
-                            },
+                        settings: {
+                            autoRoles: [],
+                            autoDelete: [],
+                            notifyOnStatusChange: false,
                             threads: {
-                                bugs: false,
+                                bugReports: false,
                                 suggestions: false
                             }
                         }
@@ -125,7 +128,6 @@ export default class WipeCommand extends Command {
         }
 
         await interaction.editReply(`Successfully wiped all${type !== "all" ? ` ${type}` : ""} data from the database!`);
-
         return;
     }
 }

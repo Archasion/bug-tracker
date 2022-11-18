@@ -12,7 +12,6 @@ import {
 } from "discord.js";
 
 import {RestrictionLevel} from "../../utils/RestrictionUtils";
-import {SubmissionType} from "../../data/Types";
 
 const idOption: ApplicationCommandNumericOptionData[] = [
     {
@@ -64,25 +63,25 @@ export default class ViewCommand extends Command {
 
         switch (type) {
             case "bug_report":
-                type = "bugs";
+                type = "bugReports";
                 break;
             case "player_report":
-                type = "reports";
+                type = "playerReports";
                 break;
             case "suggestion":
                 type = "suggestions";
                 break;
         }
 
-        const guildConfig = await Guild.findOne(
-            {id: interaction.guildId},
-            {[type]: 1, _id: 0}
+        const guild = await Guild.findOne(
+            {_id: interaction.guildId},
+            {[`submissions.${type}`]: 1, _id: 0}
         );
 
-        const submission = guildConfig?.[type as SubmissionType].find(item => item.number === id);
+        const submission = guild?.submissions[type][id];
 
         if (!submission) {
-            await interaction.editReply(`There are no **${type}** with the ID of \`${id}\``);
+            await interaction.editReply(`There are no submissions of this type with the ID of \`${id}\``);
             return;
         }
 
@@ -92,43 +91,43 @@ export default class ViewCommand extends Command {
             .setFooter({text: `#${id}`});
 
         switch (type) {
-            case "bugs": {
+            case "bugReports": {
                 embed.setAuthor({name: `Priority: ${submission.priority}`});
                 embed.setFields([
                     {
                         name: "Summary",
-                        value: submission.summary
+                        value: submission.content.summary
                     },
                     {
                         name: "Description",
-                        value: submission.description
+                        value: submission.content.description
                     }
                 ]);
 
-                if (submission.reproduction)
+                if (submission.content.reproductionSteps)
                     embed.data.fields?.push({
                         name: "Reproduction Steps",
-                        value: submission.reproduction
+                        value: submission.content.reproductionSteps
                     });
 
-                if (submission.specs)
+                if (submission.content.systemSpecs)
                     embed.data.fields?.push({
                         name: "System Specs",
-                        value: submission.specs
+                        value: submission.content.systemSpecs
                     });
 
                 break;
             }
 
-            case "reports": {
+            case "playerReports": {
                 embed.setFields([
                     {
                         name: "Reported Player",
-                        value: submission.player
+                        value: submission.content.reportedPlayer
                     },
                     {
                         name: "Reason",
-                        value: submission.reason
+                        value: submission.content.reason
                     }
                 ]);
                 break;
@@ -136,13 +135,13 @@ export default class ViewCommand extends Command {
 
             case "suggestions": {
                 embed.setTitle("Suggestion");
-                embed.setDescription(submission.suggestion);
+                embed.setDescription(submission.content);
                 break;
             }
         }
 
         await interaction.editReply({
-            content: `<@${submission.author}> (\`${submission.author}\`)`,
+            content: `<@${submission.authorId}> (\`${submission.authorId}\`)`,
             embeds: [embed]
         });
     }

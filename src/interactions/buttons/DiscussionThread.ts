@@ -20,6 +20,7 @@ import {
 } from "discord.js";
 
 import {RestrictionLevel} from "../../utils/RestrictionUtils";
+import {SubmissionType} from "../../data/Types";
 
 export default class DiscussionThreadButton extends Button {
     constructor(client: Bot) {
@@ -57,7 +58,7 @@ export default class DiscussionThreadButton extends Button {
         })) return;
 
         const [embed] = interaction.message.embeds;
-
+        const id = embed.footer!.text.replace("#", "");
         let threadName;
 
         if (embed.fields.length === 0 || embed.fields[0]?.name === "Reason") {
@@ -71,32 +72,42 @@ export default class DiscussionThreadButton extends Button {
             return;
         }
 
-        const type = (embed.title ? embed.title.split(" ")[0].toLowerCase() + "s" : "suggestions") as "bugs" | "suggestions";
+        let type: SubmissionType = "suggestions";
 
-        const guildConfig = await Guild.findOne(
-            {id: interaction.guildId},
+        switch (embed.title) {
+            case "Bug Report": {
+                type = "bugReports";
+                break;
+            }
+
+            case "Player Report": {
+                type = "playerReports";
+                break;
+            }
+        }
+
+        const guild = await Guild.findOne(
+            {_id: interaction.guildId},
             {
-                ["auto.dm.status"]: 1,
-                [type]: 1,
+                ["settings.notifyOnStatusChange"]: 1,
+                [`submissions.${type}.${id}`]: 1,
                 _id: 0
             }
         );
 
-        const isValid = guildConfig?.[type].some(report => report.messageId === interaction.message.id);
+        const submission = guild?.submissions[type][id];
 
-        if (!isValid) {
-            await interaction.editReply(`This ${type.slice(0, -1)} is not located in the database.`);
+        if (!submission) {
+            await interaction.editReply("This submission is not located in the database.");
             return;
         }
-
-        const submission = guildConfig?.[type].find(report => report.messageId === interaction.message.id);
 
         interaction.message.startThread({
             name: threadName,
             autoArchiveDuration: 10080, // 1 week
             reason: "Submission discussion thread"
         }).then(async (thread) => {
-            await interaction.editReply(`Started a discussion thread for **${type.slice(0, -1)}** \`${embed.footer?.text}\`.`);
+            await interaction.editReply(`Started a discussion thread for submission \`${embed.footer?.text}\`.`);
 
             const threadAuthorEmbed = new EmbedBuilder()
                 .setColor(Properties.colors.default)
@@ -106,13 +117,13 @@ export default class DiscussionThreadButton extends Button {
                     iconURL: interaction.user.displayAvatarURL()
                 })
                 .setDescription(`This is the place to discuss anything related to the submission above, this thread was created by ${interaction.member}`)
-                .setFooter({ text: `ID: ${interaction.user.id}` });
+                .setFooter({text: `ID: ${interaction.user.id}`});
 
             setTimeout(() => {
-                thread.send({ embeds: [threadAuthorEmbed] });
+                thread.send({embeds: [threadAuthorEmbed]});
             }, 500);
 
-            if (guildConfig?.auto.dm.status) {
+            if (guild?.settings.notifyOnStatusChange) {
                 const author = await interaction.guild?.members.fetch(submission.author);
                 if (!author) return;
 

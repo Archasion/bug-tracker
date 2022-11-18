@@ -44,101 +44,105 @@ export default class ServerCommand extends Command {
 
         const embed = new EmbedBuilder()
             .setColor(Properties.colors.default)
-            .setAuthor({name: interaction.guild?.name as string, iconURL: interaction.guild?.iconURL() as string})
+            .setAuthor({
+                name: interaction.guild?.name as string,
+                iconURL: interaction.guild?.iconURL() as string
+            })
             .setFooter({text: `Server ID: ${interaction.guild?.id}`})
             .setTimestamp();
 
-        const guildConfig = await Guild.findOne(
-            {id: interaction.guild?.id},
-            {
-                channels: 1,
-                roles: 1,
-                auto: 1,
-                bugs: 1,
-                reports: 1,
-                suggestions: 1,
-                _id: 0
-            }
-        );
+        const guild = await Guild.findOne({_id: interaction.guildId});
 
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        const {channels, roles, auto, bugs, reports, suggestions} = guildConfig;
+        const {channels, roles, settings, submissions} = guild;
+        const {bugReports, playerReports, suggestions} = submissions;
+
+        const submissionCount = (
+            Object.keys(bugReports).length +
+            Object.keys(playerReports).length +
+            Object.keys(suggestions).length
+        ).toString();
 
         if (type === "config") {
             embed.setTitle("Server Configuration");
             embed.setDescription("All of the information below is stored in the bot's database.");
             embed.setFields([
                 {
-                    name: "Reports/Suggestions",
-                    value: (bugs.length + reports.length + suggestions.length).toString(),
+                    name: "Submission Count",
+                    value: submissionCount,
                     inline: true
                 },
                 {
                     name: "Bug Reports Channel",
-                    value: `${channels.bugs ? `<#${channels.bugs}>` : "None"}`,
+                    value: `${channels.submissions.bugReports ? `<#${channels.submissions.bugReports}>` : "None"}`,
                     inline: true
                 },
                 {
                     name: "Player Reports Channel",
-                    value: `${channels.reports ? `<#${channels.reports}>` : "None"}`,
+                    value: `${channels.submissions.playerReports ? `<#${channels.submissions.playerReports}>` : "None"}`,
                     inline: true
                 },
                 {
                     name: "Suggestions Channel",
-                    value: `${channels.suggestions ? `<#${channels.suggestions}>` : "None"}`,
+                    value: `${channels.submissions.suggestions ? `<#${channels.submissions.suggestions}>` : "None"}`,
                     inline: true
                 },
                 {
-                    name: "Archive Channel",
-                    value: `${channels.archive ? `<#${channels.archive}>` : "None"}`,
+                    name: "Bug Report Archive",
+                    value: `${channels.submissions.archive.bugReports ? `<#${channels.submissions.archive.bugReports}>` : "None"}`,
+                    inline: true
+                },
+                {
+                    name: "Player Report Archive",
+                    value: `${channels.submissions.archive.playerReports ? `<#${channels.submissions.archive.playerReports}>` : "None"}`,
+                    inline: true
+                },
+                {
+                    name: "Suggestion Archive",
+                    value: `${channels.submissions.archive.suggestions ? `<#${channels.submissions.archive.suggestions}>` : "None"}`,
                     inline: true
                 },
                 {
                     name: "Bot Updates Channel",
-                    value: `${channels.bot_updates ? `<#${channels.bot_updates}>` : "None"}`,
+                    value: `${channels.botUpdates ? `<#${channels.botUpdates}>` : "None"}`,
                     inline: true
                 },
                 {
-                    name: "Auto Threads (Bugs)",
-                    value: `${auto.threads.bugs ? "Enabled" : "Disabled"}`,
+                    name: "Create Threads (Bug Reports)",
+                    value: `${settings.threads.bugReports ? "Enabled" : "Disabled"}`,
                     inline: true
                 },
                 {
-                    name: "Auto Threads (Suggestions)",
-                    value: `${auto.threads.suggestions ? "Enabled" : "Disabled"}`,
+                    name: "Create Threads (Suggestions)",
+                    value: `${settings.threads.suggestions ? "Enabled" : "Disabled"}`,
                     inline: true
                 },
                 {
-                    name: "DM on Status Change",
-                    value: `${auto.dm.status ? "Enabled" : "Disabled"}`,
+                    name: "Notify on Status Change",
+                    value: `${settings.notifyOnStatusChange ? "Enabled" : "Disabled"}`,
                     inline: true
                 },
                 {
-                    name: "Auto Role",
-                    value: `${auto.roles.length > 0 ? `<@&${auto.roles.join("> <@&")}>` : "None"
+                    name: "Auto Roles",
+                    value: `${settings.autoRoles?.length > 0 ? `<@&${settings.autoRoles.join("> <@&")}>` : "None"
                     }`,
                     inline: true
                 },
-                // {
-                // 	name: "Reviewer Role",
-                // 	value: `${roles.moderator ? `<@&${roles.moderator}>` : "None"}`,
-                // 	inline: true
-                // },
                 {
-                    name: "Moderator Role",
-                    value: `${roles.moderator ? `<@&${roles.moderator}>` : "None"}`,
+                    name: "Reviewer Role",
+                    value: `${roles.reviewer ? `<@&${roles.reviewer}>` : "None"}`,
                     inline: true
                 },
                 {
                     name: "Administrator Role",
-                    value: `${roles.administrator ? `<@&${roles.administrator}>` : "None"}`,
+                    value: `${roles.admin ? `<@&${roles.admin}>` : "None"}`,
                     inline: true
                 },
                 {
                     name: "Automatic Message Deletion",
-                    value: `${auto.delete.length > 0 ? `<#${auto.delete.join("> <#")}>` : "None"}`,
-                    inline: false
+                    value: `${settings.autoDelete.length > 0 ? `<#${settings.autoDelete.join("> <#")}>` : "None"}`,
+                    inline: true
                 }
             ]);
         } else {
@@ -146,6 +150,8 @@ export default class ServerCommand extends Command {
             if (roles.length > 1024) guildRoles = "Too many roles to display...";
 
             embed.setTitle("Server Information");
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             embed.setFields([
                 {
                     name: "Created",
@@ -158,23 +164,23 @@ export default class ServerCommand extends Command {
                     inline: true
                 },
                 {
-                    name: "All Reports",
-                    value: (bugs.length + reports.length + suggestions.length).toString(),
+                    name: "Submission Count",
+                    value: submissionCount,
                     inline: true
                 },
                 {
-                    name: "Bug Reports",
-                    value: bugs.length.toString(),
+                    name: "Bug Report Count",
+                    value: Object.keys(bugReports).length.toString(),
                     inline: true
                 },
                 {
-                    name: "Player Reports",
-                    value: reports.length.toString(),
+                    name: "Player Report Count",
+                    value: Object.keys(playerReports).length.toString(),
                     inline: true
                 },
                 {
-                    name: "Suggestions",
-                    value: suggestions.length.toString(),
+                    name: "Suggestion Count",
+                    value: Object.keys(suggestions).length.toString(),
                     inline: true
                 },
                 {

@@ -36,16 +36,16 @@ export default class ReportPlayerModal extends Modal {
         const player = interaction.fields.getTextInputValue("player");
         const reason = interaction.fields.getTextInputValue("reason");
 
-        const guildConfig = await Guild.findOne(
-            {id: interaction.guildId},
+        const guild = await Guild.findOne(
+            {_id: interaction.guildId},
             {
-                ["channels.reports"]: 1,
-                reports: 1,
+                ["channels.submissions.playerReports"]: 1,
+                ["submissions.playerReports"]: 1,
                 _id: 0
             }
         );
 
-        const submissionChannelId = guildConfig?.channels.reports;
+        const submissionChannelId = guild?.channels.reports;
 
         if (!submissionChannelId) {
             await interaction.editReply(ErrorMessages.ChannelNotConfigured);
@@ -71,7 +71,7 @@ export default class ReportPlayerModal extends Modal {
             replyType: "EditReply"
         })) return;
 
-        const submissionId = guildConfig?.reports.length + 1;
+        const submissionId = Object.keys(guild?.submissions.playerReports).length + 1;
 
         const embed = new EmbedBuilder()
             .setColor(Properties.colors.default)
@@ -112,19 +112,15 @@ export default class ReportPlayerModal extends Modal {
             embeds: [embed],
             components: [actionRow.toJSON() as ActionRow<ButtonComponent>]
         }).then(async (message) => {
+            const submissionData = {
+                messageId: message.id,
+                authorId: interaction.user.id,
+                content: {player, reason}
+            };
+
             await Guild.updateOne(
-                {id: interaction.guildId},
-                {
-                    $push: {
-                        reports: {
-                            number: submissionId,
-                            messageId: message.id,
-                            author: interaction.user.id,
-                            player,
-                            reason
-                        }
-                    }
-                }
+                {_id: interaction.guildId},
+                {$set: {[`submissions.playerReports.${submissionId}`]: submissionData}}
             );
 
             message.react(Properties.emojis.thumbsUp);
