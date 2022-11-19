@@ -46,8 +46,8 @@ export default class SubmitCommand extends Command {
 
         if (guildConfig?.channels.suggestions) {
             submissionOptions.push({
-                label: "Suggestions",
-                value: "suggestions"
+                label: "Suggestion",
+                value: "suggestion"
             });
         }
 
