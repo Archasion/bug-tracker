@@ -77,15 +77,13 @@ export default class WipeCommand extends Command {
                 {
                     $set: {
                         channels: {
-                            submissions: {
+                            bugReports: null,
+                            playerReports: null,
+                            suggestions: null,
+                            archive: {
                                 bugReports: null,
                                 playerReports: null,
-                                suggestions: null,
-                                archive: {
-                                    bugReports: null,
-                                    playerReports: null,
-                                    suggestions: null
-                                }
+                                suggestions: null
                             },
                             botUpdates: null
                         }
