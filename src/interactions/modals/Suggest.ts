@@ -46,7 +46,7 @@ export default class SuggestModal extends Modal {
             }
         );
 
-        const submissionChannelId = Object.keys(guild?.submissions.suggestions).length + 1;
+        const submissionChannelId = guild?.channels.suggestions;
 
         if (!submissionChannelId) {
             await interaction.editReply(ErrorMessages.ChannelNotConfigured);
@@ -77,7 +77,7 @@ export default class SuggestModal extends Modal {
             replyType: "EditReply"
         })) return;
 
-        const submissionId = guild?.suggestions.length + 1;
+        const submissionId = Object.keys(guild?.submissions.suggestions).length + 1;
 
         const embed = new EmbedBuilder()
             .setColor(Properties.colors.default)
