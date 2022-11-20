@@ -40,12 +40,10 @@ export default class UserInfoCommand extends Command {
      * @returns {Promise<void>}
      */
     async execute(interaction: ChatInputCommandInteraction): Promise<void> {
-        const guildConfig = await Guild.findOne(
+        const guild = await Guild.findOne(
             {_id: interaction.guildId},
             {
-                bugs: 1,
-                reports: 1,
-                suggestions: 1,
+                submissions: 1,
                 _id: 0
             }
         );
@@ -55,11 +53,11 @@ export default class UserInfoCommand extends Command {
 
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        let {bugs, reports, suggestions} = guildConfig;
+        let {bugReports, playerReports, suggestions} = guild;
 
-        suggestions = suggestions.filter((suggestion: { author: string; }) => suggestion.author === member.id);
-        reports = reports.filter((report: { author: string; }) => report.author === member.id);
-        bugs = bugs.filter((bug: { author: string; }) => bug.author === member.id);
+        suggestions = suggestions.filter((submission: { authorId: string; }) => submission.authorId === member.id);
+        playerReports = playerReports.filter((submission: { authorId: string; }) => submission.authorId === member.id);
+        bugReports = bugReports.filter((submission: { authorId: string; }) => submission.authorId === member.id);
 
         const permissions = member.permissions.toArray().join("` `") || "None";
         const roles = member.roles.cache.map(role => role).join(" ") || "None";
@@ -92,12 +90,12 @@ export default class UserInfoCommand extends Command {
                 },
                 {
                     name: "Bug Reports",
-                    value: bugs.length.toString(),
+                    value: bugReports.length.toString(),
                     inline: true
                 },
                 {
                     name: "Player Reports",
-                    value: reports.length.toString(),
+                    value: playerReports.length.toString(),
                     inline: true
                 },
                 {
