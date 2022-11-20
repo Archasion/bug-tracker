@@ -166,7 +166,7 @@ export default class SubmissionTypeSelectMenu extends SelectMenu {
                 return;
             }
 
-            const submissionChannel = interaction.guild?.channels.cache.get(guild?.channels.reports) as TextChannel | NewsChannel;
+            const submissionChannel = interaction.guild?.channels.cache.get(guild?.channels.playerReports) as TextChannel | NewsChannel;
 
             if (!await PermissionUtils.botHasPermissions({
                 interaction,

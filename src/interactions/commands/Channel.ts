@@ -177,7 +177,7 @@ export default class ChannelCommand extends Command {
 
                 if (type.includes("archive")) channelId = guild?.channels.archive[type.split(".")[2]];
                 else if (type === "botUpdates") channelId = guild?.channels.botUpdates;
-                else channelId = guild?.channels.submissions[type.split(".")[1]];
+                else channelId = guild?.channels[type.split(".")[1]];
 
                 if (!channelId) {
                     await interaction.editReply(ErrorMessages.ChannelNotConfigured);

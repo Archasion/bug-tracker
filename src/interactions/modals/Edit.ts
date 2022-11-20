@@ -55,7 +55,7 @@ export default class EditModal extends Modal {
             return;
         }
 
-        const submissionChannelId = guild?.channels.submissions[type];
+        const submissionChannelId = guild?.channels[type];
 
         if (!submissionChannelId) {
             await interaction.editReply(ErrorMessages.ChannelNotConfigured);

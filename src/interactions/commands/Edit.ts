@@ -74,7 +74,7 @@ export default class EditCommand extends Command {
             }
         );
 
-        const submissionChannelId = guild?.channels.submissions[type];
+        const submissionChannelId = guild?.channels[type];
 
         if (!submissionChannelId) {
             await interaction.reply({

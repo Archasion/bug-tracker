@@ -189,7 +189,7 @@ export default class StatusCommand extends Command {
             return;
         }
 
-        const submissionChannelId: string = guild?.channels.submissions[type];
+        const submissionChannelId: string = guild?.channels[type];
 
         if (!submissionChannelId) {
             await interaction.editReply(ErrorMessages.ChannelNotConfigured);

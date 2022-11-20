@@ -39,7 +39,7 @@ export default class SuggestModal extends Modal {
         const guild = await Guild.findOne(
             {_id: interaction.guildId},
             {
-                ["auto.threads.suggestions"]: 1,
+                ["settings.threads.suggestions"]: 1,
                 ["channels.suggestions"]: 1,
                 suggestions: 1,
                 _id: 0
