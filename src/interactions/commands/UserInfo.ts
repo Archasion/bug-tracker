@@ -59,6 +59,10 @@ export default class UserInfoCommand extends Command {
         playerReports = playerReports.filter((submission: { authorId: string; }) => submission.authorId === member.id);
         bugReports = bugReports.filter((submission: { authorId: string; }) => submission.authorId === member.id);
 
+        suggestionsLength = Object.keys(suggestions).length;
+        playerReportsLength = Object.keys(playerReports).length;
+        bugReportsLength = Object.keys(bugReports).length;
+
         const permissions = member.permissions.toArray().join("` `") || "None";
         const roles = member.roles.cache.map(role => role).join(" ") || "None";
 
@@ -85,22 +89,22 @@ export default class UserInfoCommand extends Command {
                 },
                 {
                     name: "All Reports",
-                    value: (bugs.length + reports.length + suggestions.length).toString(),
+                    value: (bugReportsLength.length + playerReportsLength + suggestionsLength).toString(),
                     inline: true
                 },
                 {
                     name: "Bug Reports",
-                    value: bugReports.length.toString(),
+                    value: bugReportsLength.toString(),
                     inline: true
                 },
                 {
                     name: "Player Reports",
-                    value: playerReports.length.toString(),
+                    value: playerReportsLength.toString(),
                     inline: true
                 },
                 {
                     name: "Suggestions",
-                    value: suggestions.length.toString(),
+                    value: suggestionsLength.toString(),
                     inline: true
                 },
                 {
