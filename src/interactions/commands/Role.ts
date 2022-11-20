@@ -24,12 +24,8 @@ const roleType: ApplicationCommandChoicesData = {
             value: "reviewer"
         },
         {
-            name: "Moderator",
-            value: "moderator"
-        },
-        {
             name: "Administrator",
-            value: "administrator"
+            value: "admin"
         }
     ]
 };
@@ -97,24 +93,32 @@ export default class RoleCommand extends Command {
 
         switch (action) {
             case "set": {
-                await Guild.updateOne({id: interaction.guildId}, {$set: {[`roles.${type}`]: role?.id}});
+                await Guild.updateOne(
+                    {_id: interaction.guildId},
+                    {$set: {[`roles.${type}`]: role?.id}}
+                );
+
                 await interaction.editReply(`The **${type}** role has been set to ${role}.`);
                 break;
             }
 
             case "reset": {
-                await Guild.updateOne({id: interaction.guildId}, {$set: {[`roles.${type}`]: null}});
+                await Guild.updateOne(
+                    {_id: interaction.guildId},
+                    {$set: {[`roles.${type}`]: null}}
+                );
+
                 await interaction.editReply(`The **${type}** role has been reset.`);
                 break;
             }
 
             case "view": {
-                const guildConfig = await Guild.findOne(
-                    {id: interaction.guildId},
+                const guild = await Guild.findOne(
+                    {_id: interaction.guildId},
                     {roles: 1, _id: 0}
                 );
 
-                const roleId = guildConfig?.roles[type];
+                const roleId = guild?.roles[type];
 
                 if (!roleId) {
                     await interaction.editReply("There is no role set for this rank.\nYou can set one using `/role set`");

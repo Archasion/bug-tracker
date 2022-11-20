@@ -6,10 +6,9 @@ import {GuildMember} from "discord.js";
 export enum RestrictionLevel {
     Public = 0,
     Reviewer = 1,
-    Moderator = 2,
-    Administrator = 3,
-    Owner = 4,
-    Developer = 5
+    Administrator = 2,
+    Owner = 3,
+    Developer = 4
 }
 
 export default class RestrictionUtils {
@@ -17,8 +16,7 @@ export default class RestrictionUtils {
         if (this.isDeveloper(member.id)) return "Developer";
         if (this.isOwner(member)) return "Owner";
         if (await this.isAdministrator(member)) return "Administrator";
-        if (await this.isModerator(member)) return "Moderator";
-        // if (await this.isReviewer(member)) return "Reviewer";
+        if (await this.isReviewer(member)) return "Reviewer";
 
         return "Public";
     }
@@ -27,8 +25,7 @@ export default class RestrictionUtils {
         if (this.isDeveloper(member.id)) return RestrictionLevel.Developer;
         if (this.isOwner(member)) return RestrictionLevel.Owner;
         if (await this.isAdministrator(member)) return RestrictionLevel.Administrator;
-        if (await this.isModerator(member)) return RestrictionLevel.Moderator;
-        // if (await this.isReviewer(member)) return RestrictionLevel.Reviewer;
+        if (await this.isReviewer(member)) return RestrictionLevel.Reviewer;
 
         return RestrictionLevel.Public;
     }
@@ -37,9 +34,8 @@ export default class RestrictionUtils {
         switch (level) {
             case RestrictionLevel.Public:
                 return true;
-            // case RestrictionLevel.Reviewer: return await this.isReviewer(member);
-            case RestrictionLevel.Moderator:
-                return await this.isModerator(member);
+            case RestrictionLevel.Reviewer:
+                return await this.isReviewer(member);
             case RestrictionLevel.Administrator:
                 return await this.isAdministrator(member);
             case RestrictionLevel.Owner:
@@ -51,34 +47,25 @@ export default class RestrictionUtils {
         }
     }
 
-    // public static async isReviewer(member: GuildMember): Promise<boolean> {
-    //       const guildSettings = await Guild.findOne({ id: member.guild.id });
-    //       const reviewerRole = guildSettings?.roles.reviewer;
-
-    //       if (reviewerRole && member.roles.cache.has(reviewerRole))return true;
-
-    //       return await this.isModerator(member);
-    // }
-
-    public static async isModerator(member: GuildMember): Promise<boolean> {
-        const guildConfig = await Guild.findOne(
-            {id: member.guild.id},
-            {roles: 1, _id: 0}
+    public static async isReviewer(member: GuildMember): Promise<boolean> {
+        const guild = await Guild.findOne(
+            {_id: member.guild.id},
+            {["roles.reviewer"]: 1, _id: 0}
         );
 
-        const moderatorRole = guildConfig?.roles.moderator;
+        const reviewerRole = guild?.roles.reviewer;
 
         if (
-            (moderatorRole && member.roles.cache.has(moderatorRole)) ||
+            (reviewerRole && member.roles.cache.has(reviewerRole)) ||
             member.permissions.has("ModerateMembers")
-        ) return true;
+            ) return true;
 
         return await this.isAdministrator(member);
     }
 
     public static async isAdministrator(member: GuildMember): Promise<boolean> {
         const guildConfig = await Guild.findOne(
-            {id: member.guild.id},
+            {_id: member.guild.id},
             {roles: 1, _id: 0}
         );
 

@@ -30,19 +30,27 @@ const channelType: ApplicationCommandChoicesData = {
         },
         {
             name: "Bug Report Submissions",
-            value: "bugs"
+            value: "bugReports"
         },
         {
             name: "Player Report Submissions",
-            value: "reports"
+            value: "playerReports"
         },
         {
-            name: "Report/Suggestion Archive",
-            value: "archive"
+            name: "Bug Report Archive",
+            value: "archive.bugReports"
+        },
+        {
+            name: "Player Report Archive",
+            value: "archive.playerReports"
+        },
+        {
+            name: "Suggestion Archive",
+            value: "archive.suggestions"
         },
         {
             name: "Bot Update Announcements",
-            value: "bot_updates"
+            value: "botUpdates"
         }
     ]
 };
@@ -140,31 +148,43 @@ export default class ChannelCommand extends Command {
 
                 if (!hasPerms) return;
 
-                await Guild.updateOne({id: interaction.guildId}, {$set: {[`channels.${type}`]: channel?.id}});
-                await interaction.editReply(`The **${type}** channel has been set to ${channel}.`);
+                await Guild.updateOne(
+                    {_id: interaction.guildId},
+                    {$set: {[`channels.${type}`]: channel?.id}}
+                );
+
+                await interaction.editReply(`The channel has been set to ${channel}.`);
                 break;
             }
 
             case "reset": {
-                await Guild.updateOne({id: interaction.guildId}, {$set: {[`channels.${type}`]: null}});
-                await interaction.editReply(`The **${type}** channel has been reset.`);
+                await Guild.updateOne(
+                    {_id: interaction.guildId},
+                    {$set: {[`channels.${type}`]: null}}
+                );
+
+                await interaction.editReply("The channel has been reset.");
                 break;
             }
 
             case "view": {
-                const guildConfig = await Guild.findOne(
-                    {id: interaction.guildId},
+                const guild = await Guild.findOne(
+                    {_id: interaction.guildId},
                     {channels: 1, _id: 0}
                 );
 
-                const channelId = guildConfig?.channels[type];
+                let channelId;
+
+                if (type.includes("archive")) channelId = guild?.channels.archive[type.split(".")[2]];
+                else if (type === "botUpdates") channelId = guild?.channels.botUpdates;
+                else channelId = guild?.channels.submissions[type.split(".")[1]];
 
                 if (!channelId) {
                     await interaction.editReply(ErrorMessages.ChannelNotConfigured);
                     return;
                 }
 
-                await interaction.editReply(`The **${type.replace(/_/g, " ")}** channel is set to <#${channelId}>.`);
+                await interaction.editReply(`The channel is set to <#${channelId}>.`);
                 break;
             }
         }

@@ -8,7 +8,7 @@ export default class SetReasonModal extends Modal {
     constructor(client: Bot) {
         super(client, {
             name: {startsWith: "set-reason"},
-            restriction: RestrictionLevel.Moderator
+            restriction: RestrictionLevel.Reviewer
         });
     }
 

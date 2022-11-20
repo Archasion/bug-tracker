@@ -1,11 +1,11 @@
-type SubmissionStatus = "approved" | "rejected" | "fixed" | "considered" | "implemented" | "none" | "known" | "nab";
-type SuggestionStatus = "approved" | "rejected" | "considered" | "implemented" | "none";
+type SubmissionStatus = "Approved" | "Rejected" | "Fixed" | "Considered" | "Implemented" | "None" | "Known" | "NAB";
+type SuggestionStatus = "Approved" | "Rejected" | "Considered" | "Implemented" | "None";
 type ContactEnquiry = "support" | "bugs" | "suggestions" | "feedback" | "other";
-type PlayerReportStatus = "approved" | "rejected" | "considered" | "none" | "known";
-type BugStatus = "approved" | "rejected" | "fixed" | "considered" | "none" | "known" | "nab";
+type PlayerReportStatus = "Approved" | "Rejected" | "Considered" | "None" | "Known";
+type BugStatus = "Approved" | "Rejected" | "Fixed" | "Considered" | "None" | "Known" | "NAB";
 type Guide = "bug_reports" | "player_reports" | "suggestions";
-type SubmissionType = "bugs" | "reports" | "suggestions";
-type BugPriority = "none" | "low" | "medium" | "high";
+type SubmissionType = "bugReports" | "playerReports" | "suggestions";
+type BugPriority = "None" | "Low" | "Medium" | "High";
 
 export {
     PlayerReportStatus,

@@ -19,26 +19,26 @@ import {RestrictionLevel} from "../../utils/RestrictionUtils";
 import Properties from "../../data/Properties";
 
 const priorityImage = {
-    medium: new AttachmentBuilder("assets/priority/Medium.png", {name: "medium.png"}),
-    none: new AttachmentBuilder("assets/priority/None.png", {name: "none.png"}),
-    high: new AttachmentBuilder("assets/priority/High.png", {name: "high.png"}),
-    low: new AttachmentBuilder("assets/priority/Low.png", {name: "low.png"})
+    High: new AttachmentBuilder("assets/priority/High.png", {name: "High.png"}),
+    Medium: new AttachmentBuilder("assets/priority/Medium.png", {name: "Medium.png"}),
+    Low: new AttachmentBuilder("assets/priority/Low.png", {name: "Low.png"}),
+    None: new AttachmentBuilder("assets/priority/None.png", {name: "None.png"})
 };
 
 const statusImage = {
-    considered: new AttachmentBuilder("assets/status/Considered.png", {name: "considered.png"}),
-    approved: new AttachmentBuilder("assets/status/Approved.png", {name: "approved.png"}),
-    rejected: new AttachmentBuilder("assets/status/Rejected.png", {name: "rejected.png"}),
-    known: new AttachmentBuilder("assets/status/Rejected.png", {name: "known.png"}),
-    nab: new AttachmentBuilder("assets/status/Rejected.png", {name: "nab.png"}),
-    fixed: new AttachmentBuilder("assets/status/Fixed.png", {name: "fixed.png"})
+    Considered: new AttachmentBuilder("assets/status/Considered.png", {name: "Considered.png"}),
+    Approved: new AttachmentBuilder("assets/status/Approved.png", {name: "Approved.png"}),
+    Rejected: new AttachmentBuilder("assets/status/Rejected.png", {name: "Rejected.png"}),
+    Known: new AttachmentBuilder("assets/status/Rejected.png", {name: "Known.png"}),
+    NAB: new AttachmentBuilder("assets/status/Rejected.png", {name: "NAB.png"}),
+    Fixed: new AttachmentBuilder("assets/status/Fixed.png", {name: "Fixed.png"})
 };
 
 export default class SetStatusSelectMenu extends SelectMenu {
     constructor(client: Bot) {
         super(client, {
             name: {startsWith: "set-status"},
-            restriction: RestrictionLevel.Moderator,
+            restriction: RestrictionLevel.Reviewer,
             defer: false
         });
     }
@@ -62,7 +62,7 @@ export default class SetStatusSelectMenu extends SelectMenu {
 
         const embed = message.embeds[0].toJSON();
 
-        if (embed.author?.name.includes(status.toUpperCase())) {
+        if (embed.author?.name.includes(status)) {
             await interaction.reply({
                 content: `This submission's status has already been set to **${status}**`,
                 ephemeral: true
@@ -79,33 +79,33 @@ export default class SetStatusSelectMenu extends SelectMenu {
             }
 
             case "Bug Report": {
-                type = "bugs";
+                type = "bugReports";
                 break;
             }
 
             case "Player Report": {
-                type = "reports";
+                type = "playerReports";
                 break;
             }
         }
 
-        const guildConfig = await Guild.findOne(
-            {id: interaction.guildId},
+        const guild = await Guild.findOne(
+            {_id: interaction.guildId},
             {
-                ["auto.dm.status"]: 1,
-                [type as SubmissionType]: 1,
+                ["settings.notifyOnStatusChange"]: 1,
+                [`submissions.${type}`]: 1,
                 _id: 0
             }
         );
 
-        const submissionData = guildConfig?.[type as SubmissionType].find(submission => submission.messageId === messageId);
+        const submissionData = guild?.submissions[type as SubmissionType][embed.footer!.text.replace("#", "")];
         const thumbnailFile: AttachmentBuilder[] = [];
 
 
-        if (type === "bugs" && status === "none") {
-            const priority = submissionData.priority.toLowerCase() as BugPriority;
+        if (type === "bugReports" && status === "None") {
+            const priority = submissionData.priority as BugPriority;
 
-            embed.author = {name: `Priority: ${priority.toUpperCase()}`};
+            embed.author = {name: `Priority: ${priority}`};
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             embed.thumbnail!.url = `attachment://${priority}.png`;
             embed.color = Properties.colors.priority[priority];
@@ -117,11 +117,11 @@ export default class SetStatusSelectMenu extends SelectMenu {
         const hasReasonField = embed.fields?.some(field => field.name === "Reason");
         if (hasReasonField) embed.fields?.pop();
 
-        if (status !== "none") {
-            embed.author = {name: `Status: ${status.toUpperCase()} (By ${interaction.user.tag})`};
+        if (status !== "None") {
+            embed.author = {name: `Status: ${status} (By ${interaction.user.tag})`};
             embed.color = Properties.colors.status[status as SubmissionStatus];
 
-            if (type === "bugs") {
+            if (type === "bugReports") {
                 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                 embed.thumbnail!.url = `attachment://${status}.png`;
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -129,7 +129,7 @@ export default class SetStatusSelectMenu extends SelectMenu {
                 thumbnailFile.push(statusImage[status]);
             }
         } else {
-            if (type !== "bugs") {
+            if (type !== "bugReports") {
                 delete embed.author;
                 embed.color = Properties.colors.default;
             }
@@ -144,13 +144,13 @@ export default class SetStatusSelectMenu extends SelectMenu {
                 components: []
             });
 
-            if (guildConfig?.auto.dm.status && status !== "none") {
-                const submissionAuthor = await interaction.guild?.members.fetch(submissionData.author);
+            if (guild?.settings.notifyOnStatusChange && status !== "None") {
+                const submissionAuthor = await interaction.guild?.members.fetch(submissionData.authorId);
                 if (!submissionAuthor) return;
 
                 const dmEmbed = new EmbedBuilder()
                     .setColor(Properties.colors.status[status])
-                    .setTitle(`Your ${type?.slice(0, -1)} with the ID of #${submissionData.number} has been ${status}`)
+                    .setTitle(`Your ${type?.slice(0, -1)} with the ID of #${embed.footer!.text.replace("#", "")} has been ${status}`)
                     .setDescription(`The status of your submission has been updated by ${interaction.user} (\`${interaction.user.id}\`).`)
                     .setTimestamp();
 
@@ -164,7 +164,7 @@ export default class SetStatusSelectMenu extends SelectMenu {
                 submissionAuthor.send({
                     embeds: [dmEmbed],
                     components: [urlActionRow.toJSON() as ActionRow<ButtonComponent>]
-                }).catch(() => console.log("Unable to DM submission author."));
+                }).catch(() => console.log("Unable to notify submission author."));
             }
         });
 

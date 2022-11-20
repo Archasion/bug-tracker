@@ -1,53 +1,79 @@
 import mongoose, {Schema} from "mongoose";
 
 const guildSchema = new Schema({
-    id: {
+    _id: {
         type: String,
         required: true
     },
-    bugs: {
-        type: Array,
-        default: []
-    },
-    reports: {
-        type: Array,
-        default: []
-    },
-    suggestions: {
-        type: Array,
-        default: []
-    },
-    auto: {
+    submissions: {
         type: Object,
+        bugReports: Object,
+        playerReports: Object,
+        suggestions: Object,
         default: {
-            dm: {
-                status: false
-            },
-            threads: {
-                bugs: false,
-                suggestions: false
-            },
-            delete: [],
-            roles: []
-        }
-    },
-    roles: {
-        type: Object,
-        default: {
-            moderator: null,
-            administrator: null
+            bugReports: {},
+            playerReports: {},
+            suggestions: {}
         }
     },
     channels: {
         type: Object,
+        bugReports: String,
+        playerReports: String,
+        suggestions: String,
+        archive: {
+            type: Object,
+            bugReports: String,
+            playerReports: String,
+            suggestions: String
+        },
+        botUpdates: String,
         default: {
-            bugs: null,
-            reports: null,
-            suggestions: null,
-            archive: null,
-            bot_updates: null
+            submissions: {
+                bugReports: null,
+                playerReports: null,
+                suggestions: null,
+                archive: {
+                    bugReports: null,
+                    playerReports: null,
+                    suggestions: null
+                }
+            },
+            botUpdates: null
+        }
+    },
+    settings: {
+        type: Object,
+        notifyOnStatusChange: Boolean,
+        autoDelete: Array,
+        autoRoles: Array,
+        threads: {
+            bugReports: Boolean,
+            playerReports: Boolean
+        },
+        default: {
+            notifyOnStatusChange: false,
+            autoDelete: [],
+            joinRoles: [],
+            threads: {
+                bugReports: false,
+                playerReports: false
+            }
+        }
+    },
+    roles: {
+        type: Object,
+        reviewer: String,
+        admin: String,
+        default: {
+            reviewer: null,
+            admin: null
         }
     }
+}, {
+    versionKey: false,
+    minimize: false,
+    strict: false
 });
 
 export default mongoose.model("Guilds", guildSchema);

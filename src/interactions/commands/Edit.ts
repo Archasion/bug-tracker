@@ -22,7 +22,7 @@ export default class EditCommand extends Command {
     constructor(client: Bot) {
         super(client, {
             name: "edit",
-            description: "Edit a report or suggestion that you have submitted.",
+            description: "Edit a report or suggestion that was submitted by you.",
             restriction: RestrictionLevel.Public,
             type: ApplicationCommandType.ChatInput,
             defer: false,
@@ -35,11 +35,11 @@ export default class EditCommand extends Command {
                     choices: [
                         {
                             name: "Bug Report",
-                            value: "bugs"
+                            value: "bugReports"
                         },
                         {
                             name: "Player Report",
-                            value: "reports"
+                            value: "playerReports"
                         },
                         {
                             name: "Suggestion",
@@ -62,58 +62,57 @@ export default class EditCommand extends Command {
      * @returns {Promise<void>}
      */
     async execute(interaction: ChatInputCommandInteraction): Promise<void> {
-        const type = interaction.options.getString("type") as string;
+        const type = interaction.options.getString("type") as SubmissionType;
         const id = interaction.options.getNumber("id") as number;
 
-        const channelConfig = await Guild.findOne(
-            {id: interaction.guildId},
-            {[`channels.${type}`]: 1, _id: 0}
+        const guild = await Guild.findOne(
+            {_id: interaction.guildId},
+            {
+                [`channels.${type}`]: 1,
+                [`submissions.${type}`]: 1,
+                _id: 0
+            }
         );
 
-        if (!channelConfig?.channels[type]) {
+        const submissionChannelId = guild?.channels.submissions[type];
+
+        if (!submissionChannelId) {
             await interaction.reply({
                 content: ErrorMessages.ChannelNotConfigured,
                 ephemeral: true
             });
-
             return;
         }
 
-        const guildConfig = await Guild.findOne(
-            {id: interaction.guildId},
-            {[type]: 1, _id: 0}
-        );
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        const submission = guild?.submissions[type][id];
 
-        const report = guildConfig?.[type as SubmissionType].find(item => item.number === id);
-
-        if (!report) {
+        if (!submission) {
             await interaction.reply({
                 content: `Unable to find report \`#${id}\``,
                 ephemeral: true
             });
-
             return;
         }
 
-        const {messageId, author} = report;
+        const {messageId, authorId} = submission;
 
-        if (author !== interaction.user.id) {
+        if (authorId !== interaction.user.id) {
             await interaction.reply({
                 content: "You must be the author of the report in order to edit its content.",
                 ephemeral: true
             });
-
             return;
         }
 
-        const submissionChannel = interaction.guild?.channels.cache.get(channelConfig?.channels[type]) as TextChannel | NewsChannel;
+        const submissionChannel = interaction.guild?.channels.cache.get(submissionChannelId) as TextChannel | NewsChannel;
 
         if (!submissionChannel) {
             await interaction.reply({
                 content: "The submission channel has either been removed or I no longer have access to it.",
                 ephemeral: true
             });
-
             return;
         }
 
@@ -125,7 +124,6 @@ export default class EditCommand extends Command {
                 content: "Unable to retrieve report/suggestion, it may have been removed.",
                 ephemeral: true
             });
-
             return;
         }
 
@@ -133,7 +131,7 @@ export default class EditCommand extends Command {
 
         const modal = new ModalBuilder()
             .setTitle("Edit Submission")
-            .setCustomId(`edit-${type}-${messageId}`);
+            .setCustomId(`edit-${type}-${id}`);
 
         const modalComponents: ActionRowBuilder<TextInputBuilder>[] = [];
 

@@ -12,7 +12,7 @@ export default class ArchiveButton extends Button {
     constructor(client: Bot) {
         super(client, {
             name: "archive",
-            restriction: RestrictionLevel.Moderator,
+            restriction: RestrictionLevel.Reviewer,
             defer: true
         });
     }
@@ -23,38 +23,38 @@ export default class ArchiveButton extends Button {
      */
     async execute(interaction: ButtonInteraction): Promise<void> {
         const embed = interaction.message.embeds[0].toJSON();
-
+        const id = embed.footer!.text.replace("#", "");
         let type: SubmissionType = "suggestions";
 
         switch (embed.title) {
             case "Bug Report": {
-                type = "bugs";
+                type = "bugReports";
                 break;
             }
 
             case "Player Report": {
-                type = "reports";
+                type = "playerReports";
                 break;
             }
         }
 
-        const guildConfig = await Guild.findOne(
-            {id: interaction.guildId},
+        const guild = await Guild.findOne(
+            {_id: interaction.guildId},
             {
-                ["channels.archive"]: 1,
-                [type]: 1,
+                [`channels.archive.${type}`]: 1,
+                [`submissions.${type}.${id}`]: 1,
                 _id: 0
             }
         );
 
-        const isValid = guildConfig?.[type].some(report => report.messageId === interaction.message.id);
+        const exists = guild?.submissions[type][id];
 
-        if (!isValid) {
-            await interaction.editReply(`This ${type.slice(0, -1)} is not located in the database.`);
+        if (!exists) {
+            await interaction.editReply("This submission is not located in the database.");
             return;
         }
 
-        const archiveChannelId = guildConfig?.channels.archive;
+        const archiveChannelId = guild?.channels.archive[type];
 
         if (!archiveChannelId) {
             await interaction.editReply(ErrorMessages.ChannelNotConfigured);

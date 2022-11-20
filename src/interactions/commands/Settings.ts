@@ -40,29 +40,29 @@ const actionOption: ApplicationCommandChoicesData = {
     ]
 };
 
-export default class AutoCommand extends Command {
+export default class SettingsCommand extends Command {
     constructor(client: Bot) {
         super(client, {
-            name: "auto",
-            description: "Configure automated tasks.",
+            name: "settings",
+            description: "Update server configuration.",
             restriction: RestrictionLevel.Administrator,
             type: ApplicationCommandType.ChatInput,
             defer: true,
             options: [
                 {
-                    name: "threads",
+                    name: "create_threads",
                     description: "Create discussion threads for reports/suggestions automatically.",
                     type: ApplicationCommandOptionType.Subcommand,
                     options: [
                         {
                             name: "type",
-                            description: "The submissions to automate threads for.",
+                            description: "The submission types to automate threads for.",
                             type: ApplicationCommandOptionType.String,
                             required: true,
                             choices: [
                                 {
                                     name: "Bug Reports",
-                                    value: "bugs"
+                                    value: "bugReports"
                                 },
                                 {
                                     name: "Suggestions",
@@ -79,22 +79,10 @@ export default class AutoCommand extends Command {
                     ]
                 },
                 {
-                    name: "dm",
+                    name: "notify_on_status_change",
                     description: "Send a DM confirmation to users when their report/suggestion status changes.",
                     type: ApplicationCommandOptionType.Subcommand,
                     options: [
-                        {
-                            name: "type",
-                            description: "The type of DM confirmations.",
-                            type: ApplicationCommandOptionType.String,
-                            required: true,
-                            choices: [
-                                {
-                                    name: "Report/Suggestion Status Change",
-                                    value: "status"
-                                }
-                            ]
-                        },
                         {
                             name: "enabled",
                             description: "Whether or not DM confirmations are enabled.",
@@ -104,22 +92,22 @@ export default class AutoCommand extends Command {
                     ]
                 },
                 {
-                    name: "roles",
-                    description: "View a submitted suggestion.",
+                    name: "auto_roles",
+                    description: "Manage roles given to new members.",
                     type: ApplicationCommandOptionType.Subcommand,
                     options: [
                         actionOption,
                         {
                             name: "role",
-                            description: "The role to perform the action on.",
+                            description: "The role to grant.",
                             type: ApplicationCommandOptionType.Role,
                             required: false
                         }
                     ]
                 },
                 {
-                    name: "delete",
-                    description: "Remove messages in a channel as they are being sent.",
+                    name: "auto_message_deletion",
+                    description: "Remove messages in a channel as they are being sent (Administrators+ are not affected).",
                     type: ApplicationCommandOptionType.Subcommand,
                     options: [
                         actionOption,
@@ -140,67 +128,86 @@ export default class AutoCommand extends Command {
      * @returns {Promise<void>}
      */
     async execute(interaction: ChatInputCommandInteraction): Promise<void> {
-        const subCommand = interaction.options.getSubcommand();
+        let option = interaction.options.getSubcommand();
 
-        const guildConfig = await Guild.findOne(
-            {id: interaction.guildId},
-            {[`auto.${subCommand}`]: 1, _id: 0}
+        switch (option) {
+            case "notify_on_status_change":
+                option = "notifyOnStatusChange";
+                break;
+
+            case "join_roles":
+                option = "joinRoles";
+                break;
+
+            case "auto_message_deletion":
+                option = "autoDelete";
+                break;
+
+            case "create_threads":
+                option = "threads";
+                break;
+        }
+
+        const guild = await Guild.findOne(
+            {_id: interaction.guildId},
+            {[`settings.${option}`]: 1, _id: 0}
         );
 
-        if (subCommand === "threads") {
+        // Automatic thread creation
+        if (option === "threads") {
             const enabled = interaction.options.getBoolean("enabled");
             const type = interaction.options.getString("type") as string;
 
-            if (guildConfig?.auto.threads[type] === enabled) {
+            if (guild?.settings.threads[type] === enabled) {
                 await interaction.editReply(`Automatic discussion thread creation is **already ${enabled ? "enabled" : "disabled"}** for these submissions.`);
                 return;
             }
 
             await Guild.updateOne(
-                {id: interaction.guildId},
-                {$set: {[`auto.threads.${type}`]: enabled}}
+                {_id: interaction.guildId},
+                {$set: {[`settings.threads.${type}`]: enabled}}
             );
 
             await interaction.editReply(`Automatic discussion thread creation has been **${enabled ? "enabled" : "disabled"}** for these submissions.`);
             return;
         }
 
-        if (subCommand === "dm") {
+        // Message submission author on status change
+        if (option === "notifyOnStatusChange") {
             const enabled = interaction.options.getBoolean("enabled");
-            const type = interaction.options.getString("type") as string;
 
-            if (guildConfig?.auto.dm[type] === enabled) {
+            if (guild?.settings.notifyOnStatusChange === enabled) {
                 await interaction.editReply(`These DM confirmations are **already ${enabled ? "enabled" : "disabled"}**.`);
                 return;
             }
 
             await Guild.updateOne(
-                {id: interaction.guildId},
-                {$set: {[`auto.dm.${type}`]: enabled}}
+                {_id: interaction.guildId},
+                {$set: {["settings.notifyOnStatusChange"]: enabled}}
             );
 
             await interaction.editReply(`DM confirmations for this task have been **${enabled ? "enabled" : "disabled"}**.`);
             return;
         }
 
-        if (subCommand === "roles") {
+        // Grant role on join
+        if (option === "autoRoles") {
             const action = interaction.options.getString("action");
+            const autoRoles = guild?.settings.autoRoles;
 
             if (action === "view") {
-                if (guildConfig?.auto.roles.length === 0) {
+                if (autoRoles.length === 0) {
                     await interaction.editReply("No roles are configured to be added on join.");
                     return;
                 }
 
                 const embed = new EmbedBuilder()
                     .setColor(Properties.colors.default)
-                    .setTitle("Role Automation")
-                    .setFields([
-                        {
-                            name: "Roles",
-                            value: `<@&${guildConfig?.auto.roles.join("> <@&")}>`
-                        }
-                    ]);
+                    .setTitle("Auto Roles")
+                    .setFields([{
+                        name: "Roles",
+                        value: `<@&${autoRoles.join("> <@&")}>`
+                    }]);
 
                 await interaction.editReply({embeds: [embed]});
                 return;
@@ -209,7 +216,7 @@ export default class AutoCommand extends Command {
             const role = interaction.options.getRole("role") as Role;
 
             if (!role) {
-                await interaction.editReply("Please specify a channel to perform the action on.");
+                await interaction.editReply("Please specify a role to perform the action on.");
                 return;
             }
 
@@ -225,14 +232,14 @@ export default class AutoCommand extends Command {
                     return;
                 }
 
-                if (guildConfig?.auto.roles.includes(role.id)) {
+                if (autoRoles.includes(role.id)) {
                     await interaction.editReply(`${role} is already being given on join.`);
                     return;
                 }
 
                 await Guild.updateOne(
-                    {id: interaction.guildId},
-                    {$push: {["auto.roles"]: role.id}}
+                    {_id: interaction.guildId},
+                    {$push: {["settings.autoRoles"]: role.id}}
                 );
 
                 await interaction.editReply(`${role} will now be given on join.`);
@@ -240,14 +247,14 @@ export default class AutoCommand extends Command {
             }
 
             if (action === "remove") {
-                if (!guildConfig?.auto.roles.includes(role.id)) {
+                if (!autoRoles.includes(role.id)) {
                     await interaction.editReply(`${role} is already not being given on join.`);
                     return;
                 }
 
                 await Guild.updateOne(
-                    {id: interaction.guildId},
-                    {$pull: {["auto.roles"]: role.id}}
+                    {_id: interaction.guildId},
+                    {$pull: {["settings.autoRoles"]: role.id}}
                 );
 
                 await interaction.editReply(`${role} will no longer be given on join.`);
@@ -256,11 +263,13 @@ export default class AutoCommand extends Command {
 
         }
 
-        if (subCommand === "delete") {
+        // Automatically delete all messages in channel(s) - Unless sent by an Administrator+
+        if (option === "autoDelete") {
             const action = interaction.options.getString("action");
+            const autoDelete = guild?.settings.autoDelete;
 
             if (action === "view") {
-                if (guildConfig?.auto.delete.length === 0) {
+                if (autoDelete.length === 0) {
                     await interaction.editReply("No channels are configured for automatic message deletion.");
                     return;
                 }
@@ -268,12 +277,10 @@ export default class AutoCommand extends Command {
                 const embed = new EmbedBuilder()
                     .setColor(Properties.colors.default)
                     .setTitle("Automatic Message Deletion")
-                    .setFields([
-                        {
-                            name: "Channels",
-                            value: `<#${guildConfig?.auto.delete.join("> <#")}>`
-                        }
-                    ]);
+                    .setFields([{
+                        name: "Channels",
+                        value: `<#${autoDelete.join("> <#")}>`
+                    }]);
 
                 await interaction.editReply({embeds: [embed]});
                 return;
@@ -292,7 +299,7 @@ export default class AutoCommand extends Command {
             }
 
             if (action === "add") {
-                if (guildConfig?.auto.delete.includes(channel.id)) {
+                if (autoDelete.includes(channel.id)) {
                     await interaction.editReply(`Automatic message deletion for ${channel} is **already enabled**.`);
                     return;
                 }
@@ -308,8 +315,8 @@ export default class AutoCommand extends Command {
                 })) return;
 
                 await Guild.updateOne(
-                    {id: interaction.guildId},
-                    {$push: {["auto.delete"]: channel.id}}
+                    {_id: interaction.guildId},
+                    {$push: {["settings.autoDelete"]: channel.id}}
                 );
 
                 await interaction.editReply(`Automatic message deletion for ${channel} has been **enabled**.`);
@@ -317,14 +324,14 @@ export default class AutoCommand extends Command {
             }
 
             if (action === "remove") {
-                if (!guildConfig?.auto.delete.includes(channel.id)) {
+                if (!autoDelete.includes(channel.id)) {
                     await interaction.editReply(`Automatic message deletion for ${channel} is **already disabled**.`);
                     return;
                 }
 
                 await Guild.updateOne(
-                    {id: interaction.guildId},
-                    {$pull: {["auto.delete"]: channel.id}}
+                    {_id: interaction.guildId},
+                    {$pull: {["settings.autoDelete"]: channel.id}}
                 );
 
                 await interaction.editReply(`Automatic message deletion for ${channel} has been **disabled**.`);

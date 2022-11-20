@@ -14,7 +14,7 @@ export default class SetReasonButton extends Button {
     constructor(client: Bot) {
         super(client, {
             name: {startsWith: "set-reason"},
-            restriction: RestrictionLevel.Moderator,
+            restriction: RestrictionLevel.Reviewer,
             defer: false
         });
     }
