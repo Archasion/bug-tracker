@@ -41,7 +41,7 @@ export default class SuggestModal extends Modal {
             {
                 ["settings.threads.suggestions"]: 1,
                 ["channels.suggestions"]: 1,
-                suggestions: 1,
+                ["submissions.suggestions"]: 1,
                 _id: 0
             }
         );
