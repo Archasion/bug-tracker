@@ -53,7 +53,7 @@ export default class UserInfoCommand extends Command {
 
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        let {bugReports, playerReports, suggestions} = guild;
+        let {bugReports, playerReports, suggestions} = guild.submissions;
 
         suggestions = suggestions.filter((submission: { authorId: string; }) => submission.authorId === member.id);
         playerReports = playerReports.filter((submission: { authorId: string; }) => submission.authorId === member.id);
