@@ -54,13 +54,13 @@ export default class BugReportModal extends Modal {
             {_id: interaction.guildId},
             {
                 ["settings.threads.bugReports"]: 1,
-                ["channels.submissions.bugReports"]: 1,
+                ["channels.bugReports"]: 1,
                 ["submissions.bugReports"]: 1,
                 _id: 0
             }
         );
 
-        const submissionChannelId = guild?.channels.submissions.bugReports;
+        const submissionChannelId = guild?.channels.bugReports;
 
         if (!submissionChannelId) {
             await interaction.editReply(ErrorMessages.ChannelNotConfigured);

@@ -75,32 +75,32 @@ export default class ServerCommand extends Command {
                 },
                 {
                     name: "Bug Reports Channel",
-                    value: `${channels.submissions.bugReports ? `<#${channels.submissions.bugReports}>` : "None"}`,
+                    value: `${channels.bugReports ? `<#${channels.bugReports}>` : "None"}`,
                     inline: true
                 },
                 {
                     name: "Player Reports Channel",
-                    value: `${channels.submissions.playerReports ? `<#${channels.submissions.playerReports}>` : "None"}`,
+                    value: `${channels.playerReports ? `<#${channels.playerReports}>` : "None"}`,
                     inline: true
                 },
                 {
                     name: "Suggestions Channel",
-                    value: `${channels.submissions.suggestions ? `<#${channels.submissions.suggestions}>` : "None"}`,
+                    value: `${channels.suggestions ? `<#${channels.suggestions}>` : "None"}`,
                     inline: true
                 },
                 {
                     name: "Bug Report Archive",
-                    value: `${channels.submissions.archive.bugReports ? `<#${channels.submissions.archive.bugReports}>` : "None"}`,
+                    value: `${channels.archive.bugReports ? `<#${channels.archive.bugReports}>` : "None"}`,
                     inline: true
                 },
                 {
                     name: "Player Report Archive",
-                    value: `${channels.submissions.archive.playerReports ? `<#${channels.submissions.archive.playerReports}>` : "None"}`,
+                    value: `${channels.archive.playerReports ? `<#${channels.archive.playerReports}>` : "None"}`,
                     inline: true
                 },
                 {
                     name: "Suggestion Archive",
-                    value: `${channels.submissions.archive.suggestions ? `<#${channels.submissions.archive.suggestions}>` : "None"}`,
+                    value: `${channels.archive.suggestions ? `<#${channels.archive.suggestions}>` : "None"}`,
                     inline: true
                 },
                 {

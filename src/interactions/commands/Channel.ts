@@ -26,27 +26,27 @@ const channelType: ApplicationCommandChoicesData = {
     choices: [
         {
             name: "Suggestion Submissions",
-            value: "submissions.suggestions"
+            value: "suggestions"
         },
         {
             name: "Bug Report Submissions",
-            value: "submissions.bugReports"
+            value: "bugReports"
         },
         {
             name: "Player Report Submissions",
-            value: "submissions.playerReports"
+            value: "playerReports"
         },
         {
             name: "Bug Report Archive",
-            value: "submissions.archive.bugReports"
+            value: "archive.bugReports"
         },
         {
             name: "Player Report Archive",
-            value: "submissions.archive.playerReports"
+            value: "archive.playerReports"
         },
         {
             name: "Suggestion Archive",
-            value: "submissions.archive.suggestions"
+            value: "archive.suggestions"
         },
         {
             name: "Bot Update Announcements",
@@ -175,7 +175,7 @@ export default class ChannelCommand extends Command {
 
                 let channelId;
 
-                if (type.includes("archive")) channelId = guild?.channels.submissions.archive[type.split(".")[2]];
+                if (type.includes("archive")) channelId = guild?.channels.archive[type.split(".")[2]];
                 else if (type === "botUpdates") channelId = guild?.channels.botUpdates;
                 else channelId = guild?.channels.submissions[type.split(".")[1]];
 

@@ -34,21 +34,21 @@ export default class SubmitCommand extends Command {
 
         const submissionOptions = [];
 
-        if (guildConfig?.channels.submissions.bugReports) {
+        if (guildConfig?.channels.bugReports) {
             submissionOptions.push({
                 label: "Bug Report",
                 value: "bug-report"
             });
         }
 
-        if (guildConfig?.channels.submissions.playerReports) {
+        if (guildConfig?.channels.playerReports) {
             submissionOptions.push({
                 label: "Player Report",
                 value: "player-report"
             });
         }
 
-        if (guildConfig?.channels.submissions.suggestions) {
+        if (guildConfig?.channels.suggestions) {
             submissionOptions.push({
                 label: "Suggestions",
                 value: "suggestions"

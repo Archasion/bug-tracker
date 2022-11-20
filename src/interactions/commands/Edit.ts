@@ -68,7 +68,7 @@ export default class EditCommand extends Command {
         const guild = await Guild.findOne(
             {_id: interaction.guildId},
             {
-                [`channels.submissions.${type}`]: 1,
+                [`channels.${type}`]: 1,
                 [`submissions.${type}`]: 1,
                 _id: 0
             }

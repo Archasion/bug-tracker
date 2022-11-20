@@ -39,7 +39,7 @@ export default class ReportPlayerModal extends Modal {
         const guild = await Guild.findOne(
             {_id: interaction.guildId},
             {
-                ["channels.submissions.playerReports"]: 1,
+                ["channels.playerReports"]: 1,
                 ["submissions.playerReports"]: 1,
                 _id: 0
             }

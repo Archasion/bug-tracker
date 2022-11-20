@@ -38,10 +38,10 @@ export default class SubmissionTypeSelectMenu extends SelectMenu {
         if (submissionType === "bug-report") {
             const guild = await Guild.findOne(
                 {_id: interaction.guildId},
-                {["channels.submissions.bugReports"]: 1, _id: 0}
+                {["channels.bugReports"]: 1, _id: 0}
             );
 
-            if (!guild?.channels.submissions.bugReports) {
+            if (!guild?.channels.bugReports) {
                 await interaction.update({
                     content: ErrorMessages.ChannelNotConfigured,
                     components: []
@@ -49,7 +49,7 @@ export default class SubmissionTypeSelectMenu extends SelectMenu {
                 return;
             }
 
-            const submissionChannel = interaction.guild?.channels.cache.get(guild?.channels.submissions.bugReports) as TextChannel | NewsChannel;
+            const submissionChannel = interaction.guild?.channels.cache.get(guild?.channels.bugReports) as TextChannel | NewsChannel;
 
             if (!await PermissionUtils.botHasPermissions({
                 interaction,
@@ -109,10 +109,10 @@ export default class SubmissionTypeSelectMenu extends SelectMenu {
         if (submissionType === "suggestion") {
             const guild = await Guild.findOne(
                 {_id: interaction.guildId},
-                {["channels.submissions.suggestions"]: 1, _id: 0}
+                {["channels.suggestions"]: 1, _id: 0}
             );
 
-            if (!guild?.channels.submissions.suggestions) {
+            if (!guild?.channels.suggestions) {
                 await interaction.update({
                     content: ErrorMessages.ChannelNotConfigured,
                     components: []
@@ -120,7 +120,7 @@ export default class SubmissionTypeSelectMenu extends SelectMenu {
                 return;
             }
 
-            const submissionChannel = interaction.guild?.channels.cache.get(guild?.channels.submissions.suggestions) as TextChannel | NewsChannel;
+            const submissionChannel = interaction.guild?.channels.cache.get(guild?.channels.suggestions) as TextChannel | NewsChannel;
 
             if (!await PermissionUtils.botHasPermissions({
                 interaction,
@@ -155,10 +155,10 @@ export default class SubmissionTypeSelectMenu extends SelectMenu {
         if (submissionType === "player-report") {
             const guild = await Guild.findOne(
                 {_id: interaction.guildId},
-                {["channels.submissions.playerReports"]: 1, _id: 0}
+                {["channels.playerReports"]: 1, _id: 0}
             );
 
-            if (!guild?.channels.submissions.playerReports) {
+            if (!guild?.channels.playerReports) {
                 await interaction.update({
                     content: ErrorMessages.ChannelNotConfigured,
                     components: []
@@ -166,7 +166,7 @@ export default class SubmissionTypeSelectMenu extends SelectMenu {
                 return;
             }
 
-            const submissionChannel = interaction.guild?.channels.cache.get(guild?.channels.submissions.reports) as TextChannel | NewsChannel;
+            const submissionChannel = interaction.guild?.channels.cache.get(guild?.channels.reports) as TextChannel | NewsChannel;
 
             if (!await PermissionUtils.botHasPermissions({
                 interaction,

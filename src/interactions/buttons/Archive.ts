@@ -41,7 +41,7 @@ export default class ArchiveButton extends Button {
         const guild = await Guild.findOne(
             {_id: interaction.guildId},
             {
-                [`channels.submissions.archive.${type}`]: 1,
+                [`channels.archive.${type}`]: 1,
                 [`submissions.${type}.${id}`]: 1,
                 _id: 0
             }
@@ -54,7 +54,7 @@ export default class ArchiveButton extends Button {
             return;
         }
 
-        const archiveChannelId = guild?.channels.submissions.archive[type];
+        const archiveChannelId = guild?.channels.archive[type];
 
         if (!archiveChannelId) {
             await interaction.editReply(ErrorMessages.ChannelNotConfigured);

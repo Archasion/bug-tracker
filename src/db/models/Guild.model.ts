@@ -18,17 +18,14 @@ const guildSchema = new Schema({
     },
     channels: {
         type: Object,
-        submissions: {
+        bugReports: String,
+        playerReports: String,
+        suggestions: String,
+        archive: {
             type: Object,
             bugReports: String,
             playerReports: String,
-            suggestions: String,
-            archive: {
-                type: Object,
-                bugReports: String,
-                playerReports: String,
-                suggestions: String
-            }
+            suggestions: String
         },
         botUpdates: String,
         default: {
@@ -75,7 +72,8 @@ const guildSchema = new Schema({
     }
 }, {
     versionKey: false,
-    minimize: false
+    minimize: false,
+    strict: false
 });
 
 export default mongoose.model("Guilds", guildSchema);
