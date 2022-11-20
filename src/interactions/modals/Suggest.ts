@@ -36,8 +36,8 @@ export default class SuggestModal extends Modal {
     async execute(interaction: ModalSubmitInteraction): Promise<void> {
         const suggestion = interaction.fields.getTextInputValue("suggestion");
 
-        const guildConfig = await Guild.findOne(
-            {id: interaction.guildId},
+        const guild = await Guild.findOne(
+            {_id: interaction.guildId},
             {
                 ["auto.threads.suggestions"]: 1,
                 ["channels.suggestions"]: 1,
@@ -46,7 +46,7 @@ export default class SuggestModal extends Modal {
             }
         );
 
-        const submissionChannelId = guildConfig?.channels.suggestions;
+        const submissionChannelId = Object.keys(guild?.submissions.suggestions).length + 1;
 
         if (!submissionChannelId) {
             await interaction.editReply(ErrorMessages.ChannelNotConfigured);
@@ -77,7 +77,7 @@ export default class SuggestModal extends Modal {
             replyType: "EditReply"
         })) return;
 
-        const submissionId = guildConfig?.suggestions.length + 1;
+        const submissionId = guild?.suggestions.length + 1;
 
         const embed = new EmbedBuilder()
             .setColor(Properties.colors.default)
@@ -117,14 +117,13 @@ export default class SuggestModal extends Modal {
             components: [actionRow.toJSON() as ActionRow<ButtonComponent>]
         }).then(async (message) => {
             await Guild.updateOne(
-                {id: interaction.guildId},
+                {_id: interaction.guildId},
                 {
-                    $push: {
-                        suggestions: {
-                            number: submissionId,
+                    $set: {
+                        [`submissions.suggestions.${submissionId}`]: {
                             messageId: message.id,
-                            author: interaction.user.id,
-                            suggestion
+                            authorId: interaction.user.id,
+                            content: suggestion
                         }
                     }
                 }
@@ -133,7 +132,7 @@ export default class SuggestModal extends Modal {
             message.react(Properties.emojis.thumbsUp);
             message.react(Properties.emojis.thumbsDown);
 
-            if (guildConfig?.auto.threads.suggestions) {
+            if (guild?.settings.threads.suggestions) {
                 await message.startThread({
                     name: StringUtils.elipsify(suggestion, 100),
                     autoArchiveDuration: 10080, // 1 week

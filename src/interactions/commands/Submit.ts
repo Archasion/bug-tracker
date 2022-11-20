@@ -29,7 +29,7 @@ export default class SubmitCommand extends Command {
     async execute(interaction: ChatInputCommandInteraction): Promise<void> {
         const guildConfig = await Guild.findOne(
             {_id: interaction.guildId},
-            {["channels.submissions"]: 1, _id: 0}
+            {channels: 1, _id: 0}
         );
 
         const submissionOptions = [];

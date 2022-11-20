@@ -41,7 +41,7 @@ export default class UserInfoCommand extends Command {
      */
     async execute(interaction: ChatInputCommandInteraction): Promise<void> {
         const guildConfig = await Guild.findOne(
-            {id: interaction.guildId},
+            {_id: interaction.guildId},
             {
                 bugs: 1,
                 reports: 1,

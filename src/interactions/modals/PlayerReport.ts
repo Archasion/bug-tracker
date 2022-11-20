@@ -45,7 +45,7 @@ export default class ReportPlayerModal extends Modal {
             }
         );
 
-        const submissionChannelId = guild?.channels.reports;
+        const submissionChannelId = guild?.channels.playerReports;
 
         if (!submissionChannelId) {
             await interaction.editReply(ErrorMessages.ChannelNotConfigured);
@@ -115,7 +115,10 @@ export default class ReportPlayerModal extends Modal {
             const submissionData = {
                 messageId: message.id,
                 authorId: interaction.user.id,
-                content: {player, reason}
+                content: {
+                    reportedPlayer: player,
+                    reason
+                }
             };
 
             await Guild.updateOne(

@@ -157,7 +157,6 @@ export default class BugReportModal extends Modal {
             components: [actionRow.toJSON() as ActionRow<ButtonComponent>]
         }).then(async (message) => {
             const submissionData = {
-                number: submissionId,
                 messageId: message.id,
                 authorId: interaction.user.id,
                 priority,
