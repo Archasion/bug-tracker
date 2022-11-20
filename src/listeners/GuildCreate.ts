@@ -17,11 +17,11 @@ module.exports = class GuildCreateEventListener extends EventListener {
             return;
         }
 
-        const guildConfig = await Guild.findOne({_id: guild.id});
+        const guildData = await Guild.findOne({_id: guild.id});
 
-        if (!guildConfig) {
-            const newGuildConfig = new Guild({_id: guild.id});
-            await newGuildConfig
+        if (!guildData) {
+            const guildData = new Guild({_id: guild.id});
+            await guildData
                 .save()
                 .then(() => console.log("%s Created a new guild configuration %s", Properties.cli.listeners.guildCreate, clc.blackBright(`("${guild.name}" • ${guild.id})`)));
 

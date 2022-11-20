@@ -27,28 +27,28 @@ export default class SubmitCommand extends Command {
      * @returns {Promise<void>}
      */
     async execute(interaction: ChatInputCommandInteraction): Promise<void> {
-        const guildConfig = await Guild.findOne(
+        const guild = await Guild.findOne(
             {_id: interaction.guildId},
             {channels: 1, _id: 0}
         );
 
         const submissionOptions = [];
 
-        if (guildConfig?.channels.bugReports) {
+        if (guild?.channels.bugReports) {
             submissionOptions.push({
                 label: "Bug Report",
                 value: "bug-report"
             });
         }
 
-        if (guildConfig?.channels.playerReports) {
+        if (guild?.channels.playerReports) {
             submissionOptions.push({
                 label: "Player Report",
                 value: "player-report"
             });
         }
 
-        if (guildConfig?.channels.suggestions) {
+        if (guild?.channels.suggestions) {
             submissionOptions.push({
                 label: "Suggestion",
                 value: "suggestion"

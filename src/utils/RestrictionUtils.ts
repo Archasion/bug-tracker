@@ -64,12 +64,12 @@ export default class RestrictionUtils {
     }
 
     public static async isAdministrator(member: GuildMember): Promise<boolean> {
-        const guildConfig = await Guild.findOne(
+        const guild = await Guild.findOne(
             {_id: member.guild.id},
             {roles: 1, _id: 0}
         );
 
-        const administratorRole = guildConfig?.roles.administrator;
+        const administratorRole = guild?.roles.administrator;
 
         if (
             (administratorRole && member.roles.cache.has(administratorRole)) ||
