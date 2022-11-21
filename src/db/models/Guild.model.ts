@@ -72,8 +72,7 @@ const guildSchema = new Schema({
     }
 }, {
     versionKey: false,
-    minimize: false,
-    strict: false
+    minimize: false
 });
 
 export default mongoose.model("Guilds", guildSchema);
