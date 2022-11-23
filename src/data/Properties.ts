@@ -17,7 +17,7 @@ export default class Properties {
     };
 
     public static readonly colors = {
-        default: 0x2F3136,
+        default: 0x008EFF,
         success: 0x84F584,
         error: 0x202020,
         priority: {
