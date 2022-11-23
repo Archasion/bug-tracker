@@ -1,14 +1,13 @@
 <br>
-<p align="center"><img src="https://user-images.githubusercontent.com/59822256/187733633-1fea1bf4-1b0a-4a1d-a10a-1af4ff0525cc.png" width="200"></p>
+<p align="center"><img src="https://user-images.githubusercontent.com/59822256/203636654-05f07e3d-7a97-45a3-aebe-66073fe19c61.png" width="200"></p>
 <h3 align="center">BUG TRACKER</h3>
 <p align="center">A bug tracking bot created to assist developers.</p>
 
-
-![image](https://user-images.githubusercontent.com/59822256/187736036-09c4672f-aa4d-4e9c-859e-76305c413b54.png)
+![image](https://user-images.githubusercontent.com/59822256/203636819-59f960c4-23aa-4121-92eb-f0edce567086.png)
 
 <br>
 
-<img src="https://user-images.githubusercontent.com/59822256/187736846-4f1d5512-2c3e-4dcd-a261-6451ac2c6c1e.png" width="120">
+<img src="https://user-images.githubusercontent.com/59822256/203636876-1b08e854-ebdb-4bb5-b849-403193bd078e.png" width="120">
 
 Create a local copy of the project
 ```git
