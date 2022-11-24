@@ -36,7 +36,7 @@ export default class CommandHandler {
             button.name :
             Object.values(button.name)[0];
 
-        console.log(`%s Registered button: "${buttonName}"`, Properties.cli.modules.buttons);
+        console.log(`%s Registered button: "${buttonName}"`, clc.magenta("(BUTTONS)"));
     }
 
     public async handle(interaction: ButtonInteraction) {
@@ -73,7 +73,7 @@ export default class CommandHandler {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
             await button.execute(interaction, this.client);
-            console.log(`%s "${buttonName}" executed by ${interaction.user.tag} %s`, Properties.cli.modules.buttons, clc.blackBright(`("${interaction.guild?.name}" • ${interaction.guildId})`));
+            console.log(`%s "${buttonName}" executed by ${interaction.user.tag} %s`, clc.magenta("(BUTTONS)"), clc.blackBright(`("${interaction.guild?.name}" • ${interaction.guildId})`));
         } catch (err) {
             console.log(`Failed to execute button: ${buttonName}`);
             console.error(err);

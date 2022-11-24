@@ -36,7 +36,7 @@ export default class CommandHandler {
             modal.name :
             Object.values(modal.name)[0];
 
-        console.log(`%s Registered modal: "${modalName}"`, Properties.cli.modules.modals);
+        console.log(`%s Registered modal: "${modalName}"`, clc.red("(MODALS)"));
     }
 
     public async handle(interaction: ModalSubmitInteraction) {
@@ -71,7 +71,7 @@ export default class CommandHandler {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
             await modal.execute(interaction, this.client);
-            console.log(`%s "${modalName}" executed by ${interaction.user.tag} %s`, Properties.cli.modules.modals, clc.blackBright(`("${interaction.guild?.name}" • ${interaction.guildId})`));
+            console.log(`%s "${modalName}" executed by ${interaction.user.tag} %s`, clc.red("(MODALS)"), clc.blackBright(`("${interaction.guild?.name}" • ${interaction.guildId})`));
         } catch (err) {
             console.log(`Failed to execute modal: ${modal.name}`);
             console.error(err);

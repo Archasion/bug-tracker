@@ -31,7 +31,7 @@ export default class CommandHandler {
 
     public async register(command: Command) {
         this.commands.set(command.name, command);
-        console.log(`%s Registered command: "${command.name}"`, Properties.cli.modules.commands);
+        console.log(`%s Registered command: "${command.name}"`, clc.blue("(COMMANDS)"));
     }
 
     public async publish() {
@@ -69,7 +69,7 @@ export default class CommandHandler {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
             await command.execute(interaction, this.client);
-            console.log(`%s "${command.name}" executed by ${interaction.user.tag} %s`, Properties.cli.modules.commands, clc.blackBright(`("${interaction.guild?.name}" • ${interaction.guildId})`));
+            console.log(`%s "${command.name}" executed by ${interaction.user.tag} %s`, clc.blue("(COMMANDS)"), clc.blackBright(`("${interaction.guild?.name}" • ${interaction.guildId})`));
         } catch (err) {
             console.log(`Failed to execute command: ${command.name}`);
             console.error(err);

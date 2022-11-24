@@ -1,6 +1,5 @@
 import EventListener from "../modules/listeners/Listener";
 import Guild from "../database/models/Guild.model";
-import Properties from "../data/Properties";
 import clc from "cli-color";
 import Bot from "../Bot";
 
@@ -15,9 +14,9 @@ module.exports = class GuildDeleteEventListener extends EventListener {
         if (!guild) return;
 
         await Guild.deleteOne({_id: guild.id})
-            .then(() => console.log("%s Removed guild configuration %s", Properties.cli.listeners.guildDelete, clc.blackBright(`("${guild.name}" • ${guild.id})`)))
+            .then(() => console.log("%s Removed guild configuration %s", clc.red("(GUILD DELETE)"), clc.blackBright(`("${guild.name}" • ${guild.id})`)))
             .catch(err => {
-                console.log("%s Failed to remove guild configuration %s", Properties.cli.listeners.guildDelete, clc.blackBright(`("${guild.name}" • ${guild.id})`));
+                console.log("%s Failed to remove guild configuration %s", clc.red("(GUILD DELETE)"), clc.blackBright(`("${guild.name}" • ${guild.id})`));
                 console.error(err);
             });
     }

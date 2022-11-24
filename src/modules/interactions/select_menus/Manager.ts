@@ -36,7 +36,7 @@ export default class CommandHandler {
             select_menu.name :
             Object.values(select_menu.name)[0];
 
-        console.log(`%s Registered select menu: "${selectMenuName}"`, Properties.cli.modules.select_menus);
+        console.log(`%s Registered select menu: "${selectMenuName}"`, clc.yellow("(SELECT MENUS)"));
     }
 
     public async handle(interaction: SelectMenuInteraction) {
@@ -74,7 +74,7 @@ export default class CommandHandler {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
             await select_menu.execute(interaction, this.client);
-            console.log(`%s "${selectMenuName}" executed by ${interaction.user.tag} %s`, Properties.cli.modules.select_menus, clc.blackBright(`("${interaction.guild?.name}" • ${interaction.guildId})`));
+            console.log(`%s "${selectMenuName}" executed by ${interaction.user.tag} %s`, clc.yellow("(SELECT MENUS)"), clc.blackBright(`("${interaction.guild?.name}" • ${interaction.guildId})`));
         } catch (err) {
             console.log(`Failed to execute select menu: ${selectMenuName}`);
             console.error(err);

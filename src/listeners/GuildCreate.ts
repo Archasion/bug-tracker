@@ -1,6 +1,5 @@
 import EventListener from "../modules/listeners/Listener";
 import Guild from "../database/models/Guild.model";
-import Properties from "../data/Properties";
 import clc from "cli-color";
 import Bot from "../Bot";
 
@@ -23,11 +22,11 @@ module.exports = class GuildCreateEventListener extends EventListener {
             const guildData = new Guild({_id: guild.id});
             await guildData
                 .save()
-                .then(() => console.log("%s Created a new guild configuration %s", Properties.cli.listeners.guildCreate, clc.blackBright(`("${guild.name}" • ${guild.id})`)));
+                .then(() => console.log("%s Created a new guild configuration %s", clc.green("(GUILD CREATE)"), clc.blackBright(`("${guild.name}" • ${guild.id})`)));
 
             return;
         }
 
-        console.log("%s Joined guild %s", Properties.cli.listeners.guildCreate, clc.blackBright(`("${guild.name}" • ${guild.id})`));
+        console.log("%s Joined guild %s", clc.green("(GUILD CREATE)"), clc.blackBright(`("${guild.name}" • ${guild.id})`));
     }
 };
