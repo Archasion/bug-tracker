@@ -1,7 +1,7 @@
 import EventListener from "../modules/listeners/Listener";
 import RestrictionUtils from "../utils/RestrictionUtils";
 import ValidationUtils from "../utils/ValidationUtils";
-import Guild from "../db/models/Guild.model";
+import Guild from "../database/models/Guild.model";
 import Properties from "../data/Properties";
 import Bot from "../Bot";
 

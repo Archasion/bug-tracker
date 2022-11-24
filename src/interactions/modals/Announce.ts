@@ -1,5 +1,5 @@
 import Modal from "../../modules/interactions/modals/Modal";
-import Guild from "../../db/models/Guild.model";
+import Guild from "../../database/models/Guild.model";
 import Properties from "../../data/Properties";
 import Bot from "../../Bot";
 import clc from "cli-color";

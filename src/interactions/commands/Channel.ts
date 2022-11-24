@@ -1,7 +1,7 @@
 import Command from "../../modules/interactions/commands/Command";
 import PermissionUtils from "../../utils/PermissionUtils";
 import ErrorMessages from "../../data/ErrorMessages";
-import Guild from "../../db/models/Guild.model";
+import Guild from "../../database/models/Guild.model";
 import Bot from "../../Bot";
 
 import {

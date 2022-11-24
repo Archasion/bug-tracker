@@ -1,7 +1,7 @@
 import Button from "../../modules/interactions/buttons/Button";
 import PermissionUtils from "../../utils/PermissionUtils";
 import ErrorMessages from "../../data/ErrorMessages";
-import Guild from "../../db/models/Guild.model";
+import Guild from "../../database/models/Guild.model";
 import Bot from "../../Bot";
 
 import {ButtonInteraction, TextChannel, NewsChannel, PermissionFlagsBits} from "discord.js";

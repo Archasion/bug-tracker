@@ -1,5 +1,5 @@
 import SelectMenu from "../../modules/interactions/select_menus/SelectMenu";
-import Guild from "../../db/models/Guild.model";
+import Guild from "../../database/models/Guild.model";
 import Bot from "../../Bot";
 
 import {

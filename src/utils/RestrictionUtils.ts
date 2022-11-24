@@ -1,5 +1,5 @@
 import Properties from "../data/Properties";
-import Guild from "../db/models/Guild.model";
+import Guild from "../database/models/Guild.model";
 
 import {GuildMember} from "discord.js";
 

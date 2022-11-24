@@ -1,6 +1,6 @@
 import Command from "../../modules/interactions/commands/Command";
 import Properties from "../../data/Properties";
-import Guild from "../../db/models/Guild.model";
+import Guild from "../../database/models/Guild.model";
 import Bot from "../../Bot";
 
 import {
@@ -55,13 +55,18 @@ export default class UserInfoCommand extends Command {
         // @ts-ignore
         let {bugReports, playerReports, suggestions} = guild.submissions;
 
-        suggestions = suggestions.filter((submission: { authorId: string; }) => submission.authorId === member.id);
-        playerReports = playerReports.filter((submission: { authorId: string; }) => submission.authorId === member.id);
-        bugReports = bugReports.filter((submission: { authorId: string; }) => submission.authorId === member.id);
+        suggestions = Object.keys(suggestions)
+            .filter(id => suggestions[id].authorId === member.id);
 
-        suggestionsLength = Object.keys(suggestions).length;
-        playerReportsLength = Object.keys(playerReports).length;
-        bugReportsLength = Object.keys(bugReports).length;
+        playerReports = Object.keys(playerReports)
+            .filter(id => playerReports[id].authorId === member.id);
+
+        bugReports = Object.keys(bugReports)
+            .filter(id => bugReports[id].authorId === member.id);
+
+        const suggestionsLength = suggestions.length;
+        const playerReportsLength = playerReports.length;
+        const bugReportsLength = bugReports.length;
 
         const permissions = member.permissions.toArray().join("` `") || "None";
         const roles = member.roles.cache.map(role => role).join(" ") || "None";
@@ -89,7 +94,7 @@ export default class UserInfoCommand extends Command {
                 },
                 {
                     name: "All Reports",
-                    value: (bugReportsLength.length + playerReportsLength + suggestionsLength).toString(),
+                    value: (bugReportsLength + playerReportsLength + suggestionsLength).toString(),
                     inline: true
                 },
                 {

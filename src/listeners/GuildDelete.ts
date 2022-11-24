@@ -1,5 +1,5 @@
 import EventListener from "../modules/listeners/Listener";
-import Guild from "../db/models/Guild.model";
+import Guild from "../database/models/Guild.model";
 import Properties from "../data/Properties";
 import clc from "cli-color";
 import Bot from "../Bot";

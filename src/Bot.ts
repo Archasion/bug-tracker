@@ -10,7 +10,7 @@ import {Client, GatewayIntentBits, Partials} from "discord.js";
 import "dotenv/config";
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-require("./db/Manager")();
+require("./database/Manager")();
 
 process.on("unhandledRejection", (error: Error) => {
     console.error(clc.red(error.stack));

@@ -1,6 +1,6 @@
 import Command from "../../modules/interactions/commands/Command";
 import Properties from "../../data/Properties";
-import Guild from "../../db/models/Guild.model";
+import Guild from "../../database/models/Guild.model";
 import Bot from "../../Bot";
 
 import {
@@ -90,17 +90,17 @@ export default class ServerCommand extends Command {
                 },
                 {
                     name: "Bug Report Archive",
-                    value: `${channels.archive.bugReports ? `<#${channels.archive.bugReports}>` : "None"}`,
+                    value: `${channels.archive?.bugReports ? `<#${channels.archive?.bugReports}>` : "None"}`,
                     inline: true
                 },
                 {
                     name: "Player Report Archive",
-                    value: `${channels.archive.playerReports ? `<#${channels.archive.playerReports}>` : "None"}`,
+                    value: `${channels.archive?.playerReports ? `<#${channels.archive?.playerReports}>` : "None"}`,
                     inline: true
                 },
                 {
                     name: "Suggestion Archive",
-                    value: `${channels.archive.suggestions ? `<#${channels.archive.suggestions}>` : "None"}`,
+                    value: `${channels.archive?.suggestions ? `<#${channels.archive?.suggestions}>` : "None"}`,
                     inline: true
                 },
                 {

@@ -1,7 +1,7 @@
 import Modal from "../../modules/interactions/modals/Modal";
 import PermissionUtils from "../../utils/PermissionUtils";
 import ErrorMessages from "../../data/ErrorMessages";
-import Guild from "../../db/models/Guild.model";
+import Guild from "../../database/models/Guild.model";
 import Properties from "../../data/Properties";
 import Bot from "../../Bot";
 
