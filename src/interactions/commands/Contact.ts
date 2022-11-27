@@ -42,7 +42,7 @@ export default class ContactCommand extends Command {
             name: "contact",
             description: "Contact the bot's developer regarding an enquiry.",
             restriction: RestrictionLevel.Public,
-            defer: true,
+            defer: false,
             type: ApplicationCommandType.ChatInput,
             options: [
                 {
