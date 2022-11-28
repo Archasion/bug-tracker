@@ -1,5 +1,5 @@
 import Modal from "../../modules/interactions/modals/Modal";
-import PermissionUtils from "../../utils/PermissionUtils";
+import PermissionUtils, {ReplyType, SubmissionChannelPermissions} from "../../utils/PermissionUtils";
 import ErrorMessages from "../../data/ErrorMessages";
 import Guild from "../../database/models/Guild.model";
 import Properties from "../../data/Properties";
@@ -59,16 +59,11 @@ export default class ReportPlayerModal extends Modal {
             return;
         }
 
-        if (!await PermissionUtils.botHasPermissions({
+        if (!await PermissionUtils.verifyPermissions({
             interaction,
-            permissions: [
-                PermissionFlagsBits.ReadMessageHistory,
-                PermissionFlagsBits.SendMessages,
-                PermissionFlagsBits.ViewChannel,
-                PermissionFlagsBits.EmbedLinks
-            ],
+            permissions: SubmissionChannelPermissions.PlayerReports,
             channel: submissionChannel,
-            replyType: "EditReply"
+            replyType: ReplyType.EditReply
         })) return;
 
         const submissionId = Object.keys(guild?.submissions.playerReports).length + 1;

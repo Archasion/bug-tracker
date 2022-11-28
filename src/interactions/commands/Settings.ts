@@ -1,5 +1,5 @@
 import Command from "../../modules/interactions/commands/Command";
-import PermissionUtils from "../../utils/PermissionUtils";
+import PermissionUtils, {ReplyType} from "../../utils/PermissionUtils";
 import Properties from "../../data/Properties";
 import Guild from "../../database/models/Guild.model";
 import Bot from "../../Bot";
@@ -304,14 +304,14 @@ export default class SettingsCommand extends Command {
                     return;
                 }
 
-                if (!await PermissionUtils.botHasPermissions({
+                if (!await PermissionUtils.verifyPermissions({
                     interaction,
                     permissions: [
                         PermissionFlagsBits.ManageMessages,
                         PermissionFlagsBits.ViewChannel
                     ],
                     channel,
-                    replyType: "EditReply"
+                    replyType: ReplyType.EditReply
                 })) return;
 
                 await Guild.updateOne(

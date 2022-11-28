@@ -1,5 +1,5 @@
 import Command from "../../modules/interactions/commands/Command";
-import PermissionUtils from "../../utils/PermissionUtils";
+import PermissionUtils, {ReplyType} from "../../utils/PermissionUtils";
 import ErrorMessages from "../../data/ErrorMessages";
 import Guild from "../../database/models/Guild.model";
 import Bot from "../../Bot";
@@ -131,18 +131,18 @@ export default class ChannelCommand extends Command {
                 let hasPerms: boolean;
 
                 if (type === "suggestions") {
-                    hasPerms = await PermissionUtils.botHasPermissions({
+                    hasPerms = await PermissionUtils.verifyPermissions({
                         interaction,
                         permissions: permissions.setChannel,
                         channel: channel as TextChannel | NewsChannel,
-                        replyType: "EditReply"
+                        replyType: ReplyType.EditReply
                     });
                 } else {
-                    hasPerms = await PermissionUtils.botHasPermissions({
+                    hasPerms = await PermissionUtils.verifyPermissions({
                         interaction,
                         permissions: [...permissions.setChannel, ...permissions.setReportChannel],
                         channel: channel as TextChannel | NewsChannel,
-                        replyType: "EditReply"
+                        replyType: ReplyType.EditReply
                     });
                 }
 

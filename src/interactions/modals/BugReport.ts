@@ -1,5 +1,5 @@
 import Modal from "../../modules/interactions/modals/Modal";
-import PermissionUtils from "../../utils/PermissionUtils";
+import PermissionUtils, {ReplyType, SubmissionChannelPermissions} from "../../utils/PermissionUtils";
 import ErrorMessages from "../../data/ErrorMessages";
 import StringUtils from "../../utils/StringUtils";
 import Guild from "../../database/models/Guild.model";
@@ -74,21 +74,11 @@ export default class BugReportModal extends Modal {
             return;
         }
 
-        if (!await PermissionUtils.botHasPermissions({
+        if (!await PermissionUtils.verifyPermissions({
             interaction,
-            permissions: [
-                PermissionFlagsBits.SendMessagesInThreads,
-                PermissionFlagsBits.CreatePublicThreads,
-                PermissionFlagsBits.ReadMessageHistory,
-                PermissionFlagsBits.UseExternalEmojis,
-                PermissionFlagsBits.ManageThreads,
-                PermissionFlagsBits.AddReactions,
-                PermissionFlagsBits.SendMessages,
-                PermissionFlagsBits.ViewChannel,
-                PermissionFlagsBits.EmbedLinks
-            ],
+            permissions: SubmissionChannelPermissions.BugReports,
             channel: submissionChannel,
-            replyType: "EditReply"
+            replyType: ReplyType.EditReply
         })) return;
 
         const submissionId = Object.keys(guild?.submissions.bugReports).length + 1;

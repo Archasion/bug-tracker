@@ -17,7 +17,7 @@ import {
 import {Guide} from "../../data/Types";
 
 import RestrictionUtils, {RestrictionLevel} from "../../utils/RestrictionUtils";
-import PermissionUtils from "../../utils/PermissionUtils";
+import PermissionUtils, {ReplyType} from "../../utils/PermissionUtils";
 
 export default class GuideCommand extends Command {
     constructor(client: Bot) {
@@ -81,12 +81,12 @@ export default class GuideCommand extends Command {
         if (example) embed.setFields([{name: "Example", value: `\`/${example}\``}]);
 
         if (
-            await RestrictionUtils.isModerator(interaction.member as GuildMember) &&
-            await PermissionUtils.botHasPermissions({
+            await RestrictionUtils.isReviewer(interaction.member as GuildMember) &&
+            await PermissionUtils.verifyPermissions({
                 interaction,
                 permissions: [PermissionFlagsBits.SendMessages],
                 channel: interaction.channel as TextChannel | NewsChannel,
-                replyType: "EditReply"
+                replyType: ReplyType.EditReply
             }) &&
             sendPublicly
         ) {

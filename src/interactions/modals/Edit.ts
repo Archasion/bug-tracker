@@ -1,5 +1,5 @@
 import Modal from "../../modules/interactions/modals/Modal";
-import PermissionUtils from "../../utils/PermissionUtils";
+import PermissionUtils, {ReplyType} from "../../utils/PermissionUtils";
 import ErrorMessages from "../../data/ErrorMessages";
 import Guild from "../../database/models/Guild.model";
 import Bot from "../../Bot";
@@ -69,14 +69,14 @@ export default class EditModal extends Modal {
             return;
         }
 
-        if (!await PermissionUtils.botHasPermissions({
+        if (!await PermissionUtils.verifyPermissions({
             interaction,
             permissions: [
                 PermissionFlagsBits.ReadMessageHistory,
                 PermissionFlagsBits.ViewChannel
             ],
             channel: submissionChannel,
-            replyType: "EditReply"
+            replyType: ReplyType.EditReply
         })) return;
 
         const message = await submissionChannel.messages.fetch(submission.messageId)

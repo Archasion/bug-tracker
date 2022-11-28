@@ -1,12 +1,10 @@
 import SelectMenu from "../../modules/interactions/select_menus/SelectMenu";
-import PermissionUtils from "../../utils/PermissionUtils";
 import ErrorMessages from "../../data/ErrorMessages";
 import Guild from "../../database/models/Guild.model";
 import Bot from "../../Bot";
 
 import {
     SelectMenuInteraction,
-    PermissionFlagsBits,
     SelectMenuBuilder,
     ActionRowBuilder,
     TextInputBuilder,
@@ -17,6 +15,7 @@ import {
 } from "discord.js";
 
 import {RestrictionLevel} from "../../utils/RestrictionUtils";
+import PermissionUtils, {SubmissionChannelPermissions, ReplyType} from "../../utils/PermissionUtils";
 
 export default class SubmissionTypeSelectMenu extends SelectMenu {
     constructor(client: Bot) {
@@ -51,21 +50,11 @@ export default class SubmissionTypeSelectMenu extends SelectMenu {
 
             const submissionChannel = interaction.guild?.channels.cache.get(guild?.channels.bugReports) as TextChannel | NewsChannel;
 
-            if (!await PermissionUtils.botHasPermissions({
+            if (!await PermissionUtils.verifyPermissions({
                 interaction,
-                permissions: [
-                    PermissionFlagsBits.SendMessagesInThreads,
-                    PermissionFlagsBits.CreatePublicThreads,
-                    PermissionFlagsBits.ReadMessageHistory,
-                    PermissionFlagsBits.UseExternalEmojis,
-                    PermissionFlagsBits.ManageThreads,
-                    PermissionFlagsBits.SendMessages,
-                    PermissionFlagsBits.AddReactions,
-                    PermissionFlagsBits.ViewChannel,
-                    PermissionFlagsBits.EmbedLinks
-                ],
+                permissions: SubmissionChannelPermissions.BugReports,
                 channel: submissionChannel,
-                replyType: "Update"
+                replyType: ReplyType.Update
             })) return;
 
             const bugPriority = new SelectMenuBuilder()
@@ -122,21 +111,11 @@ export default class SubmissionTypeSelectMenu extends SelectMenu {
 
             const submissionChannel = interaction.guild?.channels.cache.get(guild?.channels.suggestions) as TextChannel | NewsChannel;
 
-            if (!await PermissionUtils.botHasPermissions({
+            if (!await PermissionUtils.verifyPermissions({
                 interaction,
-                permissions: [
-                    PermissionFlagsBits.SendMessagesInThreads,
-                    PermissionFlagsBits.CreatePublicThreads,
-                    PermissionFlagsBits.ReadMessageHistory,
-                    PermissionFlagsBits.UseExternalEmojis,
-                    PermissionFlagsBits.ManageThreads,
-                    PermissionFlagsBits.SendMessages,
-                    PermissionFlagsBits.AddReactions,
-                    PermissionFlagsBits.ViewChannel,
-                    PermissionFlagsBits.EmbedLinks
-                ],
+                permissions: SubmissionChannelPermissions.Suggestions,
                 channel: submissionChannel,
-                replyType: "Update"
+                replyType: ReplyType.Update
             })) return;
 
             const suggestionInput = new TextInputBuilder()
@@ -168,16 +147,11 @@ export default class SubmissionTypeSelectMenu extends SelectMenu {
 
             const submissionChannel = interaction.guild?.channels.cache.get(guild?.channels.playerReports) as TextChannel | NewsChannel;
 
-            if (!await PermissionUtils.botHasPermissions({
+            if (!await PermissionUtils.verifyPermissions({
                 interaction,
-                permissions: [
-                    PermissionFlagsBits.ReadMessageHistory,
-                    PermissionFlagsBits.SendMessages,
-                    PermissionFlagsBits.ViewChannel,
-                    PermissionFlagsBits.EmbedLinks
-                ],
+                permissions: SubmissionChannelPermissions.PlayerReports,
                 channel: submissionChannel,
-                replyType: "Update"
+                replyType: ReplyType.Update
             })) return;
 
             modalComponents.push(

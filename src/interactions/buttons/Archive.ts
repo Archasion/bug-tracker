@@ -1,5 +1,5 @@
 import Button from "../../modules/interactions/buttons/Button";
-import PermissionUtils from "../../utils/PermissionUtils";
+import PermissionUtils, {ReplyType} from "../../utils/PermissionUtils";
 import ErrorMessages from "../../data/ErrorMessages";
 import Guild from "../../database/models/Guild.model";
 import Bot from "../../Bot";
@@ -63,24 +63,24 @@ export default class ArchiveButton extends Button {
 
         const archiveChannel = interaction.guild?.channels.cache.get(archiveChannelId) as TextChannel | NewsChannel;
 
-        if (!await PermissionUtils.botHasPermissions({
+        if (!await PermissionUtils.verifyPermissions({
             interaction,
             permissions: [
                 PermissionFlagsBits.SendMessages,
                 PermissionFlagsBits.ViewChannel
             ],
             channel: archiveChannel,
-            replyType: "EditReply"
+            replyType: ReplyType.EditReply
         })) return;
 
-        if (!await PermissionUtils.botHasPermissions({
+        if (!await PermissionUtils.verifyPermissions({
             interaction,
             permissions: [
                 PermissionFlagsBits.ManageMessages,
                 PermissionFlagsBits.ViewChannel
             ],
             channel: interaction.channel as TextChannel | NewsChannel,
-            replyType: "EditReply"
+            replyType: ReplyType.EditReply
         })) return;
 
         if (interaction.message.hasThread) {

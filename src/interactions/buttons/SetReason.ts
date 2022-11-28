@@ -3,9 +3,10 @@ import Bot from "../../Bot";
 
 import {
     ButtonInteraction,
+    ActionRowBuilder,
     TextInputBuilder,
     TextInputStyle,
-    ModalBuilder, ActionRowBuilder
+    ModalBuilder
 } from "discord.js";
 
 import {RestrictionLevel} from "../../utils/RestrictionUtils";

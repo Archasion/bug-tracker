@@ -1,5 +1,5 @@
 import Modal from "../../modules/interactions/modals/Modal";
-import PermissionUtils from "../../utils/PermissionUtils";
+import PermissionUtils, {ReplyType, SubmissionChannelPermissions} from "../../utils/PermissionUtils";
 import ErrorMessages from "../../data/ErrorMessages";
 import StringUtils from "../../utils/StringUtils";
 import Guild from "../../database/models/Guild.model";
@@ -8,7 +8,6 @@ import Bot from "../../Bot";
 
 import {
     ModalSubmitInteraction,
-    PermissionFlagsBits,
     ActionRowBuilder,
     ButtonComponent,
     ButtonBuilder,
@@ -60,21 +59,11 @@ export default class SuggestModal extends Modal {
             return;
         }
 
-        if (!await PermissionUtils.botHasPermissions({
+        if (!await PermissionUtils.verifyPermissions({
             interaction,
-            permissions: [
-                PermissionFlagsBits.SendMessagesInThreads,
-                PermissionFlagsBits.CreatePublicThreads,
-                PermissionFlagsBits.ReadMessageHistory,
-                PermissionFlagsBits.UseExternalEmojis,
-                PermissionFlagsBits.ManageThreads,
-                PermissionFlagsBits.SendMessages,
-                PermissionFlagsBits.AddReactions,
-                PermissionFlagsBits.ViewChannel,
-                PermissionFlagsBits.EmbedLinks
-            ],
+            permissions: SubmissionChannelPermissions.Suggestions,
             channel: submissionChannel,
-            replyType: "EditReply"
+            replyType: ReplyType.EditReply
         })) return;
 
         const submissionId = Object.keys(guild?.submissions.suggestions).length + 1;

@@ -1,5 +1,5 @@
 import Button from "../../modules/interactions/buttons/Button";
-import PermissionUtils from "../../utils/PermissionUtils";
+import PermissionUtils, {ReplyType} from "../../utils/PermissionUtils";
 import StringUtils from "../../utils/StringUtils";
 import Guild from "../../database/models/Guild.model";
 import Properties from "../../data/Properties";
@@ -46,7 +46,7 @@ export default class DiscussionThreadButton extends Button {
             return;
         }
 
-        if (!await PermissionUtils.botHasPermissions({
+        if (!await PermissionUtils.verifyPermissions({
             interaction,
             permissions: [
                 PermissionFlagsBits.SendMessagesInThreads,
@@ -54,7 +54,7 @@ export default class DiscussionThreadButton extends Button {
                 PermissionFlagsBits.ViewChannel
             ],
             channel: interaction.channel as TextChannel | NewsChannel,
-            replyType: "EditReply"
+            replyType: ReplyType.EditReply
         })) return;
 
         const [embed] = interaction.message.embeds;

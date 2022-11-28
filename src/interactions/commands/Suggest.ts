@@ -12,7 +12,7 @@ export default class SuggestCommand extends Command {
     constructor(client: Bot) {
         super(client, {
             name: "suggest",
-            description: "Submit a suggestion for the server staff to review.",
+            description: "DEPRECATED",
             restriction: RestrictionLevel.Public,
             type: ApplicationCommandType.ChatInput,
             defer: true
