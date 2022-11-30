@@ -2,13 +2,13 @@ import Command from "../../modules/interactions/commands/Command";
 import Bot from "../../Bot";
 
 import {
+    ApplicationCommandOptionType,
     ChatInputCommandInteraction,
     ApplicationCommandType,
     ActionRowBuilder,
     TextInputBuilder,
     TextInputStyle,
-    ModalBuilder,
-    ApplicationCommandOptionType
+    ModalBuilder
 } from "discord.js";
 
 import {RestrictionLevel} from "../../utils/RestrictionUtils";
@@ -40,9 +40,9 @@ export default class ContactCommand extends Command {
     constructor(client: Bot) {
         super(client, {
             name: "contact",
-            description: "Contact the bot's developer regarding an enquiry.",
+            description: "Contact the bot's developer.",
             restriction: RestrictionLevel.Public,
-            defer: false,
+            defer: false, // Modal response
             type: ApplicationCommandType.ChatInput,
             options: [
                 {
@@ -52,7 +52,7 @@ export default class ContactCommand extends Command {
                     required: true,
                     choices: [
                         {
-                            name: "Bot support",
+                            name: "Support",
                             value: "support"
                         },
                         {
@@ -64,7 +64,7 @@ export default class ContactCommand extends Command {
                             value: "suggestions"
                         },
                         {
-                            name: "Provide feedback",
+                            name: "Feedback",
                             value: "feedback"
                         },
                         {
@@ -84,6 +84,10 @@ export default class ContactCommand extends Command {
     async execute(interaction: ChatInputCommandInteraction): Promise<void> {
         const enquiry = interaction.options.getString("enquiry") as string;
 
+        const modal = new ModalBuilder()
+            .setTitle("Contact Form")
+            .setCustomId(`contact-${enquiry}`);
+
         const modalComponents: ActionRowBuilder<TextInputBuilder>[] = [
             new ActionRowBuilder().addComponents(
                 new TextInputBuilder()
@@ -96,10 +100,6 @@ export default class ContactCommand extends Command {
                     .setValue("")
             ) as ActionRowBuilder<TextInputBuilder>
         ];
-
-        const modal = new ModalBuilder()
-            .setTitle("Contact Form")
-            .setCustomId(`contact-${enquiry}`);
 
         switch (enquiry) {
             case "bugs": {
@@ -115,7 +115,6 @@ export default class ContactCommand extends Command {
                             .setValue("")
                     ) as ActionRowBuilder<TextInputBuilder>
                 );
-
                 break;
             }
         }

@@ -54,7 +54,7 @@ interface VerifyPermissionsData {
 }
 
 export default class PermissionUtils {
-    public static async verifyPermissions(data: VerifyPermissionsData): Promise<boolean> {
+    public static async verifyAccess(data: VerifyPermissionsData): Promise<boolean> {
         const {interaction, permissions, channel, replyType} = data;
 
         const client = interaction.guild?.members.me as GuildMember;

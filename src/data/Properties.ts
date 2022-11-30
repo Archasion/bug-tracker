@@ -31,7 +31,7 @@ type Properties = {
     },
 
     channels: {
-        bot: {
+        contact: {
             support: string,
             suggestions: string,
             bugs: string,

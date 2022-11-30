@@ -59,7 +59,7 @@ export default class SuggestModal extends Modal {
             return;
         }
 
-        if (!await PermissionUtils.verifyPermissions({
+        if (!await PermissionUtils.verifyAccess({
             interaction,
             permissions: SubmissionChannelPermissions.Suggestions,
             channel: submissionChannel,

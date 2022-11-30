@@ -24,7 +24,7 @@ users:
         - "556206370429599755"
 
 channels:
-    bot:
+    contact:
         support: "996440036205666344" #support
         suggestions: "996440053557514261" #suggestions
         bugs: "996440087921426512" #bugs

@@ -25,7 +25,7 @@ module.exports = class MessageCreateEventListener extends EventListener {
 
         if (
             RestrictionUtils.isDeveloper(message.author.id) &&
-            ValidationUtils.isBotChannel(message.channel.id) &&
+            ValidationUtils.isContactChannel(message.channel.id) &&
             message.reference // Message is a reply
         ) {
             const reference = await message.channel.messages.fetch(message.reference.messageId as string);

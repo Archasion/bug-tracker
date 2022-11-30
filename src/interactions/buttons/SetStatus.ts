@@ -4,8 +4,8 @@ import Bot from "../../Bot";
 
 import {
     ComponentEmojiResolvable,
+    StringSelectMenuBuilder,
     ButtonInteraction,
-    SelectMenuBuilder,
     ActionRowBuilder,
     ButtonBuilder,
     ButtonStyle
@@ -138,7 +138,7 @@ export default class SetStatusButton extends Button {
             }
         }
 
-        const statusOptions = new SelectMenuBuilder()
+        const statusOptions = new StringSelectMenuBuilder()
             .setCustomId(`set-status-${interaction.message.id}`)
             .setPlaceholder("Select the new submission status...")
             .setOptions(submissionOptions);

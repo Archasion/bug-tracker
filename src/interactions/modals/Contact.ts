@@ -21,7 +21,7 @@ export default class ContactModal extends Modal {
     async execute(interaction: ModalSubmitInteraction): Promise<void> {
         const description = interaction.fields.getTextInputValue("description");
         const enquiry = interaction.customId.split("-")[1] as ContactEnquiry;
-        const channelId = Properties.channels.bot[enquiry];
+        const channelId = Properties.channels.contact[enquiry];
 
         const channel = this.client.channels.cache.get(channelId) as TextChannel | NewsChannel;
 

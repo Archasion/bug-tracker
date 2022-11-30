@@ -6,8 +6,8 @@ import {
     ApplicationCommandType,
     TextInputBuilder,
     ActionRowBuilder,
-    ModalBuilder,
-    TextInputStyle
+    TextInputStyle,
+    ModalBuilder
 } from "discord.js";
 
 import {RestrictionLevel} from "../../utils/RestrictionUtils";
@@ -16,10 +16,10 @@ export default class AnnounceCommand extends Command {
     constructor(client: Bot) {
         super(client, {
             name: "announce",
-            description: "Submit an announcement to guilds that have an updates channel set up.",
+            description: "Send announcement to all configured guilds.",
             restriction: RestrictionLevel.Developer,
             type: ApplicationCommandType.ChatInput,
-            defer: false
+            defer: false // Modal response
         });
     }
 

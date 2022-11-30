@@ -4,8 +4,8 @@ import Bot from "../../Bot";
 
 import {
     ChatInputCommandInteraction,
+    StringSelectMenuBuilder,
     ApplicationCommandType,
-    SelectMenuBuilder,
     ActionRowBuilder
 } from "discord.js";
 
@@ -29,7 +29,12 @@ export default class SubmitCommand extends Command {
     async execute(interaction: ChatInputCommandInteraction): Promise<void> {
         const guild = await Guild.findOne(
             {_id: interaction.guildId},
-            {channels: 1, _id: 0}
+            {
+                ["channels.playerReporst"]: 1,
+                ["channels.suggestions"]: 1,
+                ["channels.bugReports"]: 1,
+                _id: 0
+            }
         );
 
         const submissionOptions = [];
@@ -56,16 +61,16 @@ export default class SubmitCommand extends Command {
         }
 
         if (submissionOptions.length === 0) {
-            await interaction.editReply("There are no submission channels set up");
+            await interaction.editReply("There are no submission channels set up.");
             return;
         }
 
-        const submissionType = new SelectMenuBuilder()
+        const submissionTypeSelection = new StringSelectMenuBuilder()
             .setCustomId("submission-type")
             .setPlaceholder("Select the submission type...")
             .setOptions(...submissionOptions);
 
-        const actionRow = new ActionRowBuilder().setComponents(submissionType);
+        const actionRow = new ActionRowBuilder().setComponents(submissionTypeSelection);
 
         await interaction.editReply({
             content: "Please select the submission type:",

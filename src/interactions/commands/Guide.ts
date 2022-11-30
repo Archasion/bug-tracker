@@ -63,9 +63,9 @@ export default class GuideCommand extends Command {
      */
     async execute(interaction: ChatInputCommandInteraction): Promise<void> {
         const sendPublicly = interaction.options.getBoolean("public");
-        const topic = interaction.options.getString("topic");
+        const topic = interaction.options.getString("topic") as Guide;
 
-        const {title, description, example, attachmentName, attachmentFile} = Guides[topic as Guide];
+        const {title, description, example, attachmentName, attachmentFiles} = Guides[topic];
 
         const embed = new EmbedBuilder()
             .setColor(Properties.colors.default)
@@ -74,15 +74,14 @@ export default class GuideCommand extends Command {
             .setFooter({
                 text: `Requested by ${interaction.user.tag}`,
                 iconURL: interaction.user.displayAvatarURL()
-            })
-            .setTimestamp();
+            });
 
-        if (attachmentName && attachmentFile.length > 0) embed.setImage(`attachment://${attachmentName}`);
+        if (attachmentName && attachmentFiles.length > 0) embed.setImage(`attachment://${attachmentName}`);
         if (example) embed.setFields([{name: "Example", value: `\`/${example}\``}]);
 
         if (
             await RestrictionUtils.isReviewer(interaction.member as GuildMember) &&
-            await PermissionUtils.verifyPermissions({
+            await PermissionUtils.verifyAccess({
                 interaction,
                 permissions: [PermissionFlagsBits.SendMessages],
                 channel: interaction.channel as TextChannel | NewsChannel,
@@ -92,7 +91,7 @@ export default class GuideCommand extends Command {
         ) {
             interaction.channel?.send({
                 embeds: [embed],
-                files: attachmentFile
+                files: attachmentFiles
             });
 
             await interaction.editReply("Sent the guide!");
@@ -101,7 +100,7 @@ export default class GuideCommand extends Command {
 
         await interaction.editReply({
             embeds: [embed],
-            files: attachmentFile
+            files: attachmentFiles
         });
 
         return;

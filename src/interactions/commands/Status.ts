@@ -5,7 +5,8 @@ import Properties from "../../data/Properties";
 import Bot from "../../Bot";
 
 import {
-    ApplicationCommandChoicesData,
+    ApplicationCommandNumericOptionData,
+    ApplicationCommandStringOptionData,
     ApplicationCommandOptionType,
     ChatInputCommandInteraction,
     ApplicationCommandType,
@@ -51,7 +52,7 @@ const forbiddenStatuses = {
     bugReports: ["Implemented"]
 };
 
-const typeAndIdOptions: ApplicationCommandChoicesData[] = [
+const typeAndIdOptions: (ApplicationCommandStringOptionData | ApplicationCommandNumericOptionData)[] = [
     {
         name: "type",
         description: "The type of submission to manage the status of.",

@@ -4,8 +4,8 @@ import Guild from "../../database/models/Guild.model";
 import Bot from "../../Bot";
 
 import {
+    StringSelectMenuBuilder,
     SelectMenuInteraction,
-    SelectMenuBuilder,
     ActionRowBuilder,
     TextInputBuilder,
     TextInputStyle,
@@ -50,14 +50,14 @@ export default class SubmissionTypeSelectMenu extends SelectMenu {
 
             const submissionChannel = interaction.guild?.channels.cache.get(guild?.channels.bugReports) as TextChannel | NewsChannel;
 
-            if (!await PermissionUtils.verifyPermissions({
+            if (!await PermissionUtils.verifyAccess({
                 interaction,
                 permissions: SubmissionChannelPermissions.BugReports,
                 channel: submissionChannel,
                 replyType: ReplyType.Update
             })) return;
 
-            const bugPriority = new SelectMenuBuilder()
+            const bugPriority = new StringSelectMenuBuilder()
                 .setCustomId("bug-priority")
                 .setPlaceholder("Select the bug priority...")
                 .setOptions([
@@ -81,7 +81,7 @@ export default class SubmissionTypeSelectMenu extends SelectMenu {
 
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
-            const disabledSubmissionType = new SelectMenuBuilder(interaction.component.toJSON());
+            const disabledSubmissionType = new StringSelectMenuBuilder(interaction.component.toJSON());
             disabledSubmissionType.setDisabled(true);
 
             const priorityActionRow = new ActionRowBuilder().setComponents(bugPriority);
@@ -111,7 +111,7 @@ export default class SubmissionTypeSelectMenu extends SelectMenu {
 
             const submissionChannel = interaction.guild?.channels.cache.get(guild?.channels.suggestions) as TextChannel | NewsChannel;
 
-            if (!await PermissionUtils.verifyPermissions({
+            if (!await PermissionUtils.verifyAccess({
                 interaction,
                 permissions: SubmissionChannelPermissions.Suggestions,
                 channel: submissionChannel,
@@ -147,7 +147,7 @@ export default class SubmissionTypeSelectMenu extends SelectMenu {
 
             const submissionChannel = interaction.guild?.channels.cache.get(guild?.channels.playerReports) as TextChannel | NewsChannel;
 
-            if (!await PermissionUtils.verifyPermissions({
+            if (!await PermissionUtils.verifyAccess({
                 interaction,
                 permissions: SubmissionChannelPermissions.PlayerReports,
                 channel: submissionChannel,

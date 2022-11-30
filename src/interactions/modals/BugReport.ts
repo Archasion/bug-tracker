@@ -74,7 +74,7 @@ export default class BugReportModal extends Modal {
             return;
         }
 
-        if (!await PermissionUtils.verifyPermissions({
+        if (!await PermissionUtils.verifyAccess({
             interaction,
             permissions: SubmissionChannelPermissions.BugReports,
             channel: submissionChannel,

@@ -1,6 +1,6 @@
 import Command from "../../modules/interactions/commands/Command";
-import ErrorMessages from "../../data/ErrorMessages";
 import Guild from "../../database/models/Guild.model";
+import ErrorMessages from "../../data/ErrorMessages";
 import Bot from "../../Bot";
 
 import {
@@ -22,14 +22,14 @@ export default class EditCommand extends Command {
     constructor(client: Bot) {
         super(client, {
             name: "edit",
-            description: "Edit a report or suggestion that was submitted by you.",
+            description: "Edit your submissions.",
             restriction: RestrictionLevel.Public,
             type: ApplicationCommandType.ChatInput,
-            defer: false,
+            defer: false, // Model response
             options: [
                 {
                     name: "type",
-                    description: "The submission type to edit.",
+                    description: "The type of submission.",
                     type: ApplicationCommandOptionType.String,
                     required: true,
                     choices: [
@@ -49,7 +49,7 @@ export default class EditCommand extends Command {
                 },
                 {
                     name: "id",
-                    description: "The number in the report/suggestion's footer.",
+                    description: "The number in the submission's footer.",
                     type: ApplicationCommandOptionType.Number,
                     required: true
                 }
@@ -68,8 +68,8 @@ export default class EditCommand extends Command {
         const guild = await Guild.findOne(
             {_id: interaction.guildId},
             {
+                [`submissions.${type}.${id}`]: 1,
                 [`channels.${type}`]: 1,
-                [`submissions.${type}`]: 1,
                 _id: 0
             }
         );
@@ -84,11 +84,9 @@ export default class EditCommand extends Command {
             return;
         }
 
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        const submission = guild?.submissions[type][id];
+        const submissionData = guild?.submissions[type][id];
 
-        if (!submission) {
+        if (!submissionData) {
             await interaction.reply({
                 content: `Unable to find report \`#${id}\``,
                 ephemeral: true
@@ -96,7 +94,7 @@ export default class EditCommand extends Command {
             return;
         }
 
-        const {messageId, authorId} = submission;
+        const {messageId, authorId} = submissionData;
 
         if (authorId !== interaction.user.id) {
             await interaction.reply({
@@ -106,7 +104,7 @@ export default class EditCommand extends Command {
             return;
         }
 
-        const submissionChannel = interaction.guild?.channels.cache.get(submissionChannelId) as TextChannel | NewsChannel;
+        const submissionChannel = await interaction.guild?.channels.fetch(submissionChannelId) as TextChannel | NewsChannel;
 
         if (!submissionChannel) {
             await interaction.reply({
@@ -116,10 +114,9 @@ export default class EditCommand extends Command {
             return;
         }
 
-        let reportMessage;
-        try {
-            reportMessage = await submissionChannel.messages.fetch(messageId);
-        } catch {
+        const submission = await submissionChannel.messages.fetch(messageId);
+
+        if (!submission) {
             await interaction.reply({
                 content: "Unable to retrieve report/suggestion, it may have been removed.",
                 ephemeral: true
@@ -127,7 +124,7 @@ export default class EditCommand extends Command {
             return;
         }
 
-        const [embed] = reportMessage.embeds;
+        const [embed] = submission.embeds;
 
         const modal = new ModalBuilder()
             .setTitle("Edit Submission")
@@ -162,7 +159,7 @@ export default class EditCommand extends Command {
                         .setMinLength(12)
                         .setMaxLength(4000)
                         .setPlaceholder("Suggestion...")
-                        .setValue(embed.description as string || embed.fields?.[0].value as string)
+                        .setValue(embed.description as string)
                         .setRequired(true)
                         .setStyle(TextInputStyle.Paragraph)
                 ) as ActionRowBuilder<TextInputBuilder>

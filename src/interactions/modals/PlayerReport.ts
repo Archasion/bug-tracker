@@ -59,7 +59,7 @@ export default class ReportPlayerModal extends Modal {
             return;
         }
 
-        if (!await PermissionUtils.verifyPermissions({
+        if (!await PermissionUtils.verifyAccess({
             interaction,
             permissions: SubmissionChannelPermissions.PlayerReports,
             channel: submissionChannel,

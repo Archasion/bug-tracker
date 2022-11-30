@@ -46,7 +46,7 @@ export default class DiscussionThreadButton extends Button {
             return;
         }
 
-        if (!await PermissionUtils.verifyPermissions({
+        if (!await PermissionUtils.verifyAccess({
             interaction,
             permissions: [
                 PermissionFlagsBits.SendMessagesInThreads,

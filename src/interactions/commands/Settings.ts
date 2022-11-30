@@ -5,21 +5,22 @@ import Guild from "../../database/models/Guild.model";
 import Bot from "../../Bot";
 
 import {
-    ApplicationCommandChoicesData,
+    ApplicationCommandStringOptionData,
     ApplicationCommandOptionType,
     ChatInputCommandInteraction,
     ApplicationCommandType,
     PermissionFlagsBits,
     EmbedBuilder,
-    ChannelType,
     TextChannel,
     NewsChannel,
+    Channel,
     Role
 } from "discord.js";
 
 import {RestrictionLevel} from "../../utils/RestrictionUtils";
+import ValidationUtils from "../../utils/ValidationUtils";
 
-const actionOption: ApplicationCommandChoicesData = {
+const actionOptions: ApplicationCommandStringOptionData = {
     name: "action",
     description: "The action to perform.",
     type: ApplicationCommandOptionType.String,
@@ -50,7 +51,7 @@ export default class SettingsCommand extends Command {
             defer: true,
             options: [
                 {
-                    name: "create_threads",
+                    name: "auto_thread_creation",
                     description: "Create discussion threads for reports/suggestions automatically.",
                     type: ApplicationCommandOptionType.Subcommand,
                     options: [
@@ -96,7 +97,7 @@ export default class SettingsCommand extends Command {
                     description: "Manage roles given to new members.",
                     type: ApplicationCommandOptionType.Subcommand,
                     options: [
-                        actionOption,
+                        actionOptions,
                         {
                             name: "role",
                             description: "The role to grant.",
@@ -110,7 +111,7 @@ export default class SettingsCommand extends Command {
                     description: "Remove messages in a channel as they are being sent (Administrators+ are not affected).",
                     type: ApplicationCommandOptionType.Subcommand,
                     options: [
-                        actionOption,
+                        actionOptions,
                         {
                             name: "channel",
                             description: "The channel to remove messages from.",
@@ -128,70 +129,55 @@ export default class SettingsCommand extends Command {
      * @returns {Promise<void>}
      */
     async execute(interaction: ChatInputCommandInteraction): Promise<void> {
-        let option = interaction.options.getSubcommand();
+        let selection = interaction.options.getSubcommand();
 
-        switch (option) {
+        switch (selection) {
             case "notify_on_status_change":
-                option = "notifyOnStatusChange";
+                selection = "notifyOnStatusChange";
                 break;
 
             case "join_roles":
-                option = "joinRoles";
+                selection = "joinRoles";
                 break;
 
             case "auto_message_deletion":
-                option = "autoDelete";
+                selection = "autoDelete";
                 break;
 
-            case "create_threads":
-                option = "threads";
+            case "auto_thread_creation":
+                selection = "threads";
                 break;
         }
 
         const guild = await Guild.findOne(
             {_id: interaction.guildId},
-            {[`settings.${option}`]: 1, _id: 0}
+            {[`settings.${selection}`]: 1, _id: 0}
         );
 
-        // Automatic thread creation
-        if (option === "threads") {
+        // Automatic thread creation & status change notifications
+        if (selection === "threads" || selection === "notifyOnStatusChange") {
             const enabled = interaction.options.getBoolean("enabled");
             const type = interaction.options.getString("type") as string;
 
-            if (guild?.settings.threads[type] === enabled) {
-                await interaction.editReply(`Automatic discussion thread creation is **already ${enabled ? "enabled" : "disabled"}** for these submissions.`);
+            if (
+                (type && guild?.settings.threads[type] === enabled) ||
+                (!type && guild?.settings.notifyOnStatusChange === enabled)
+            ) {
+                await interaction.editReply(`This configuration has **already been ${enabled ? "enabled" : "disabled"}**.`);
                 return;
             }
 
             await Guild.updateOne(
                 {_id: interaction.guildId},
-                {$set: {[`settings.threads.${type}`]: enabled}}
+                {$set: {[`settings.${selection}${type ? `.${type}` : ""}`]: enabled}}
             );
 
-            await interaction.editReply(`Automatic discussion thread creation has been **${enabled ? "enabled" : "disabled"}** for these submissions.`);
-            return;
-        }
-
-        // Message submission author on status change
-        if (option === "notifyOnStatusChange") {
-            const enabled = interaction.options.getBoolean("enabled");
-
-            if (guild?.settings.notifyOnStatusChange === enabled) {
-                await interaction.editReply(`These DM confirmations are **already ${enabled ? "enabled" : "disabled"}**.`);
-                return;
-            }
-
-            await Guild.updateOne(
-                {_id: interaction.guildId},
-                {$set: {["settings.notifyOnStatusChange"]: enabled}}
-            );
-
-            await interaction.editReply(`DM confirmations for this task have been **${enabled ? "enabled" : "disabled"}**.`);
+            await interaction.editReply(`This configuration has been **${enabled ? "enabled" : "disabled"}** successfully.`);
             return;
         }
 
         // Grant role on join
-        if (option === "autoRoles") {
+        if (selection === "autoRoles") {
             const action = interaction.options.getString("action");
             const autoRoles = guild?.settings.autoRoles;
 
@@ -206,7 +192,7 @@ export default class SettingsCommand extends Command {
                     .setTitle("Auto Roles")
                     .setFields([{
                         name: "Roles",
-                        value: `<@&${autoRoles.join("> <@&")}>`
+                        value: `<@&${autoRoles.join(">\n<@&")}>`
                     }]);
 
                 await interaction.editReply({embeds: [embed]});
@@ -248,7 +234,7 @@ export default class SettingsCommand extends Command {
 
             if (action === "remove") {
                 if (!autoRoles.includes(role.id)) {
-                    await interaction.editReply(`${role} is already not being given on join.`);
+                    await interaction.editReply(`${role} is not configured to be given on join.`);
                     return;
                 }
 
@@ -264,7 +250,7 @@ export default class SettingsCommand extends Command {
         }
 
         // Automatically delete all messages in channel(s) - Unless sent by an Administrator+
-        if (option === "autoDelete") {
+        if (selection === "autoDelete") {
             const action = interaction.options.getString("action");
             const autoDelete = guild?.settings.autoDelete;
 
@@ -279,21 +265,21 @@ export default class SettingsCommand extends Command {
                     .setTitle("Automatic Message Deletion")
                     .setFields([{
                         name: "Channels",
-                        value: `<#${autoDelete.join("> <#")}>`
+                        value: `<#${autoDelete.join(">\n<#")}>`
                     }]);
 
                 await interaction.editReply({embeds: [embed]});
                 return;
             }
 
-            const channel = interaction.options.getChannel("channel") as TextChannel | NewsChannel;
+            const channel = interaction.options.getChannel("channel") as Channel;
 
             if (!channel) {
                 await interaction.editReply("Please specify a channel to perform the action on.");
                 return;
             }
 
-            if (channel.type !== ChannelType.GuildText && channel.type !== ChannelType.GuildNews) {
+            if (!ValidationUtils.isTextOrNewsChannel(channel.type)) {
                 await interaction.editReply("You must specify either a text or announcement channel.");
                 return;
             }
@@ -304,13 +290,13 @@ export default class SettingsCommand extends Command {
                     return;
                 }
 
-                if (!await PermissionUtils.verifyPermissions({
+                if (!await PermissionUtils.verifyAccess({
                     interaction,
                     permissions: [
                         PermissionFlagsBits.ManageMessages,
                         PermissionFlagsBits.ViewChannel
                     ],
-                    channel,
+                    channel: channel as TextChannel | NewsChannel,
                     replyType: ReplyType.EditReply
                 })) return;
 

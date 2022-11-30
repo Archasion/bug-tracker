@@ -15,18 +15,16 @@ export default class EvalCommand extends Command {
     constructor(client: Bot) {
         super(client, {
             name: "eval",
-            description: "Evaluates code.",
+            description: "Evaluate code.",
             restriction: RestrictionLevel.Developer,
             type: ApplicationCommandType.ChatInput,
             defer: true,
-            options: [
-                {
-                    name: "code",
-                    description: "The code to evaluate.",
-                    required: true,
-                    type: ApplicationCommandOptionType.String
-                }
-            ]
+            options: [{
+                name: "code",
+                description: "The code to evaluate.",
+                required: true,
+                type: ApplicationCommandOptionType.String
+            }]
         });
     }
 
@@ -39,13 +37,13 @@ export default class EvalCommand extends Command {
 
         const embed = new EmbedBuilder()
             .setColor(Properties.colors.default)
-            .setTitle("Evaluated code")
-            .setTimestamp();
+            .setTitle("Evaluated code");
 
         try {
             let evaluatedCode = eval(codeToEvaluate);
 
-            if (typeof evaluatedCode === "object") evaluatedCode = JSON.stringify(evaluatedCode, null, "\t");
+            if (typeof evaluatedCode === "object")
+                evaluatedCode = JSON.stringify(evaluatedCode, null, "\t");
 
             if (
                 typeof evaluatedCode !== "string" &&
@@ -56,16 +54,13 @@ export default class EvalCommand extends Command {
                 return;
             }
 
-            embed.setDescription(`\`\`\`js\n${evaluatedCode}\n\`\`\``);
+            embed.setDescription(`\`\`\`ts\n${evaluatedCode}\n\`\`\``);
         } catch (error) {
             embed.setTitle("Failed to evaluate code");
-            embed.setDescription(`\`\`\`js\n${error}\n\`\`\``);
+            embed.setDescription(`\`\`\`ts\n${error}\n\`\`\``);
         }
 
-        await interaction.editReply({
-            embeds: [embed]
-        });
-
+        await interaction.editReply({embeds: [embed]});
         return;
     }
 }

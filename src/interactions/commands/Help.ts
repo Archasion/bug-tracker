@@ -15,7 +15,7 @@ export default class HelpCommand extends Command {
     constructor(client: Bot) {
         super(client, {
             name: "help",
-            description: "Shows all commands",
+            description: "List all commands available to you.",
             restriction: RestrictionLevel.Public,
             type: ApplicationCommandType.ChatInput,
             defer: true
@@ -27,15 +27,15 @@ export default class HelpCommand extends Command {
      * @returns {Promise<void>}
      */
     async execute(interaction: ChatInputCommandInteraction): Promise<void> {
-        const level = await RestrictionUtils.getRestrictionLevel(interaction.member as GuildMember);
-        const commands = this.manager.commands.filter(command => command.restriction <= level);
+        const restrictionLevel = await RestrictionUtils.getRestrictionLevel(interaction.member as GuildMember);
+        const usableCommands = this.manager.commands.filter(command => command.restriction <= restrictionLevel);
 
         const commandList = new EmbedBuilder()
             .setColor(Properties.colors.default)
             .setTitle("Command Guide")
             .setFields([]);
 
-        for (let i = 0; i <= level; i++) {
+        for (let i = 0; i <= restrictionLevel; i++) {
             commandList.data.fields?.push({
                 name: `${RestrictionLevel[i]} Commands`,
                 value: "\u200b"
@@ -43,13 +43,10 @@ export default class HelpCommand extends Command {
         }
 
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        commands.map(command => commandList.data.fields![command.restriction].value += `**\`/${command.name}\` ·** ${command.description}\n`);
+        usableCommands.map(command => commandList.data.fields![command.restriction].value += `**\`/${command.name}\` ·** ${command.description}\n`);
         commandList.data.fields = commandList.data.fields?.filter(field => field.value !== "\u200b");
 
-        await interaction.editReply({
-            embeds: [commandList]
-        });
-
+        await interaction.editReply({ embeds: [commandList] });
         return;
     }
 }

@@ -69,7 +69,7 @@ export default class EditModal extends Modal {
             return;
         }
 
-        if (!await PermissionUtils.verifyPermissions({
+        if (!await PermissionUtils.verifyAccess({
             interaction,
             permissions: [
                 PermissionFlagsBits.ReadMessageHistory,

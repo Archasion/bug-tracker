@@ -1,11 +1,7 @@
 import Command from "../../modules/interactions/commands/Command";
 import Bot from "../../Bot";
 
-import {
-    ChatInputCommandInteraction,
-    ApplicationCommandType
-} from "discord.js";
-
+import {ChatInputCommandInteraction, ApplicationCommandType} from "discord.js";
 import {RestrictionLevel} from "../../utils/RestrictionUtils";
 
 export default class ReportCommand extends Command {

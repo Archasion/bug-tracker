@@ -63,7 +63,7 @@ export default class ArchiveButton extends Button {
 
         const archiveChannel = interaction.guild?.channels.cache.get(archiveChannelId) as TextChannel | NewsChannel;
 
-        if (!await PermissionUtils.verifyPermissions({
+        if (!await PermissionUtils.verifyAccess({
             interaction,
             permissions: [
                 PermissionFlagsBits.SendMessages,
@@ -73,7 +73,7 @@ export default class ArchiveButton extends Button {
             replyType: ReplyType.EditReply
         })) return;
 
-        if (!await PermissionUtils.verifyPermissions({
+        if (!await PermissionUtils.verifyAccess({
             interaction,
             permissions: [
                 PermissionFlagsBits.ManageMessages,
