@@ -62,19 +62,19 @@ export default class EditCommand extends Command {
      * @returns {Promise<void>}
      */
     async execute(interaction: ChatInputCommandInteraction): Promise<void> {
-        const type = interaction.options.getString("type") as SubmissionType;
-        const id = interaction.options.getNumber("id") as number;
+        const submissionType = interaction.options.getString("type") as SubmissionType;
+        const submissionId = interaction.options.getNumber("id") as number;
 
         const guild = await Guild.findOne(
             {_id: interaction.guildId},
             {
-                [`submissions.${type}.${id}`]: 1,
-                [`channels.${type}`]: 1,
+                [`submissions.${submissionType}.${submissionId}`]: 1,
+                [`channels.${submissionType}`]: 1,
                 _id: 0
             }
         );
 
-        const submissionChannelId = guild?.channels[type];
+        const submissionChannelId = guild?.channels[submissionType];
 
         if (!submissionChannelId) {
             await interaction.reply({
@@ -84,11 +84,11 @@ export default class EditCommand extends Command {
             return;
         }
 
-        const submissionData = guild?.submissions[type][id];
+        const submissionData = guild?.submissions[submissionType][submissionId];
 
         if (!submissionData) {
             await interaction.reply({
-                content: `Unable to find report \`#${id}\``,
+                content: `Unable to find submission \`#${submissionId}\``,
                 ephemeral: true
             });
             return;
@@ -98,7 +98,7 @@ export default class EditCommand extends Command {
 
         if (authorId !== interaction.user.id) {
             await interaction.reply({
-                content: "You must be the author of the report in order to edit its content.",
+                content: "You must be the author of the submisonsi in order to edit its content.",
                 ephemeral: true
             });
             return;
@@ -118,7 +118,7 @@ export default class EditCommand extends Command {
 
         if (!submission) {
             await interaction.reply({
-                content: "Unable to retrieve report/suggestion, it may have been removed.",
+                content: "Unable to retrieve submission, it may have been removed.",
                 ephemeral: true
             });
             return;
@@ -128,42 +128,115 @@ export default class EditCommand extends Command {
 
         const modal = new ModalBuilder()
             .setTitle("Edit Submission")
-            .setCustomId(`edit-${type}-${id}`);
+            .setCustomId(`edit-${submissionType}-${submissionId}`);
 
         const modalComponents: ActionRowBuilder<TextInputBuilder>[] = [];
 
-        embed.fields?.forEach(field => {
-            if (!field.name.includes("Reason")) {
+        switch (submissionType) {
+            case "bugReports": {
+                const [summaryField, descriptionField] = embed.fields;
+                const reproductionStepsField = embed.fields.find(field => field.name === "Reproduction Steps");
+                const systemSpecsField = embed.fields.find(field => field.name === "System Specs");
+
+                modalComponents.push(...[
+                    new ActionRowBuilder().addComponents(
+                        new TextInputBuilder()
+                            .setCustomId("Summary")
+                            .setLabel("Summary")
+                            .setMinLength(12)
+                            .setMaxLength(1024)
+                            .setValue(summaryField.value)
+                            .setPlaceholder(`Enter summary...`)
+                            .setRequired(true)
+                            .setStyle(TextInputStyle.Short)
+                    ) as ActionRowBuilder<TextInputBuilder>,
+
+                    new ActionRowBuilder().addComponents(
+                        new TextInputBuilder()
+                            .setCustomId("Description")
+                            .setLabel("Description")
+                            .setMinLength(12)
+                            .setMaxLength(1024)
+                            .setValue(descriptionField.value)
+                            .setPlaceholder(`Enter description...`)
+                            .setRequired(true)
+                            .setStyle(TextInputStyle.Paragraph)
+                    ) as ActionRowBuilder<TextInputBuilder>,
+
+                    new ActionRowBuilder().addComponents(
+                        new TextInputBuilder()
+                            .setCustomId("Reproduction-Steps")
+                            .setLabel("Reproduction Steps")
+                            .setMinLength(12)
+                            .setMaxLength(1024)
+                            .setValue(reproductionStepsField?.value ?? "")
+                            .setPlaceholder(`Enter reproduction steps...`)
+                            .setRequired(false)
+                            .setStyle(TextInputStyle.Paragraph)
+                    ) as ActionRowBuilder<TextInputBuilder>,
+
+                    new ActionRowBuilder().addComponents(
+                        new TextInputBuilder()
+                            .setCustomId("System-Specs")
+                            .setLabel("System Specs")
+                            .setMinLength(12)
+                            .setMaxLength(1024)
+                            .setValue(systemSpecsField?.value ?? "")
+                            .setPlaceholder(`Enter system specs...`)
+                            .setRequired(false)
+                            .setStyle(TextInputStyle.Paragraph)
+                    ) as ActionRowBuilder<TextInputBuilder>
+                ]);
+
+                break;
+            }
+
+            case "playerReports": {
+                const [reportedPlayerField, reportReasonField] = embed.fields;
+                modalComponents.push(...[
+                    new ActionRowBuilder().addComponents(
+                        new TextInputBuilder()
+                            .setCustomId("Reported-Player")
+                            .setLabel("Reported Player")
+                            .setMinLength(1)
+                            .setMaxLength(1024)
+                            .setValue(reportedPlayerField?.value ?? "")
+                            .setPlaceholder(`Enter reported player...`)
+                            .setRequired(true)
+                            .setStyle(TextInputStyle.Short)
+                    ) as ActionRowBuilder<TextInputBuilder>,
+
+                    new ActionRowBuilder().addComponents(
+                        new TextInputBuilder()
+                            .setCustomId("Report-Reason")
+                            .setLabel("Report Reason")
+                            .setMinLength(12)
+                            .setMaxLength(1024)
+                            .setValue(reportReasonField?.value ?? "")
+                            .setPlaceholder(`Enter report reason...`)
+                            .setRequired(true)
+                            .setStyle(TextInputStyle.Paragraph)
+                    ) as ActionRowBuilder<TextInputBuilder>
+                ]);
+
+                break;
+            }
+
+            case "suggestions": {
                 modalComponents.push(
                     new ActionRowBuilder().addComponents(
                         new TextInputBuilder()
-                            .setCustomId(field.name.replaceAll(" ", "-"))
-                            .setLabel(field.name)
+                            .setCustomId("Suggestion")
+                            .setLabel("Suggestion")
                             .setMinLength(12)
-                            .setMaxLength(1024)
-                            .setValue(field.value)
-                            .setPlaceholder(`${field.name}...`)
+                            .setMaxLength(4000)
+                            .setPlaceholder("Enter suggestion...")
+                            .setValue(embed.description as string)
                             .setRequired(true)
                             .setStyle(TextInputStyle.Paragraph)
                     ) as ActionRowBuilder<TextInputBuilder>
                 );
             }
-        });
-
-        if (modalComponents.length === 0) {
-            modalComponents.push(
-                new ActionRowBuilder().addComponents(
-                    new TextInputBuilder()
-                        .setCustomId("suggestion")
-                        .setLabel("Suggestion")
-                        .setMinLength(12)
-                        .setMaxLength(4000)
-                        .setPlaceholder("Suggestion...")
-                        .setValue(embed.description as string)
-                        .setRequired(true)
-                        .setStyle(TextInputStyle.Paragraph)
-                ) as ActionRowBuilder<TextInputBuilder>
-            );
         }
 
         modal.addComponents(modalComponents);

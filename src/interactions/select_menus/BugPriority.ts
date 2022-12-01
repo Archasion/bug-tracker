@@ -80,7 +80,7 @@ export default class BugPrioritySelectMenu extends SelectMenu {
                 ) as ActionRowBuilder<TextInputBuilder>
             ]);
 
-        await interaction.showModal(modal);
+        await interaction.showModal(modal).then(() => interaction.deleteReply());
         return;
     }
 }

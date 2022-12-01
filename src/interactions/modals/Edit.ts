@@ -1,7 +1,6 @@
 import Modal from "../../modules/interactions/modals/Modal";
-import PermissionUtils, {ReplyType} from "../../utils/PermissionUtils";
-import ErrorMessages from "../../data/ErrorMessages";
 import Guild from "../../database/models/Guild.model";
+import ErrorMessages from "../../data/ErrorMessages";
 import Bot from "../../Bot";
 
 import {
@@ -14,8 +13,8 @@ import {
     Message
 } from "discord.js";
 
+import PermissionUtils, {ReplyType} from "../../utils/PermissionUtils";
 import {RestrictionLevel} from "../../utils/RestrictionUtils";
-import {SubmissionType} from "../../data/Types";
 
 export default class EditModal extends Modal {
     constructor(client: Bot) {
@@ -30,32 +29,25 @@ export default class EditModal extends Modal {
      * @returns {Promise<void>}
      */
     async execute(interaction: ModalSubmitInteraction): Promise<void> {
-        const args = interaction.customId.split("-");
-        const type = args[1] as SubmissionType;
-        const id = args[2];
+        const [_, submissionType, submissionId] = interaction.customId.split("-");
 
         const guild = await Guild.findOne(
             {_id: interaction.guildId},
             {
-                [`channels.${type}`]: 1,
-                [`submissions.${type}.${id}`]: 1,
+                [`submissions.${submissionType}.${submissionId}`]: 1,
+                [`channels.${submissionType}`]: 1,
                 _id: 0
             }
         );
 
-        const submission = guild?.submissions[type][id];
+        const submission = guild?.submissions[submissionType][submissionId];
 
         if (!submission) {
             await interaction.editReply(ErrorMessages.SubmissionNotFound);
             return;
         }
 
-        if (submission.authorId !== interaction.user.id) {
-            await interaction.editReply("Only the author of the submission can edit it.");
-            return;
-        }
-
-        const submissionChannelId = guild?.channels[type];
+        const submissionChannelId = guild?.channels[submissionType];
 
         if (!submissionChannelId) {
             await interaction.editReply(ErrorMessages.ChannelNotConfigured);
@@ -79,27 +71,48 @@ export default class EditModal extends Modal {
             replyType: ReplyType.EditReply
         })) return;
 
-        const message = await submissionChannel.messages.fetch(submission.messageId)
-            .catch(async () => {
-                await interaction.editReply(ErrorMessages.SubmissionNotFound);
-                return;
-            }) as Message;
+        const message = await submissionChannel.messages.fetch(submission.messageId);
+
+        if (!message) {
+            await interaction.editReply(ErrorMessages.SubmissionNotFound);
+            return;
+        }
 
         const [embed] = message.embeds;
         const newEmbed = new EmbedBuilder(embed.toJSON());
-
         const newFields: APIEmbedField[] = [];
 
-        interaction.fields.fields.forEach(field => {
-            if (field.customId === "suggestion") {
+        for (const fieldData of interaction.fields.fields) {
+            const [customId, field] = fieldData;
+
+            let contentName = customId.replaceAll("-", "");
+            contentName = contentName[0].toLowerCase() + contentName.slice(1);
+            if (contentName === "reportReason") contentName = "reason";
+
+            if (customId === "suggestion") {
+                await Guild.updateOne(
+                    {_id: interaction.guildId},
+                    {$set: {[`submissions.${submissionType}.${submissionId}.content`]: field.value}}
+                );
+
                 newEmbed.setDescription(field.value);
-            } else {
+            } else if (field.value) {
+                await Guild.updateOne(
+                    {_id: interaction.guildId},
+                    {$set: {[`submissions.${submissionType}.${submissionId}.content.${contentName}`]: field.value}}
+                );
+
                 newFields.push({
-                    name: field.customId.replaceAll("-", " "),
+                    name: customId.replaceAll("-", " "),
                     value: field.value
                 });
+            } else {
+                await Guild.updateOne(
+                    {_id: interaction.guildId},
+                    {$unset: {[`submissions.${submissionType}.${submissionId}.content.${contentName}`]: 1}}
+                )
             }
-        });
+        }
 
         if (newFields.length > 0) newEmbed.setFields(newFields);
 

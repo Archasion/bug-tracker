@@ -144,6 +144,8 @@ export default class SetStatusSelectMenu extends SelectMenu {
                 components: []
             });
 
+            await interaction.deleteReply();
+
             if (guild?.settings.notifyOnStatusChange && status !== "None") {
                 const submissionAuthor = await interaction.guild?.members.fetch(submissionData.authorId);
                 if (!submissionAuthor) return;

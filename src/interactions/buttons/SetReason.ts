@@ -61,7 +61,7 @@ export default class SetReasonButton extends Button {
                 ) as ActionRowBuilder<TextInputBuilder>
             );
 
-        await interaction.showModal(modal);
+        await interaction.showModal(modal).then(() => interaction.deleteReply());
         return;
     }
 }

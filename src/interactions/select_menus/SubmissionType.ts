@@ -186,7 +186,7 @@ export default class SubmissionTypeSelectMenu extends SelectMenu {
             .setTitle(submissionType === "suggestion" ? "Suggestion" : "Player Report")
             .addComponents(modalComponents);
 
-        await interaction.showModal(modal);
+        await interaction.showModal(modal).then(() => interaction.deleteReply());
         return;
     }
 }
