@@ -8,7 +8,7 @@ export default class ReportCommand extends Command {
     constructor(client: Bot) {
         super(client, {
             name: "report",
-            description: "DEPRECATED",
+            description: "`DEPRECATED`",
             restriction: RestrictionLevel.Public,
             type: ApplicationCommandType.ChatInput,
             defer: true

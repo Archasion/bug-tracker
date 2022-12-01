@@ -19,17 +19,24 @@ import {RestrictionLevel} from "../../utils/RestrictionUtils";
 export default class UserInfoCommand extends Command {
     constructor(client: Bot) {
         super(client, {
-            name: "user-info",
-            description: "View information and report statistics about a member.",
+            name: "user",
+            description: "User command.",
             restriction: RestrictionLevel.Public,
             type: ApplicationCommandType.ChatInput,
             defer: true,
             options: [
                 {
-                    name: "member",
-                    description: "The member to view information about.",
-                    type: ApplicationCommandOptionType.User,
-                    required: true
+                    name: "info",
+                    description: "View member information and their submission statistics.",
+                    type: ApplicationCommandOptionType.Subcommand,
+                    options: [
+                        {
+                            name: "member",
+                            description: "The member to view information about.",
+                            type: ApplicationCommandOptionType.User,
+                            required: true
+                        }
+                    ]
                 }
             ]
         });
@@ -42,10 +49,7 @@ export default class UserInfoCommand extends Command {
     async execute(interaction: ChatInputCommandInteraction): Promise<void> {
         const guild = await Guild.findOne(
             {_id: interaction.guildId},
-            {
-                submissions: 1,
-                _id: 0
-            }
+            {submissions: 1, _id: 0}
         );
 
         const member = interaction.options.getMember("member") as GuildMember;
@@ -55,28 +59,23 @@ export default class UserInfoCommand extends Command {
         // @ts-ignore
         let {bugReports, playerReports, suggestions} = guild.submissions;
 
-        suggestions = Object.keys(suggestions)
-            .filter(id => suggestions[id].authorId === member.id);
-
-        playerReports = Object.keys(playerReports)
-            .filter(id => playerReports[id].authorId === member.id);
-
-        bugReports = Object.keys(bugReports)
-            .filter(id => bugReports[id].authorId === member.id);
+        suggestions = Object.keys(suggestions).filter(id => suggestions[id].authorId === member.id);
+        playerReports = Object.keys(playerReports).filter(id => playerReports[id].authorId === member.id);
+        bugReports = Object.keys(bugReports).filter(id => bugReports[id].authorId === member.id);
 
         const suggestionsLength = suggestions.length;
         const playerReportsLength = playerReports.length;
         const bugReportsLength = bugReports.length;
 
-        const permissions = member.permissions.toArray().join("` `") || "None";
-        const roles = member.roles.cache.map(role => role).join(" ") || "None";
+        const permissionsInGuild = member.permissions.toArray().join("` `") || "None";
+        const memberRoles = member.roles.cache.map(role => role).join(" ") || "None";
 
         const info = new EmbedBuilder()
             .setColor(Properties.colors.default)
             .setTitle(member.displayName)
             .setThumbnail(member.displayAvatarURL())
             .setImage(member.user.bannerURL() as string | null)
-            .setFooter({text: `ID: ${member.id}`})
+            .setFooter({text: `User ID: ${member.id}`})
             .setAuthor({
                 name: member.user.tag,
                 iconURL: member.user.displayAvatarURL()
@@ -93,7 +92,7 @@ export default class UserInfoCommand extends Command {
                     inline: true
                 },
                 {
-                    name: "All Reports",
+                    name: "Submissions",
                     value: (bugReportsLength + playerReportsLength + suggestionsLength).toString(),
                     inline: true
                 },
@@ -114,22 +113,22 @@ export default class UserInfoCommand extends Command {
                 },
                 {
                     name: `Roles (${member.roles.cache.size})`,
-                    value: roles,
+                    value: memberRoles,
                     inline: false
                 },
                 {
                     name: `Permissions (${member.permissions.toArray().length})`,
-                    value: `\`${permissions}\``,
+                    value: `\`${permissionsInGuild}\``,
                     inline: false
                 }
             ]);
 
-        const actionRow: ActionRowBuilder<ButtonBuilder> = new ActionRowBuilder().addComponents(
-            new ButtonBuilder({})
-                .setLabel("Avatar")
-                .setStyle(ButtonStyle.Link)
-                .setURL(member.displayAvatarURL())
-        ) as ActionRowBuilder<ButtonBuilder>;
+        const avatarUrl = new ButtonBuilder({})
+            .setLabel("Avatar")
+            .setStyle(ButtonStyle.Link)
+            .setURL(member.displayAvatarURL());
+
+        const actionRow = new ActionRowBuilder().setComponents(avatarUrl) as ActionRowBuilder<ButtonBuilder>;
 
         await interaction.editReply({
             content: `${member}`,

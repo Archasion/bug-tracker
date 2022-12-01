@@ -14,7 +14,7 @@ export default class WipeCommand extends Command {
     constructor(client: Bot) {
         super(client, {
             name: "wipe",
-            description: "Wipe certain/all data from the database",
+            description: "Wipe  data from the database",
             restriction: RestrictionLevel.Owner,
             type: ApplicationCommandType.ChatInput,
             defer: true,

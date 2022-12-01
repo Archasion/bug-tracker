@@ -1,4 +1,5 @@
 import {AttachmentBuilder} from "discord.js";
+import Media from "./Media";
 
 export default class Guides {
     public static readonly bug_reports = {
@@ -6,7 +7,7 @@ export default class Guides {
         description: "Want to report a bug? Here's how to do it!\n\nAll you need to do is use the command provided in the example, fill out the form and submit the bug report!",
         example: "submit",
         attachmentName: "BugReportForm.png",
-        attachmentFiles: [new AttachmentBuilder("assets/guide/BugReports.png", {name: "BugReportForm.png"})]
+        attachmentFiles: [Media.guides.bugReports]
     };
 
     public static readonly player_reports = {
@@ -14,7 +15,7 @@ export default class Guides {
         description: "Want to report a player? Here's how to do it!\n\nAll you need to do is use the command provided in the example, fill out the form and submit the player report!",
         example: "submit",
         attachmentName: "PlayerReportForm.png",
-        attachmentFiles: [new AttachmentBuilder("assets/guide/PlayerReports.png", {name: "PlayerReportForm.png"})]
+        attachmentFiles: [Media.guides.playerReports]
     };
 
     public static readonly suggestions = {
@@ -22,6 +23,6 @@ export default class Guides {
         description: "Want to suggest something? Here's how to do it!\n\nAll you need to do is use the command provided in the example, fill out the form and submit the suggestion!",
         example: "submit",
         attachmentName: "SuggestionForm.png",
-        attachmentFiles: [new AttachmentBuilder("assets/guide/Suggestions.png", {name: "SuggestionForm.png"})]
+        attachmentFiles: [Media.guides.suggestions]
     };
 }

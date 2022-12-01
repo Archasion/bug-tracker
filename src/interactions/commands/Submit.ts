@@ -3,10 +3,12 @@ import Guild from "../../database/models/Guild.model";
 import Bot from "../../Bot";
 
 import {
+    MessageActionRowComponentData,
     ChatInputCommandInteraction,
     StringSelectMenuBuilder,
     ApplicationCommandType,
-    ActionRowBuilder
+    ActionRowBuilder,
+    ActionRowData
 } from "discord.js";
 
 import {RestrictionLevel} from "../../utils/RestrictionUtils";
@@ -30,37 +32,37 @@ export default class SubmitCommand extends Command {
         const guild = await Guild.findOne(
             {_id: interaction.guildId},
             {
-                ["channels.playerReporst"]: 1,
+                ["channels.playerReports"]: 1,
                 ["channels.suggestions"]: 1,
                 ["channels.bugReports"]: 1,
                 _id: 0
             }
         );
 
-        const submissionOptions = [];
+        const submissionTypeOptions = [];
 
         if (guild?.channels.bugReports) {
-            submissionOptions.push({
+            submissionTypeOptions.push({
                 label: "Bug Report",
                 value: "bug-report"
             });
         }
 
         if (guild?.channels.playerReports) {
-            submissionOptions.push({
+            submissionTypeOptions.push({
                 label: "Player Report",
                 value: "player-report"
             });
         }
 
         if (guild?.channels.suggestions) {
-            submissionOptions.push({
+            submissionTypeOptions.push({
                 label: "Suggestion",
                 value: "suggestion"
             });
         }
 
-        if (submissionOptions.length === 0) {
+        if (submissionTypeOptions.length === 0) {
             await interaction.editReply("There are no submission channels set up.");
             return;
         }
@@ -68,15 +70,15 @@ export default class SubmitCommand extends Command {
         const submissionTypeSelection = new StringSelectMenuBuilder()
             .setCustomId("submission-type")
             .setPlaceholder("Select the submission type...")
-            .setOptions(...submissionOptions);
+            .setOptions(...submissionTypeOptions);
 
-        const actionRow = new ActionRowBuilder().setComponents(submissionTypeSelection);
+        const actionRow = new ActionRowBuilder()
+            .setComponents(submissionTypeSelection)
+            .toJSON() as ActionRowData<MessageActionRowComponentData>
 
         await interaction.editReply({
             content: "Please select the submission type:",
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            components: [actionRow.toJSON()]
+            components: [actionRow]
         });
         return;
     }

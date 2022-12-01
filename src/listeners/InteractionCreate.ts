@@ -17,7 +17,7 @@ module.exports = class InteractionCreateEventListener extends EventListener {
             await this.client.buttons.handle(interaction);
         }
 
-        if (interaction.isSelectMenu()) {
+        if (interaction.isStringSelectMenu()) {
             await this.client.select_menus.handle(interaction);
         }
 

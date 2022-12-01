@@ -1,22 +1,24 @@
 import Command from "../../modules/interactions/commands/Command";
-import Properties from "../../data/Properties";
 import Guild from "../../database/models/Guild.model";
+import Properties from "../../data/Properties";
 import Bot from "../../Bot";
 
 import {
+    ApplicationCommandNumericOptionData,
     ApplicationCommandOptionType,
     ChatInputCommandInteraction,
     ApplicationCommandType,
-    EmbedBuilder,
-    ApplicationCommandNumericOptionData,
+    EmbedBuilder
 } from "discord.js";
 
 import {RestrictionLevel} from "../../utils/RestrictionUtils";
+import {BugPriority} from "../../data/Types";
+import Media from "../../data/Media";
 
-const idOption: ApplicationCommandNumericOptionData[] = [
+const submissionIdInput: ApplicationCommandNumericOptionData[] = [
     {
         name: "id",
-        description: "The ID of the bug report.",
+        description: "The ID of the submission.",
         type: ApplicationCommandOptionType.Number,
         required: true
     }
@@ -26,28 +28,28 @@ export default class ViewCommand extends Command {
     constructor(client: Bot) {
         super(client, {
             name: "view",
-            description: "View a submitted report/suggestion.",
+            description: "View a submission.",
             restriction: RestrictionLevel.Public,
-            defer: true,
             type: ApplicationCommandType.ChatInput,
+            defer: true,
             options: [
                 {
                     name: "bug_report",
-                    description: "View a submitted bug report.",
+                    description: "View a bug report.",
                     type: ApplicationCommandOptionType.Subcommand,
-                    options: idOption
+                    options: submissionIdInput
                 },
                 {
                     name: "player_report",
-                    description: "View a submitted player report.",
+                    description: "View a player report.",
                     type: ApplicationCommandOptionType.Subcommand,
-                    options: idOption
+                    options: submissionIdInput
                 },
                 {
                     name: "suggestion",
-                    description: "View a submitted suggestion.",
+                    description: "View a suggestion.",
                     type: ApplicationCommandOptionType.Subcommand,
-                    options: idOption
+                    options: submissionIdInput
                 }
             ]
         });
@@ -58,40 +60,45 @@ export default class ViewCommand extends Command {
      * @returns {Promise<void>}
      */
     async execute(interaction: ChatInputCommandInteraction): Promise<void> {
-        let type = interaction.options.getSubcommand();
-        const id = interaction.options.getNumber("id") as number;
+        let submissionType = interaction.options.getSubcommand();
+        const submissionId = interaction.options.getNumber("id") as number;
 
-        switch (type) {
+        switch (submissionType) {
             case "bug_report":
-                type = "bugReports";
+                submissionType = "bugReports";
                 break;
             case "player_report":
-                type = "playerReports";
+                submissionType = "playerReports";
                 break;
             case "suggestion":
-                type = "suggestions";
+                submissionType = "suggestions";
                 break;
         }
 
         const guild = await Guild.findOne(
             {_id: interaction.guildId},
-            {[`submissions.${type}`]: 1, _id: 0}
+            {[`submissions.${submissionType}.${submissionId}`]: 1, _id: 0}
         );
 
-        const submission = guild?.submissions[type][id];
+        const submission = guild?.submissions[submissionType][submissionId];
+        const attachmentFiles = [];
 
         if (!submission) {
-            await interaction.editReply(`There are no submissions of this type with the ID of \`${id}\``);
+            await interaction.editReply(`There are no submissions of this type with the ID of \`${submissionId}\``);
             return;
         }
 
         const embed = new EmbedBuilder()
             .setColor(Properties.colors.default)
             .setThumbnail(interaction.guild?.iconURL() as string | null)
-            .setFooter({text: `#${id}`});
+            .setFooter({text: `#${submissionId}`});
 
-        switch (type) {
+        switch (submissionType) {
             case "bugReports": {
+                attachmentFiles.push(Media.priority[submission.priority as BugPriority]);
+
+                embed.setColor(Properties.colors.priority[submission.priority as BugPriority])
+                embed.setThumbnail(`attachment://${submission.priority}.png`);
                 embed.setAuthor({name: `Priority: ${submission.priority}`});
                 embed.setFields([
                     {
@@ -120,6 +127,8 @@ export default class ViewCommand extends Command {
             }
 
             case "playerReports": {
+                const submissionAuthor = await this.client.users.fetch(submission.authorId);
+                embed.setThumbnail(submissionAuthor.displayAvatarURL());
                 embed.setFields([
                     {
                         name: "Reported Player",
@@ -134,7 +143,10 @@ export default class ViewCommand extends Command {
             }
 
             case "suggestions": {
+                const submissionAuthor = await this.client.users.fetch(submission.authorId);
+
                 embed.setTitle("Suggestion");
+                embed.setThumbnail(submissionAuthor.displayAvatarURL());
                 embed.setDescription(submission.content);
                 break;
             }
@@ -142,7 +154,8 @@ export default class ViewCommand extends Command {
 
         await interaction.editReply({
             content: `<@${submission.authorId}> (\`${submission.authorId}\`)`,
-            embeds: [embed]
+            embeds: [embed],
+            files: attachmentFiles
         });
     }
 }
