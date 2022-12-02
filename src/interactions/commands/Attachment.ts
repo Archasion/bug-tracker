@@ -114,10 +114,7 @@ export default class AttachmentCommand extends Command {
             return;
         }
 
-        if (
-//            !guild?.settings.allowSubmissionAttachments &&
-            !isReviewer
-        ) {
+        if (!guild?.settings.allowSubmissionAttachments && !isReviewer) {
             await interaction.editReply("You must be a **Reviewer+** in order to use this command.");
             return;
         }
