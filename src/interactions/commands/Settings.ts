@@ -52,7 +52,7 @@ export default class SettingsCommand extends Command {
             options: [
                 {
                     name: "auto_thread_creation",
-                    description: "Create discussion threads for reports/suggestions automatically.",
+                    description: "Create discussion threads for submissions automatically.",
                     type: ApplicationCommandOptionType.Subcommand,
                     options: [
                         {
@@ -81,7 +81,7 @@ export default class SettingsCommand extends Command {
                 },
                 {
                     name: "notify_on_status_change",
-                    description: "Send a DM confirmation to users when their report/suggestion status changes.",
+                    description: "Send a DM confirmation to users when their submission's status changes.",
                     type: ApplicationCommandOptionType.Subcommand,
                     options: [
                         {

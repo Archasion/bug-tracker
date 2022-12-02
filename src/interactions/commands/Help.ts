@@ -4,9 +4,10 @@ import Bot from "../../Bot";
 
 import {
     MessageActionRowComponentData,
+    ApplicationCommandOptionType,
     ChatInputCommandInteraction,
     ApplicationCommandType,
-    PermissionFlagsBits,
+    ApplicationCommand,
     ActionRowBuilder,
     ActionRowData,
     ButtonBuilder,
@@ -36,24 +37,49 @@ export default class HelpCommand extends Command {
         const restrictionLevel = await RestrictionUtils.getRestrictionLevel(interaction.member as GuildMember);
         const fetchedCommands = await this.client.application?.commands.fetch();
 
-        const usableCommands = this.manager.commands
-            .filter(command => command.restriction <= restrictionLevel)
-            .map(command => {
-                const fetchedCommand = fetchedCommands?.find(cmd => cmd.name === command.name);
-                return {
+        const allowedCommands = this.manager.commands.filter(command => command.restriction <= restrictionLevel).map(command => {
+            return {
+                name: command.name,
+                description: command.description,
+                restriction: command.restriction,
+                options: command.options
+            }
+        });
+
+        const usableCommands = allowedCommands.flatMap(command => {
+            const fetchedCommand = fetchedCommands?.find(fetchedCommandData => command.name === fetchedCommandData.name) as ApplicationCommand;
+            const commands = []
+
+            for (const subcommand of fetchedCommand.options) {
+                if (subcommand.type !== ApplicationCommandOptionType.Subcommand) continue;
+
+                commands.push({
+                    restriction: command.restriction,
+                    description: subcommand.description,
+                    id: fetchedCommand.id,
+                    name: `${command.name} ${subcommand.name}`
+                });
+            }
+
+            if (commands.length === 0) {
+                commands.push({
                     restriction: command.restriction,
                     description: command.description,
-                    id: fetchedCommand?.id,
+                    id: fetchedCommand.id,
                     name: command.name
-                };
-            });
+                });
+            }
+
+            return commands;
+        }).values();
 
         const commandList = new EmbedBuilder()
             .setColor(Properties.colors.default)
             .setTitle("Command Guide")
+            .setDescription("**Public Commands**\n\n")
             .setFields([]);
 
-        for (let i = 0; i <= restrictionLevel; i++) {
+        for (let i = 1; i <= restrictionLevel; i++) {
             commandList.data.fields?.push({
                 name: `${RestrictionLevel[i]} Commands`,
                 value: "\u200b"
@@ -61,9 +87,14 @@ export default class HelpCommand extends Command {
         }
 
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        usableCommands.forEach(command => {
-            commandList.data.fields![command.restriction].value += `</${command.name}:${command.id}> **·** ${command.description}\n`;
-        });
+        for (const command of usableCommands) {
+            if (command.restriction === RestrictionLevel.Public) {
+                commandList.data.description += `</${command.name}:${command.id}> **·** ${command.description}\n`;
+                continue;
+            }
+
+            commandList.data.fields![command.restriction - 1].value += `</${command.name}:${command.id}> **·** ${command.description}\n`;
+        }
 
         commandList.data.fields = commandList.data.fields?.filter(field => field.value !== "\u200b");
         const scopes = ["bot", "applications.commands"].join("%20");
