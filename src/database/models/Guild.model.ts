@@ -44,6 +44,7 @@ const guildSchema = new Schema({
     },
     settings: {
         type: Object,
+        allowSubmissionAttachments: Boolean,
         notifyOnStatusChange: Boolean,
         autoDelete: Array,
         autoRoles: Array,
@@ -52,6 +53,7 @@ const guildSchema = new Schema({
             playerReports: Boolean
         },
         default: {
+            allowSubmissionAttachments: false,
             notifyOnStatusChange: false,
             autoDelete: [],
             joinRoles: [],
