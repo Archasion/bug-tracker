@@ -5,10 +5,15 @@ import Bot from "../../Bot";
 
 import {
     ApplicationCommandNumericOptionData,
+    MessageActionRowComponentData,
     ApplicationCommandOptionType,
     ChatInputCommandInteraction,
     ApplicationCommandType,
-    EmbedBuilder
+    ActionRowBuilder,
+    ActionRowData,
+    ButtonBuilder,
+    EmbedBuilder,
+    ButtonStyle
 } from "discord.js";
 
 import {RestrictionLevel} from "../../utils/RestrictionUtils";
@@ -77,10 +82,15 @@ export default class ViewCommand extends Command {
 
         const guild = await Guild.findOne(
             {_id: interaction.guildId},
-            {[`submissions.${submissionType}.${submissionId}`]: 1, _id: 0}
+            {
+                [`submissions.${submissionType}.${submissionId}`]: 1,
+                [`channels.${submissionType}`]: 1,
+                _id: 0
+            }
         );
 
         const submission = guild?.submissions[submissionType][submissionId];
+        const submissionChannelId = guild?.channels[submissionType];
         const attachmentFiles = [];
 
         if (!submission) {
@@ -152,9 +162,19 @@ export default class ViewCommand extends Command {
             }
         }
 
+        const jumpToSubmission = new ButtonBuilder()
+            .setLabel("Jump to Submission")
+            .setStyle(ButtonStyle.Link)
+            .setURL(`https://discord.com/channels/${interaction.guildId}/${submissionChannelId}/${submission.messageId}`);
+
+        const actionRow = new ActionRowBuilder()
+        .setComponents(jumpToSubmission)
+        .toJSON() as ActionRowData<MessageActionRowComponentData>;
+
         await interaction.editReply({
             content: `<@${submission.authorId}> (\`${submission.authorId}\`)`,
             embeds: [embed],
+            components: [actionRow],
             files: attachmentFiles
         });
     }
