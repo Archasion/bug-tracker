@@ -1,7 +1,7 @@
 import Properties from "../data/Properties";
 import Guild from "../database/models/Guild.model";
 
-import {GuildMember} from "discord.js";
+import {GuildMember, PermissionFlagsBits} from "discord.js";
 
 export enum RestrictionLevel {
     Public = 0,
@@ -57,8 +57,8 @@ export default class RestrictionUtils {
 
         if (
             (reviewerRole && member.roles.cache.has(reviewerRole)) ||
-            member.permissions.has("ModerateMembers")
-            ) return true;
+            member.permissions.has(PermissionFlagsBits.ModerateMembers)
+        ) return true;
 
         return await this.isAdministrator(member);
     }
@@ -73,7 +73,7 @@ export default class RestrictionUtils {
 
         if (
             (administratorRole && member.roles.cache.has(administratorRole)) ||
-            member.permissions.has("Administrator")
+            member.permissions.has(PermissionFlagsBits.Administrator)
         ) return true;
 
         return this.isOwner(member);
