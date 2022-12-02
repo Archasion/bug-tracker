@@ -93,6 +93,19 @@ export default class SettingsCommand extends Command {
                     ]
                 },
                 {
+                    name: "allow_submission_attachments",
+                    description: "Allow users to attach media to their submissions (Reviewer+ by default).",
+                    type: ApplicationCommandOptionType.Subcommand,
+                    options: [
+                        {
+                            name: "enabled",
+                            description: "Whether or not submission attachments are allowed.",
+                            type: ApplicationCommandOptionType.Boolean,
+                            required: true
+                        }
+                    ]
+                },
+                {
                     name: "auto_roles",
                     description: "Manage roles given to new members.",
                     type: ApplicationCommandOptionType.Subcommand,
@@ -144,6 +157,10 @@ export default class SettingsCommand extends Command {
                 selection = "autoDelete";
                 break;
 
+            case "allow_submission_attachments":
+                selection = "allowSubmissionAttachments";
+                break;
+
             case "auto_thread_creation":
                 selection = "threads";
                 break;
@@ -154,14 +171,13 @@ export default class SettingsCommand extends Command {
             {[`settings.${selection}`]: 1, _id: 0}
         );
 
-        // Automatic thread creation & status change notifications
-        if (selection === "threads" || selection === "notifyOnStatusChange") {
+        if (selection === "threads" || selection === "notifyOnStatusChange" || selection === "allowSubmissionAttachments") {
             const enabled = interaction.options.getBoolean("enabled");
             const type = interaction.options.getString("type") as string;
 
             if (
                 (type && guild?.settings.threads[type] === enabled) ||
-                (!type && guild?.settings.notifyOnStatusChange === enabled)
+                (!type && guild?.settings[selection] === enabled)
             ) {
                 await interaction.editReply(`This configuration has **already been ${enabled ? "enabled" : "disabled"}**.`);
                 return;
