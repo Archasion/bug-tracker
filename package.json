@@ -4,7 +4,7 @@
   "description": "A bug tracking utility for developers",
   "main": "src/Bot.ts",
   "scripts": {
-    "start": "ts-node src/Bot.ts"
+    "start": "tsc; node dist/Bot.js"
   },
   "repository": {
     "type": "git",
@@ -18,7 +18,7 @@
   "homepage": "https://github.com/Archasion/bug-tracker#readme",
   "dependencies": {
     "cli-color": "^2.0.3",
-    "discord.js": "^14.0.0-dev.1657757514-fe34f48",
+    "discord.js": "^14.7.1",
     "dotenv": "^16.0.1",
     "fs": "^0.0.1-security",
     "js-yaml": "^4.1.0",

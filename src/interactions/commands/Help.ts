@@ -34,10 +34,12 @@ export default class HelpCommand extends Command {
      */
     async execute(interaction: ChatInputCommandInteraction): Promise<void> {
         const restrictionLevel = await RestrictionUtils.getRestrictionLevel(interaction.member as GuildMember);
+        const fetchedCommands = await this.client.application?.commands.fetch();
+
         const usableCommands = this.manager.commands
             .filter(command => command.restriction <= restrictionLevel)
             .map(command => {
-                const fetchedCommand = this.client.application?.commands.cache.find(c => c.name === command.name);
+                const fetchedCommand = fetchedCommands?.find(cmd => cmd.name === command.name);
                 return {
                     restriction: command.restriction,
                     description: command.description,
