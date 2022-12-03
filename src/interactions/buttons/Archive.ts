@@ -54,14 +54,14 @@ export default class ArchiveButton extends Button {
             return;
         }
 
-        const archiveChannelId = guild?.channels.archive[type];
+        const archiveChannelId = guild?.channels.archive?.[type];
 
         if (!archiveChannelId) {
             await interaction.editReply(ErrorMessages.ChannelNotConfigured);
             return;
         }
 
-        const archiveChannel = interaction.guild?.channels.cache.get(archiveChannelId) as TextChannel | NewsChannel;
+        const archiveChannel = await interaction.guild?.channels.fetch(archiveChannelId) as TextChannel | NewsChannel;
 
         if (!await PermissionUtils.verifyAccess({
             interaction,

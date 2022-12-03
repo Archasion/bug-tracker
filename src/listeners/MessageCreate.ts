@@ -36,7 +36,7 @@ module.exports = class MessageCreateEventListener extends EventListener {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
             const referenceAuthorId = referenceEmbed.footer?.text?.match(/ID: (\d{17,19})/)[1];
-            const referenceAuthor = this.client.users.cache.get(referenceAuthorId as string);
+            const referenceAuthor = await this.client.users.fetch(referenceAuthorId as string);
 
             const newEmbed = new EmbedBuilder(referenceEmbed.toJSON());
 

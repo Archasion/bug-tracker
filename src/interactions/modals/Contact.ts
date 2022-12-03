@@ -23,7 +23,7 @@ export default class ContactModal extends Modal {
         const enquiry = interaction.customId.split("-")[1] as ContactEnquiry;
         const channelId = Properties.channels.contact[enquiry];
 
-        const channel = this.client.channels.cache.get(channelId) as TextChannel | NewsChannel;
+        const channel = await this.client.channels.fetch(channelId) as TextChannel | NewsChannel;
 
         const embed = new EmbedBuilder()
             .setColor(Properties.colors.default)

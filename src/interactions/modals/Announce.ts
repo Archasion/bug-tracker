@@ -44,17 +44,16 @@ export default class AnnounceModal extends Modal {
             {["channels.botUpdates"]: 1, _id: 0}
         );
 
-        guilds.forEach(guild => {
-            const channel = this.client.channels.cache.get(guild.channels.botUpdates) as TextChannel | NewsChannel;
+        for await (const guild of guilds) {
+            const channel = await this.client.channels.fetch(guild?.channels.botUpdates) as TextChannel | NewsChannel;
             if (!channel) return;
 
             channel.send({embeds: [embed]})
                 .then(() => console.log(clc.green(`Published announcement to ${channel.guild.name}`)))
                 .catch(() => console.log(clc.blackBright(`Unable to send messages in "${channel.guild.name}"`)));
-        });
+        }
 
         await interaction.editReply(`Trying to publish the announcement to **${guilds.length}** guilds...`);
-
         return;
     }
 }

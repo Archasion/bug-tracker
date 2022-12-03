@@ -48,7 +48,7 @@ export default class SubmissionTypeSelectMenu extends SelectMenu {
                 return;
             }
 
-            const submissionChannel = interaction.guild?.channels.cache.get(guild?.channels.bugReports) as TextChannel | NewsChannel;
+            const submissionChannel = await interaction.guild?.channels.fetch(guild?.channels.bugReports) as TextChannel | NewsChannel;
 
             if (!await PermissionUtils.verifyAccess({
                 interaction,
@@ -109,7 +109,7 @@ export default class SubmissionTypeSelectMenu extends SelectMenu {
                 return;
             }
 
-            const submissionChannel = interaction.guild?.channels.cache.get(guild?.channels.suggestions) as TextChannel | NewsChannel;
+            const submissionChannel = await interaction.guild?.channels.fetch(guild?.channels.suggestions) as TextChannel | NewsChannel;
 
             if (!await PermissionUtils.verifyAccess({
                 interaction,
@@ -145,7 +145,7 @@ export default class SubmissionTypeSelectMenu extends SelectMenu {
                 return;
             }
 
-            const submissionChannel = interaction.guild?.channels.cache.get(guild?.channels.playerReports) as TextChannel | NewsChannel;
+            const submissionChannel = await interaction.guild?.channels.fetch(guild?.channels.playerReports) as TextChannel | NewsChannel;
 
             if (!await PermissionUtils.verifyAccess({
                 interaction,

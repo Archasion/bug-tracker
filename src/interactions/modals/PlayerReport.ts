@@ -52,7 +52,7 @@ export default class ReportPlayerModal extends Modal {
             return;
         }
 
-        const submissionChannel = interaction.guild?.channels.cache.get(submissionChannelId) as TextChannel | NewsChannel;
+        const submissionChannel = await interaction.guild?.channels.fetch(submissionChannelId) as TextChannel | NewsChannel;
 
         if (!submissionChannel) {
             await interaction.editReply(ErrorMessages.ChannelNotFound);
