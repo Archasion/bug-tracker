@@ -124,7 +124,7 @@ export default class DiscussionThreadButton extends Button {
             }, 500);
 
             if (guild?.settings.notifyOnStatusChange) {
-                const author = await interaction.guild?.members.fetch(submission.author);
+                const author = await interaction.guild?.members.fetch(submission.authorId);
                 if (!author) return;
 
                 const dmEmbed = new EmbedBuilder()
