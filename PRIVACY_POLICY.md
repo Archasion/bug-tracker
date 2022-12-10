@@ -6,15 +6,14 @@ The personal information that we collect from users includes:
 * Discord user ID
 * Submission data, including bug reports, player reports, and suggestions
 * Channel data, including submission channels, archive channels, and bot update channels
-* User settings, including information about whether submission attachments are allowed, whether users should be notified of status changes, and which auto-delete and auto-roles settings are enabled
-* User roles, including information about which users have reviewer and admin roles
+* Guild settings, including information about whether attachments can be added by submission authors, whether submission authors are notified of status changes, which channel messages are automatically deleted as they come in, and which roles are given to members on join
+* Roles, including information about which roles are classed as reviewer and admin roles
 
 ## How we use collected information
 We use the personal information we collect from users for the following purposes:
 
 * To provide and improve our services, such as by using submission data to track and address reported bugs and player issues, and by using channel data to route submissions to the appropriate channels
-* To personalize the user experience, such as by using user settings to apply custom settings for each user
-* To communicate with users, such as by using user roles to identify and notify reviewers and admins of new submissions
+* To personalize the user experience, such as by using guild settings to apply custom settings for each guild
 
 ## Sharing of collected information
 We do not sell or rent personal information to third parties. We may share personal information with third parties in the following limited circumstances:
