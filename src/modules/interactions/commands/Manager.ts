@@ -1,58 +1,58 @@
-import {ApplicationCommandDataResolvable, Collection, GuildMember, ChatInputCommandInteraction} from "discord.js";
+import {
+    ApplicationCommandDataResolvable,
+    Collection,
+    GuildMember,
+    ChatInputCommandInteraction,
+    Client
+} from "discord.js";
 import RestrictionUtils, {RestrictionLevel} from "../../../utils/RestrictionUtils";
+import {CommandManager} from "../../../Client";
+import {readdir} from "node:fs/promises";
+import {join} from "node:path";
 
-import Properties from "../../../data/Properties";
 import Command from "./Command";
-import Bot from "../../../Bot";
 import clc from "cli-color";
 
-import {readdirSync} from "fs";
-import {join} from "path";
-
 export default class CommandHandler {
-    client: Bot;
-    commands: Collection<string, Command>;
+    client: Client;
+    list: Collection<string, Command>;
 
-    constructor(client: Bot) {
+    constructor(client: Client) {
         this.client = client;
-        this.commands = new Collection();
+        this.list = new Collection();
     }
 
     public async load() {
-        const files = readdirSync(join(__dirname, "../../../interactions/commands"))
-            .filter(file => file.endsWith(".js"));
+        const files = await readdir(join(__dirname, "../../../interactions/commands"));
 
         for (const file of files) {
             // eslint-disable-next-line @typescript-eslint/no-var-requires
             const command = require(join(__dirname, "../../../interactions/commands", file)).default;
-            new command(this.client);
+            await this.register(new command(this.client));
         }
     }
 
     public async register(command: Command) {
-        this.commands.set(command.name, command);
+        this.list.set(command.name, command);
         console.log(`%s Registered command: "${command.name}"`, clc.blue("(COMMANDS)"));
     }
 
     public async publish() {
         const commands: ApplicationCommandDataResolvable[] = await Promise.all(
-            this.client.commands.commands.map(command => command.build())
+            CommandManager.list.map(command => command.build())
         );
 
         try {
             await this.client.application?.commands.set(commands);
-            console.log(clc.green(`(COMMANDS) Successfully loaded ${this.client.commands.commands.size} commands!`));
+            console.log(clc.green(`(COMMANDS) Successfully loaded ${CommandManager.list.size} commands!`));
         } catch (err) {
             console.error(err);
         }
     }
 
     public async handle(interaction: ChatInputCommandInteraction) {
-        const command = this.commands.get(interaction.commandName);
-
-        if (!command) {
-            return;
-        }
+        const command = this.list.get(interaction.commandName);
+        if (!command) return;
 
         if (command.defer) await interaction.deferReply({ephemeral: true});
 

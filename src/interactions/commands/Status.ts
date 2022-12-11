@@ -3,7 +3,6 @@ import Guild from "../../database/models/Guild.model";
 import ErrorMessages from "../../data/ErrorMessages";
 import Properties from "../../data/Properties";
 import Media from "../../data/Media";
-import Bot from "../../Bot";
 
 import {
     ApplicationCommandNumericOptionData,
@@ -19,7 +18,8 @@ import {
     ButtonStyle,
     TextChannel,
     NewsChannel,
-    ActionRow
+    ActionRow,
+    Client
 } from "discord.js";
 
 import {
@@ -67,7 +67,7 @@ const typeAndIdSelection: (ApplicationCommandStringOptionData | ApplicationComma
 ];
 
 export default class StatusCommand extends Command {
-    constructor(client: Bot) {
+    constructor(client: Client) {
         super(client, {
             name: "status",
             description: "Manage the status of a submission.",

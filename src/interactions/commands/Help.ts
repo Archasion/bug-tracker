@@ -1,6 +1,5 @@
 import Command from "../../modules/interactions/commands/Command";
 import Properties from "../../data/Properties";
-import Bot from "../../Bot";
 
 import {
     MessageActionRowComponentData,
@@ -13,13 +12,15 @@ import {
     ButtonBuilder,
     EmbedBuilder,
     GuildMember,
-    ButtonStyle
+    ButtonStyle,
+    Client
 } from "discord.js";
 
 import RestrictionUtils, {RestrictionLevel} from "../../utils/RestrictionUtils";
+import {CommandManager} from "../../Client";
 
 export default class HelpCommand extends Command {
-    constructor(client: Bot) {
+    constructor(client: Client) {
         super(client, {
             name: "help",
             description: "List all commands available to you.",
@@ -37,18 +38,18 @@ export default class HelpCommand extends Command {
         const restrictionLevel = await RestrictionUtils.getRestrictionLevel(interaction.member as GuildMember);
         const fetchedCommands = await this.client.application?.commands.fetch();
 
-        const allowedCommands = this.manager.commands.filter(command => command.restriction <= restrictionLevel).map(command => {
+        const allowedCommands = CommandManager.list.filter(command => command.restriction <= restrictionLevel).map(command => {
             return {
                 name: command.name,
                 description: command.description,
                 restriction: command.restriction,
                 options: command.options
-            }
+            };
         });
 
         const usableCommands = allowedCommands.flatMap(command => {
             const fetchedCommand = fetchedCommands?.find(fetchedCommandData => command.name === fetchedCommandData.name) as ApplicationCommand;
-            const commands = []
+            const commands = [];
 
             for (const subcommand of fetchedCommand.options) {
                 if (subcommand.type !== ApplicationCommandOptionType.Subcommand) continue;
@@ -86,13 +87,13 @@ export default class HelpCommand extends Command {
             });
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         for (const command of usableCommands) {
             if (command.restriction === RestrictionLevel.Public) {
                 commandList.data.description += `</${command.name}:${command.id}> **·** ${command.description}\n`;
                 continue;
             }
 
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             commandList.data.fields![command.restriction - 1].value += `</${command.name}:${command.id}> **·** ${command.description}\n`;
         }
 
@@ -111,7 +112,7 @@ export default class HelpCommand extends Command {
 
         const actionRow = new ActionRowBuilder()
             .setComponents(inviteUrl, supportServer)
-            .toJSON() as ActionRowData<MessageActionRowComponentData>
+            .toJSON() as ActionRowData<MessageActionRowComponentData>;
 
         await interaction.editReply({
             embeds: [commandList],

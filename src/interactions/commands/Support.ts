@@ -1,6 +1,5 @@
 import Command from "../../modules/interactions/commands/Command";
 import Properties from "../../data/Properties";
-import Bot from "../../Bot";
 
 import {
     ChatInputCommandInteraction,
@@ -8,13 +7,14 @@ import {
     ActionRowBuilder,
     ButtonBuilder,
     EmbedBuilder,
-    ButtonStyle
+    ButtonStyle,
+    Client
 } from "discord.js";
 
 import {RestrictionLevel} from "../../utils/RestrictionUtils";
 
 export default class SupportCommand extends Command {
-    constructor(client: Bot) {
+    constructor(client: Client) {
         super(client, {
             name: "support",
             description: "Need help with the bot? Join the support server",

@@ -1,21 +1,20 @@
 import Command from "../../modules/interactions/commands/Command";
 import Properties from "../../data/Properties";
-import Bot from "../../Bot";
 
 import {
     ChatInputCommandInteraction,
     ApplicationCommandType,
-    PermissionFlagsBits,
     ActionRowBuilder,
     ButtonBuilder,
     EmbedBuilder,
-    ButtonStyle
+    ButtonStyle,
+    Client
 } from "discord.js";
 
 import {RestrictionLevel} from "../../utils/RestrictionUtils";
 
 export default class InviteCommand extends Command {
-    constructor(client: Bot) {
+    constructor(client: Client) {
         super(client, {
             name: "invite",
             description: "Invite the bot to your server!",

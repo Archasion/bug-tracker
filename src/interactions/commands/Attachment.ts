@@ -1,6 +1,5 @@
 import Command from "../../modules/interactions/commands/Command";
 import Guild from "../../database/models/Guild.model";
-import Bot from "../../Bot";
 
 import {
     ApplicationCommandNumericOptionData,
@@ -12,7 +11,8 @@ import {
     GuildMember,
     TextChannel,
     NewsChannel,
-    Attachment
+    Attachment,
+    Client
 } from "discord.js";
 
 import RestrictionUtils, {RestrictionLevel} from "../../utils/RestrictionUtils";
@@ -48,7 +48,7 @@ const submissionValidationOptions: (ApplicationCommandStringOptionData | Applica
 ]
 
 export default class AttachmentCommand extends Command {
-    constructor(client: Bot) {
+    constructor(client: Client) {
         super(client, {
             name: "attachment",
             description: "Send announcement to all configured guilds.",

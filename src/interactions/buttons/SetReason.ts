@@ -1,18 +1,18 @@
 import Button from "../../modules/interactions/buttons/Button";
-import Bot from "../../Bot";
 
 import {
     ButtonInteraction,
     ActionRowBuilder,
     TextInputBuilder,
     TextInputStyle,
-    ModalBuilder
+    ModalBuilder,
+    Client
 } from "discord.js";
 
 import {RestrictionLevel} from "../../utils/RestrictionUtils";
 
 export default class SetReasonButton extends Button {
-    constructor(client: Bot) {
+    constructor(client: Client) {
         super(client, {
             name: {startsWith: "set-reason"},
             restriction: RestrictionLevel.Reviewer,

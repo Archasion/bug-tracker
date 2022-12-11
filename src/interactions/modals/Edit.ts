@@ -1,7 +1,6 @@
 import Modal from "../../modules/interactions/modals/Modal";
 import Guild from "../../database/models/Guild.model";
 import ErrorMessages from "../../data/ErrorMessages";
-import Bot from "../../Bot";
 
 import {
     ModalSubmitInteraction,
@@ -10,14 +9,14 @@ import {
     EmbedBuilder,
     TextChannel,
     NewsChannel,
-    Message
+    Client
 } from "discord.js";
 
 import PermissionUtils, {ReplyType} from "../../utils/PermissionUtils";
 import {RestrictionLevel} from "../../utils/RestrictionUtils";
 
 export default class EditModal extends Modal {
-    constructor(client: Bot) {
+    constructor(client: Client) {
         super(client, {
             name: {startsWith: "edit"},
             restriction: RestrictionLevel.Public

@@ -1,6 +1,5 @@
 import Command from "../../modules/interactions/commands/Command";
 import Guild from "../../database/models/Guild.model";
-import Bot from "../../Bot";
 
 import {
     MessageActionRowComponentData,
@@ -8,13 +7,14 @@ import {
     StringSelectMenuBuilder,
     ApplicationCommandType,
     ActionRowBuilder,
-    ActionRowData
+    ActionRowData,
+    Client
 } from "discord.js";
 
 import {RestrictionLevel} from "../../utils/RestrictionUtils";
 
 export default class SubmitCommand extends Command {
-    constructor(client: Bot) {
+    constructor(client: Client) {
         super(client, {
             name: "submit",
             description: "Create a submission (bug report, player report or suggestion)",

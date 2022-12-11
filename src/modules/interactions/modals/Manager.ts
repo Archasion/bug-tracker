@@ -1,36 +1,33 @@
-import {Collection, GuildMember, ModalSubmitInteraction} from "discord.js";
 import RestrictionUtils, {RestrictionLevel} from "../../../utils/RestrictionUtils";
+import {Collection, GuildMember, ModalSubmitInteraction, Client} from "discord.js";
+import {readdir} from "node:fs/promises";
+import {join} from "node:path";
 
-import Properties from "../../../data/Properties";
-import Bot from "../../../Bot";
 import Modal from "./Modal";
 import clc from "cli-color";
 
-import {readdirSync} from "fs";
-import {join} from "path";
 
 export default class CommandHandler {
-    client: Bot;
-    modals: Collection<string | { startsWith: string } | { endsWith: string } | { includes: string }, Modal>;
+    client: Client;
+    list: Collection<string | { startsWith: string } | { endsWith: string } | { includes: string }, Modal>;
 
-    constructor(client: Bot) {
+    constructor(client: Client) {
         this.client = client;
-        this.modals = new Collection();
+        this.list = new Collection();
     }
 
     public async load() {
-        const files = readdirSync(join(__dirname, "../../../interactions/modals"))
-            .filter(file => file.endsWith(".js"));
+        const files = await readdir(join(__dirname, "../../../interactions/modals"));
 
         for (const file of files) {
             // eslint-disable-next-line @typescript-eslint/no-var-requires
             const modal = require(join(__dirname, "../../../interactions/modals", file)).default;
-            new modal(this.client);
+            await this.register(new modal(this.client));
         }
     }
 
     public async register(modal: Modal) {
-        this.modals.set(modal.name, modal);
+        this.list.set(modal.name, modal);
 
         const modalName = typeof modal.name === "string" ?
             modal.name :
@@ -40,7 +37,7 @@ export default class CommandHandler {
     }
 
     public async handle(interaction: ModalSubmitInteraction) {
-        const modal = this.modals.find(m => {
+        const modal = this.list.find(m => {
             if (typeof m.name === "string") return m.name === interaction.customId;
 
             if ((m.name as { startsWith: string }).startsWith) return interaction.customId.startsWith((m.name as { startsWith: string }).startsWith);

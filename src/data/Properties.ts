@@ -1,5 +1,5 @@
 import {PermissionFlagsBits, PermissionResolvable} from "discord.js";
-import {readFileSync} from "fs";
+import {readFileSync} from "node:fs";
 import {load} from "js-yaml";
 
 type Properties = {

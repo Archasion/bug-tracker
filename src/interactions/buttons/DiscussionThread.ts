@@ -1,9 +1,8 @@
-import Button from "../../modules/interactions/buttons/Button";
 import PermissionUtils, {ReplyType} from "../../utils/PermissionUtils";
-import StringUtils from "../../utils/StringUtils";
+import Button from "../../modules/interactions/buttons/Button";
 import Guild from "../../database/models/Guild.model";
+import StringUtils from "../../utils/StringUtils";
 import Properties from "../../data/Properties";
-import Bot from "../../Bot";
 
 import {
     PermissionFlagsBits,
@@ -17,13 +16,14 @@ import {
     NewsChannel,
     ButtonStyle,
     ActionRow,
+    Client
 } from "discord.js";
 
 import {RestrictionLevel} from "../../utils/RestrictionUtils";
 import {SubmissionType} from "../../data/Types";
 
 export default class DiscussionThreadButton extends Button {
-    constructor(client: Bot) {
+    constructor(client: Client) {
         super(client, {
             name: "discussion-thread",
             restriction: RestrictionLevel.Public,

@@ -32,18 +32,12 @@ export default class RestrictionUtils {
 
     public static async verifyAccess(level: RestrictionLevel, member: GuildMember): Promise<boolean> {
         switch (level) {
-            case RestrictionLevel.Public:
-                return true;
-            case RestrictionLevel.Reviewer:
-                return await this.isReviewer(member);
-            case RestrictionLevel.Administrator:
-                return await this.isAdministrator(member);
-            case RestrictionLevel.Owner:
-                return this.isOwner(member);
-            case RestrictionLevel.Developer:
-                return this.isDeveloper(member.id);
-            default:
-                return false;
+            case RestrictionLevel.Public: return true;
+            case RestrictionLevel.Reviewer: return await this.isReviewer(member);
+            case RestrictionLevel.Administrator: return await this.isAdministrator(member);
+            case RestrictionLevel.Owner: return this.isOwner(member);
+            case RestrictionLevel.Developer: return this.isDeveloper(member.id);
+            default: return false;
         }
     }
 

@@ -1,6 +1,5 @@
 import SelectMenu from "../../modules/interactions/select_menus/SelectMenu";
 import Guild from "../../database/models/Guild.model";
-import Bot from "../../Bot";
 
 import {
     SelectMenuInteraction,
@@ -10,7 +9,8 @@ import {
     ButtonBuilder,
     EmbedBuilder,
     ButtonStyle,
-    ActionRow
+    ActionRow,
+    Client
 } from "discord.js";
 
 import {SubmissionStatus, SubmissionType, BugPriority} from "../../data/Types";
@@ -35,7 +35,7 @@ const statusImage = {
 };
 
 export default class SetStatusSelectMenu extends SelectMenu {
-    constructor(client: Bot) {
+    constructor(client: Client) {
         super(client, {
             name: {startsWith: "set-status"},
             restriction: RestrictionLevel.Reviewer,
@@ -98,6 +98,7 @@ export default class SetStatusSelectMenu extends SelectMenu {
             }
         );
 
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const submissionData = guild?.submissions[type as SubmissionType][embed.footer!.text.replace("#", "")];
         const thumbnailFile: AttachmentBuilder[] = [];
 
@@ -152,6 +153,7 @@ export default class SetStatusSelectMenu extends SelectMenu {
 
                 const dmEmbed = new EmbedBuilder()
                     .setColor(Properties.colors.status[status])
+                    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                     .setTitle(`Your ${type?.slice(0, -1)} with the ID of #${embed.footer!.text.replace("#", "")} has been ${status}`)
                     .setDescription(`The status of your submission has been updated by ${interaction.user} (\`${interaction.user.id}\`).`)
                     .setTimestamp();

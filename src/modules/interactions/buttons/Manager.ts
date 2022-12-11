@@ -1,36 +1,33 @@
-import {Collection, GuildMember, ButtonInteraction} from "discord.js";
 import RestrictionUtils, {RestrictionLevel} from "../../../utils/RestrictionUtils";
+import {Collection, GuildMember, ButtonInteraction, Client} from "discord.js";
+import {readdir} from "node:fs/promises";
+import {join} from "node:path";
 
-import Properties from "../../../data/Properties";
 import Button from "./Button";
-import Bot from "../../../Bot";
 import clc from "cli-color";
 
-import {readdirSync} from "fs";
-import {join} from "path";
 
 export default class CommandHandler {
-    client: Bot;
-    buttons: Collection<string | { startsWith: string } | { endsWith: string } | { includes: string }, Button>;
+    client: Client;
+    list: Collection<string | { startsWith: string } | { endsWith: string } | { includes: string }, Button>;
 
-    constructor(client: Bot) {
+    constructor(client: Client) {
         this.client = client;
-        this.buttons = new Collection();
+        this.list = new Collection();
     }
 
     public async load() {
-        const files = readdirSync(join(__dirname, "../../../interactions/buttons"))
-            .filter(file => file.endsWith(".js"));
+        const files = await readdir(join(__dirname, "../../../interactions/buttons"));
 
         for (const file of files) {
             // eslint-disable-next-line @typescript-eslint/no-var-requires
             const button = require(join(__dirname, "../../../interactions/buttons", file)).default;
-            new button(this.client);
+            await this.register(new button(this.client));
         }
     }
 
     public async register(button: Button) {
-        this.buttons.set(button.name, button);
+        this.list.set(button.name, button);
 
         const buttonName = typeof button.name === "string" ?
             button.name :
@@ -40,7 +37,7 @@ export default class CommandHandler {
     }
 
     public async handle(interaction: ButtonInteraction) {
-        const button = this.buttons.find(b => {
+        const button = this.list.find(b => {
             if (typeof b.name === "string") return b.name === interaction.customId;
 
             if ((b.name as { startsWith: string }).startsWith) return interaction.customId.startsWith((b.name as { startsWith: string }).startsWith);
@@ -50,9 +47,7 @@ export default class CommandHandler {
             return false;
         });
 
-        if (!button) {
-            return;
-        }
+        if (!button) return;
 
         const buttonName = typeof button.name === "string" ?
             button.name :

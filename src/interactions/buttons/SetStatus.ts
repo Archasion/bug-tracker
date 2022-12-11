@@ -1,6 +1,5 @@
 import Button from "../../modules/interactions/buttons/Button";
 import Properties from "../../data/Properties";
-import Bot from "../../Bot";
 
 import {
     ComponentEmojiResolvable,
@@ -8,11 +7,12 @@ import {
     ButtonInteraction,
     ActionRowBuilder,
     ButtonBuilder,
-    ButtonStyle
+    ButtonStyle,
+    Client
 } from "discord.js";
 
-import {RestrictionLevel} from "../../utils/RestrictionUtils";
 import {BugStatus, SuggestionStatus, PlayerReportStatus, SubmissionStatus} from "../../data/Types";
+import {RestrictionLevel} from "../../utils/RestrictionUtils";
 
 const suggestionStatuses: { label: string, value: SuggestionStatus, emoji: ComponentEmojiResolvable }[] = [
     {
@@ -110,7 +110,7 @@ const playerReportStatuses: { label: string, value: PlayerReportStatus, emoji: C
 
 
 export default class SetStatusButton extends Button {
-    constructor(client: Bot) {
+    constructor(client: Client) {
         super(client, {
             name: "set-status",
             restriction: RestrictionLevel.Reviewer,

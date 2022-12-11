@@ -1,15 +1,14 @@
 import Button from "../../modules/interactions/buttons/Button";
-import PermissionUtils, {ReplyType} from "../../utils/PermissionUtils";
-import ErrorMessages from "../../data/ErrorMessages";
 import Guild from "../../database/models/Guild.model";
-import Bot from "../../Bot";
+import ErrorMessages from "../../data/ErrorMessages";
 
-import {ButtonInteraction, TextChannel, NewsChannel, PermissionFlagsBits} from "discord.js";
+import {ButtonInteraction, TextChannel, NewsChannel, PermissionFlagsBits, Client} from "discord.js";
+import PermissionUtils, {ReplyType} from "../../utils/PermissionUtils";
 import {RestrictionLevel} from "../../utils/RestrictionUtils";
 import {SubmissionType} from "../../data/Types";
 
 export default class ArchiveButton extends Button {
-    constructor(client: Bot) {
+    constructor(client: Client) {
         super(client, {
             name: "archive",
             restriction: RestrictionLevel.Reviewer,

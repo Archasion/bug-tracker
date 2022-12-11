@@ -1,7 +1,6 @@
 import Command from "../../modules/interactions/commands/Command";
 import Properties from "../../data/Properties";
 import Guides from "../../data/Guides";
-import Bot from "../../Bot";
 
 import {
     ApplicationCommandOptionType,
@@ -11,16 +10,16 @@ import {
     EmbedBuilder,
     GuildMember,
     TextChannel,
-    NewsChannel
+    NewsChannel,
+    Client
 } from "discord.js";
-
-import {Guide} from "../../data/Types";
 
 import RestrictionUtils, {RestrictionLevel} from "../../utils/RestrictionUtils";
 import PermissionUtils, {ReplyType} from "../../utils/PermissionUtils";
+import {Guide} from "../../data/Types";
 
 export default class GuideCommand extends Command {
-    constructor(client: Bot) {
+    constructor(client: Client) {
         super(client, {
             name: "guide",
             description: "View guides on certain usages of the bot.",

@@ -1,13 +1,12 @@
 import Modal from "../../modules/interactions/modals/Modal";
 import Properties from "../../data/Properties";
-import Bot from "../../Bot";
 
-import {ModalSubmitInteraction, TextChannel, NewsChannel, EmbedBuilder} from "discord.js";
+import {ModalSubmitInteraction, TextChannel, NewsChannel, EmbedBuilder, Client} from "discord.js";
 import {RestrictionLevel} from "../../utils/RestrictionUtils";
 import {ContactEnquiry} from "../../data/Types";
 
 export default class ContactModal extends Modal {
-    constructor(client: Bot) {
+    constructor(client: Client) {
         super(client, {
             name: {startsWith: "contact"},
             restriction: RestrictionLevel.Public

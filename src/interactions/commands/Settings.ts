@@ -1,8 +1,8 @@
-import Command from "../../modules/interactions/commands/Command";
 import PermissionUtils, {ReplyType} from "../../utils/PermissionUtils";
-import Properties from "../../data/Properties";
+import Command from "../../modules/interactions/commands/Command";
+import ValidationUtils from "../../utils/ValidationUtils";
 import Guild from "../../database/models/Guild.model";
-import Bot from "../../Bot";
+import Properties from "../../data/Properties";
 
 import {
     ApplicationCommandStringOptionData,
@@ -14,11 +14,11 @@ import {
     TextChannel,
     NewsChannel,
     Channel,
+    Client,
     Role
 } from "discord.js";
 
 import {RestrictionLevel} from "../../utils/RestrictionUtils";
-import ValidationUtils from "../../utils/ValidationUtils";
 
 const actionOptions: ApplicationCommandStringOptionData = {
     name: "action",
@@ -42,7 +42,7 @@ const actionOptions: ApplicationCommandStringOptionData = {
 };
 
 export default class SettingsCommand extends Command {
-    constructor(client: Bot) {
+    constructor(client: Client) {
         super(client, {
             name: "settings",
             description: "Update server configuration.",

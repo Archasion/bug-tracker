@@ -1,18 +1,18 @@
 import SelectMenu from "../../modules/interactions/select_menus/SelectMenu";
-import Bot from "../../Bot";
 
 import {
     SelectMenuInteraction,
     ActionRowBuilder,
     TextInputBuilder,
     TextInputStyle,
-    ModalBuilder
+    ModalBuilder,
+    Client
 } from "discord.js";
 
 import {RestrictionLevel} from "../../utils/RestrictionUtils";
 
 export default class BugPrioritySelectMenu extends SelectMenu {
-    constructor(client: Bot) {
+    constructor(client: Client) {
         super(client, {
             name: "bug-priority",
             restriction: RestrictionLevel.Public,

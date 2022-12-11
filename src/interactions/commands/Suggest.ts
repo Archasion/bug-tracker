@@ -1,11 +1,10 @@
 import Command from "../../modules/interactions/commands/Command";
-import Bot from "../../Bot";
 
-import {ChatInputCommandInteraction, ApplicationCommandType} from "discord.js";
+import {ChatInputCommandInteraction, ApplicationCommandType, Client} from "discord.js";
 import {RestrictionLevel} from "../../utils/RestrictionUtils";
 
 export default class SuggestCommand extends Command {
-    constructor(client: Bot) {
+    constructor(client: Client) {
         super(client, {
             name: "suggest",
             description: "`DEPRECATED`",

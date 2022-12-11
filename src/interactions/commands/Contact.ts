@@ -1,5 +1,4 @@
 import Command from "../../modules/interactions/commands/Command";
-import Bot from "../../Bot";
 
 import {
     ApplicationCommandOptionType,
@@ -8,7 +7,8 @@ import {
     ActionRowBuilder,
     TextInputBuilder,
     TextInputStyle,
-    ModalBuilder
+    ModalBuilder,
+    Client
 } from "discord.js";
 
 import {RestrictionLevel} from "../../utils/RestrictionUtils";
@@ -37,7 +37,7 @@ const enquiryDetails: { [key: string]: { [key: string]: string } } = {
 };
 
 export default class ContactCommand extends Command {
-    constructor(client: Bot) {
+    constructor(client: Client) {
         super(client, {
             name: "contact",
             description: "Contact the bot's developer.",

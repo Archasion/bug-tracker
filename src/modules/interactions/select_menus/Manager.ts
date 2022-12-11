@@ -1,36 +1,33 @@
-import {Collection, GuildMember, SelectMenuInteraction} from "discord.js";
 import RestrictionUtils, {RestrictionLevel} from "../../../utils/RestrictionUtils";
+import {Collection, GuildMember, SelectMenuInteraction, Client} from "discord.js";
+import {readdir} from "node:fs/promises";
+import {join} from "node:path";
 
-import Properties from "../../../data/Properties";
 import SelectMenu from "./SelectMenu";
-import Bot from "../../../Bot";
 import clc from "cli-color";
 
-import {readdirSync} from "fs";
-import {join} from "path";
 
 export default class CommandHandler {
-    client: Bot;
-    select_menus: Collection<string | { startsWith: string } | { endsWith: string } | { includes: string }, SelectMenu>;
+    client: Client;
+    list: Collection<string | { startsWith: string } | { endsWith: string } | { includes: string }, SelectMenu>;
 
-    constructor(client: Bot) {
+    constructor(client: Client) {
         this.client = client;
-        this.select_menus = new Collection();
+        this.list = new Collection();
     }
 
     public async load() {
-        const files = readdirSync(join(__dirname, "../../../interactions/select_menus"))
-            .filter(file => file.endsWith(".js"));
+        const files = await readdir(join(__dirname, "../../../interactions/select_menus"));
 
         for (const file of files) {
             // eslint-disable-next-line @typescript-eslint/no-var-requires
             const select_menu = require(join(__dirname, "../../../interactions/select_menus", file)).default;
-            new select_menu(this.client);
+            await this.register(new select_menu(this.client));
         }
     }
 
     public async register(select_menu: SelectMenu) {
-        this.select_menus.set(select_menu.name, select_menu);
+        this.list.set(select_menu.name, select_menu);
 
         const selectMenuName = typeof select_menu.name === "string" ?
             select_menu.name :
@@ -40,7 +37,7 @@ export default class CommandHandler {
     }
 
     public async handle(interaction: SelectMenuInteraction) {
-        const select_menu = this.select_menus.find(s => {
+        const select_menu = this.list.find(s => {
             if (typeof s.name === "string") return s.name === interaction.customId;
 
             if ((s.name as { startsWith: string }).startsWith) return interaction.customId.startsWith((s.name as { startsWith: string }).startsWith);
@@ -50,14 +47,11 @@ export default class CommandHandler {
             return false;
         });
 
-        if (!select_menu) {
-            return;
-        }
+        if (!select_menu) return;
 
         const selectMenuName = typeof select_menu.name === "string" ?
             select_menu.name :
             Object.values(select_menu.name)[0];
-
 
         if (select_menu.defer) await interaction.deferReply({ephemeral: true});
 

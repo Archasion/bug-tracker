@@ -1,18 +1,18 @@
 import Command from "../../modules/interactions/commands/Command";
 import Properties from "../../data/Properties";
-import Bot from "../../Bot";
 
 import {
     ApplicationCommandOptionType,
     ChatInputCommandInteraction,
     ApplicationCommandType,
-    EmbedBuilder
+    EmbedBuilder,
+    Client
 } from "discord.js";
 
 import {RestrictionLevel} from "../../utils/RestrictionUtils";
 
 export default class EvalCommand extends Command {
-    constructor(client: Bot) {
+    constructor(client: Client) {
         super(client, {
             name: "eval",
             description: "Evaluate code.",

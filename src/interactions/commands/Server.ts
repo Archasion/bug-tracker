@@ -1,19 +1,19 @@
 import Command from "../../modules/interactions/commands/Command";
 import Guild from "../../database/models/Guild.model";
 import Properties from "../../data/Properties";
-import Bot from "../../Bot";
 
 import {
     ApplicationCommandOptionType,
     ChatInputCommandInteraction,
     ApplicationCommandType,
-    EmbedBuilder
+    EmbedBuilder,
+    Client
 } from "discord.js";
 
 import {RestrictionLevel} from "../../utils/RestrictionUtils";
 
 export default class ServerCommand extends Command {
-    constructor(client: Bot) {
+    constructor(client: Client) {
         super(client, {
             name: "server",
             description: "View the server's info and configuration.",

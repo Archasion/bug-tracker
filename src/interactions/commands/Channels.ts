@@ -1,7 +1,7 @@
 import Command from "../../modules/interactions/commands/Command";
+import ValidationUtils from "../../utils/ValidationUtils";
 import Guild from "../../database/models/Guild.model";
 import Properties from "../../data/Properties";
-import Bot from "../../Bot";
 
 import {
     ApplicationCommandStringOptionData,
@@ -12,12 +12,12 @@ import {
     EmbedBuilder,
     NewsChannel,
     TextChannel,
-    Channel
+    Channel,
+    Client
 } from "discord.js";
 
 import PermissionUtils, {ReplyType, SubmissionChannelPermissions} from "../../utils/PermissionUtils";
 import {RestrictionLevel} from "../../utils/RestrictionUtils";
-import ValidationUtils from "../../utils/ValidationUtils";
 
 const selectChannelType: ApplicationCommandStringOptionData = {
     name: "type",
@@ -57,7 +57,7 @@ const selectChannelType: ApplicationCommandStringOptionData = {
 };
 
 export default class ChannelsCommand extends Command {
-    constructor(client: Bot) {
+    constructor(client: Client) {
         super(client, {
             name: "channels",
             description: "Manage the channels configured for the bot.",

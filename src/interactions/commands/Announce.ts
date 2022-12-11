@@ -1,5 +1,4 @@
 import Command from "../../modules/interactions/commands/Command";
-import Bot from "../../Bot";
 
 import {
     ChatInputCommandInteraction,
@@ -7,13 +6,14 @@ import {
     TextInputBuilder,
     ActionRowBuilder,
     TextInputStyle,
-    ModalBuilder
+    ModalBuilder,
+    Client
 } from "discord.js";
 
 import {RestrictionLevel} from "../../utils/RestrictionUtils";
 
 export default class AnnounceCommand extends Command {
-    constructor(client: Bot) {
+    constructor(client: Client) {
         super(client, {
             name: "announce",
             description: "Send announcement to all configured guilds.",

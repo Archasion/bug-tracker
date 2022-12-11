@@ -1,13 +1,10 @@
 import Modal from "../../modules/interactions/modals/Modal";
-import PermissionUtils, {ReplyType, SubmissionChannelPermissions} from "../../utils/PermissionUtils";
-import ErrorMessages from "../../data/ErrorMessages";
 import Guild from "../../database/models/Guild.model";
+import ErrorMessages from "../../data/ErrorMessages";
 import Properties from "../../data/Properties";
-import Bot from "../../Bot";
 
 import {
     ModalSubmitInteraction,
-    PermissionFlagsBits,
     ActionRowBuilder,
     ButtonComponent,
     ButtonBuilder,
@@ -15,13 +12,15 @@ import {
     ButtonStyle,
     TextChannel,
     NewsChannel,
-    ActionRow
+    ActionRow,
+    Client
 } from "discord.js";
 
+import PermissionUtils, {ReplyType, SubmissionChannelPermissions} from "../../utils/PermissionUtils";
 import {RestrictionLevel} from "../../utils/RestrictionUtils";
 
 export default class ReportPlayerModal extends Modal {
-    constructor(client: Bot) {
+    constructor(client: Client) {
         super(client, {
             name: "player-report",
             restriction: RestrictionLevel.Public

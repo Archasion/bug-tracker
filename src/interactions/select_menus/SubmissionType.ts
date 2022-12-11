@@ -1,7 +1,6 @@
 import SelectMenu from "../../modules/interactions/select_menus/SelectMenu";
 import ErrorMessages from "../../data/ErrorMessages";
 import Guild from "../../database/models/Guild.model";
-import Bot from "../../Bot";
 
 import {
     StringSelectMenuBuilder,
@@ -11,14 +10,15 @@ import {
     TextInputStyle,
     TextChannel,
     NewsChannel,
-    ModalBuilder
+    ModalBuilder,
+    Client
 } from "discord.js";
 
 import {RestrictionLevel} from "../../utils/RestrictionUtils";
 import PermissionUtils, {SubmissionChannelPermissions, ReplyType} from "../../utils/PermissionUtils";
 
 export default class SubmissionTypeSelectMenu extends SelectMenu {
-    constructor(client: Bot) {
+    constructor(client: Client) {
         super(client, {
             name: "submission-type",
             restriction: RestrictionLevel.Public,

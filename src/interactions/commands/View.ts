@@ -1,7 +1,7 @@
 import Command from "../../modules/interactions/commands/Command";
 import Guild from "../../database/models/Guild.model";
 import Properties from "../../data/Properties";
-import Bot from "../../Bot";
+import Media from "../../data/Media";
 
 import {
     ApplicationCommandNumericOptionData,
@@ -13,12 +13,12 @@ import {
     ActionRowData,
     ButtonBuilder,
     EmbedBuilder,
-    ButtonStyle
+    ButtonStyle,
+    Client
 } from "discord.js";
 
 import {RestrictionLevel} from "../../utils/RestrictionUtils";
 import {BugPriority} from "../../data/Types";
-import Media from "../../data/Media";
 
 const submissionIdInput: ApplicationCommandNumericOptionData[] = [
     {
@@ -30,7 +30,7 @@ const submissionIdInput: ApplicationCommandNumericOptionData[] = [
 ];
 
 export default class ViewCommand extends Command {
-    constructor(client: Bot) {
+    constructor(client: Client) {
         super(client, {
             name: "view",
             description: "View a submission.",

@@ -1,7 +1,6 @@
 import Command from "../../modules/interactions/commands/Command";
-import Properties from "../../data/Properties";
 import Guild from "../../database/models/Guild.model";
-import Bot from "../../Bot";
+import Properties from "../../data/Properties";
 
 import {
     ApplicationCommandOptionType,
@@ -11,13 +10,14 @@ import {
     ButtonBuilder,
     EmbedBuilder,
     GuildMember,
-    ButtonStyle
+    ButtonStyle,
+    Client
 } from "discord.js";
 
 import {RestrictionLevel} from "../../utils/RestrictionUtils";
 
 export default class UserInfoCommand extends Command {
-    constructor(client: Bot) {
+    constructor(client: Client) {
         super(client, {
             name: "user",
             description: "User command.",

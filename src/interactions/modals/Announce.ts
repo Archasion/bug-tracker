@@ -1,20 +1,20 @@
 import Modal from "../../modules/interactions/modals/Modal";
 import Guild from "../../database/models/Guild.model";
 import Properties from "../../data/Properties";
-import Bot from "../../Bot";
 import clc from "cli-color";
 
 import {
     ModalSubmitInteraction,
     EmbedBuilder,
     TextChannel,
-    NewsChannel
+    NewsChannel,
+    Client
 } from "discord.js";
 
 import {RestrictionLevel} from "../../utils/RestrictionUtils";
 
 export default class AnnounceModal extends Modal {
-    constructor(client: Bot) {
+    constructor(client: Client) {
         super(client, {
             name: "bot-announcement",
             restriction: RestrictionLevel.Developer

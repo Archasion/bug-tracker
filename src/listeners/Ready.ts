@@ -1,23 +1,25 @@
 import EventListener from "../modules/listeners/Listener";
 import clc from "cli-color";
-import Bot from "../Bot";
+
+import {CommandManager, SelectMenuManager, ButtonManager, ModalManager} from "../Client";
+import {Client} from "discord.js";
 
 module.exports = class ReadyEventListener extends EventListener {
-    constructor(client: Bot) {
+    constructor(client: Client) {
         super(client, {
             name: "ready",
             once: true
         });
     }
 
-    public async execute(client: Bot) {
+    public async execute(client: Client) {
         console.log("%s %s is online!", clc.green("(READY)"), client.user?.tag);
 
-        await client.select_menus.load();
-        await client.buttons.load();
-        await client.modals.load();
+        await SelectMenuManager.load();
+        await ButtonManager.load();
+        await ModalManager.load();
 
-        await client.commands.load();
-        await client.commands.publish();
+        await CommandManager.load();
+        await CommandManager.publish();
     }
 };

@@ -1,11 +1,10 @@
 import Button from "../../modules/interactions/buttons/Button";
-import Bot from "../../Bot";
 
 import {RestrictionLevel} from "../../utils/RestrictionUtils";
-import {ButtonInteraction} from "discord.js";
+import {ButtonInteraction, Client} from "discord.js";
 
 export default class RejectButton extends Button {
-    constructor(client: Bot) {
+    constructor(client: Client) {
         super(client, {
             name: "reject",
             restriction: RestrictionLevel.Reviewer,

@@ -3,12 +3,11 @@ import RestrictionUtils from "../utils/RestrictionUtils";
 import ValidationUtils from "../utils/ValidationUtils";
 import Guild from "../database/models/Guild.model";
 import Properties from "../data/Properties";
-import Bot from "../Bot";
 
-import {Message, EmbedBuilder} from "discord.js";
+import {Message, EmbedBuilder, Client} from "discord.js";
 
 module.exports = class MessageCreateEventListener extends EventListener {
-    constructor(client: Bot) {
+    constructor(client: Client) {
         super(client, {name: "messageCreate"});
     }
 
@@ -17,7 +16,7 @@ module.exports = class MessageCreateEventListener extends EventListener {
 
         const guild = await Guild.findOne(
             {_id: message.guildId},
-            { ["settings.autoDelete"]: 1, _id: 0 }
+            {["settings.autoDelete"]: 1, _id: 0}
         );
 
         const autoDeleteChannels = guild?.settings.autoDelete;

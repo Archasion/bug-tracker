@@ -1,7 +1,6 @@
 import Command from "../../modules/interactions/commands/Command";
 import Guild from "../../database/models/Guild.model";
 import ErrorMessages from "../../data/ErrorMessages";
-import Bot from "../../Bot";
 
 import {
     ApplicationCommandOptionType,
@@ -12,14 +11,15 @@ import {
     TextInputStyle,
     ModalBuilder,
     TextChannel,
-    NewsChannel
+    NewsChannel,
+    Client
 } from "discord.js";
 
 import {RestrictionLevel} from "../../utils/RestrictionUtils";
 import {SubmissionType} from "../../data/Types";
 
 export default class EditCommand extends Command {
-    constructor(client: Bot) {
+    constructor(client: Client) {
         super(client, {
             name: "edit",
             description: "Edit your submissions.",

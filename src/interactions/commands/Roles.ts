@@ -1,7 +1,6 @@
 import Command from "../../modules/interactions/commands/Command";
 import Guild from "../../database/models/Guild.model";
 import Properties from "../../data/Properties";
-import Bot from "../../Bot";
 
 import {
     ApplicationCommandStringOptionData,
@@ -10,6 +9,7 @@ import {
     ApplicationCommandType,
     EmbedBuilder,
     GuildMember,
+    Client,
     Role
 } from "discord.js";
 
@@ -33,7 +33,7 @@ const rankTypeSelection: ApplicationCommandStringOptionData = {
 };
 
 export default class RolesCommand extends Command {
-    constructor(client: Bot) {
+    constructor(client: Client) {
         super(client, {
             name: "roles",
             description: "Configure roles for the bot's usage.",

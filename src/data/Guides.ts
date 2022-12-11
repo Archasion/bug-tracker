@@ -1,4 +1,3 @@
-import {AttachmentBuilder} from "discord.js";
 import Media from "./Media";
 
 export default class Guides {
