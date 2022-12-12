@@ -38,7 +38,11 @@ MONGO_URI='Your Mongo URI goes here'
 # The token of bot can be found at https://discord.com/developers/applications/[CLIENT_ID]/bot
 # Replace [CLIENT_ID] with your bot's user ID
 
-BOT_TOKEN='Your bot token goes here'
+PRODUCTION_BOT_TOKEN='Your production bot's token goes here'
+DEVELOPMENT_BOT_TOKEN='Your development bot's token goes here'
+
+# ENVIRONMENT
+NODE_ENV='PRODUCTION or DEVELOPMENT (determines which token will be used)'
 ```
 
 Finally, build and run the code:
