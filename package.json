@@ -22,7 +22,7 @@
     "dependencies": {
         "cli-color": "^2.0.3",
         "discord.js": "^14.7.1",
-        "dotenv": "^16.0.1",
+        "dotenv": "^16.0.3",
         "js-yaml": "^4.1.0",
         "mongoose": "^6.4.5"
     },
