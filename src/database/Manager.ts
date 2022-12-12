@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import clc from "cli-color";
 
-module.exports = async () => {
+module.exports = (async () => {
     console.log("%s Connecting to database...", clc.cyan("(DATABASE)"));
 
     await mongoose
@@ -10,4 +10,4 @@ module.exports = async () => {
         .then(() => {
             console.log("%s Connected to MongoDB", clc.cyan("(DATABASE)"));
         });
-};
+})();

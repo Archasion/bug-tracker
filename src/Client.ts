@@ -3,16 +3,14 @@ import CommandHandler from "./modules/interactions/commands/Manager";
 import ButtonHandler from "./modules/interactions/buttons/Manager";
 import ModalHandler from "./modules/interactions/modals/Manager";
 import ListenerLoader from "./modules/listeners/Loader";
+import clc from "cli-color";
 import "dotenv/config";
 
 import {Client, GatewayIntentBits, Partials} from "discord.js";
-import clc from "cli-color";
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-require("./database/Manager")();
 
 process.on("unhandledRejection", (error: Error) => console.error(error.stack));
 process.on("uncaughtException", (error: Error) => console.error(error.stack));
+require("./database/Manager");
 
 const client = new Client({
     intents: [
@@ -36,7 +34,7 @@ export const CommandManager = new CommandHandler(client);
 export const ButtonManager = new ButtonHandler(client);
 export const ModalManager = new ModalHandler(client);
 
-console.log("%s Starting client...", clc.greenBright(`(${process.env.NODE_ENV})`));
+console.log("%s Starting client...", clc.greenBright(`(${process.env.NODE_ENV})`)); // test
 
 (async () => {
     await listeners.load();

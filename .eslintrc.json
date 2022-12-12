@@ -16,18 +16,9 @@
         "@typescript-eslint"
     ],
     "rules": {
-        "linebreak-style": [
-            "error",
-            "unix"
-        ],
-        "quotes": [
-            "error",
-            "double"
-        ],
-        "semi": [
-            "error",
-            "always"
-        ],
-        "no-case-declarations": "off"
+        "linebreak-style": 2,
+        "quotes": 2,
+        "semi": 2,
+        "no-case-declarations": 0
     }
 }
