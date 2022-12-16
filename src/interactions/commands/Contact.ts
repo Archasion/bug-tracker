@@ -7,8 +7,7 @@ import {
     ActionRowBuilder,
     TextInputBuilder,
     TextInputStyle,
-    ModalBuilder,
-    Client
+    ModalBuilder
 } from "discord.js";
 
 import {RestrictionLevel} from "../../utils/RestrictionUtils";
@@ -37,8 +36,8 @@ const enquiryDetails: { [key: string]: { [key: string]: string } } = {
 };
 
 export default class ContactCommand extends Command {
-    constructor(client: Client) {
-        super(client, {
+    constructor() {
+        super({
             name: "contact",
             description: "Contact the bot's developer.",
             restriction: RestrictionLevel.Public,

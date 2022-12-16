@@ -1,5 +1,5 @@
 import RestrictionUtils, {RestrictionLevel} from "../../../utils/RestrictionUtils";
-import {Collection, GuildMember, ModalSubmitInteraction, Client} from "discord.js";
+import {Collection, GuildMember, ModalSubmitInteraction} from "discord.js";
 import {readdir} from "node:fs/promises";
 import {join} from "node:path";
 
@@ -7,12 +7,10 @@ import Modal from "./Modal";
 import clc from "cli-color";
 
 
-export default class CommandHandler {
-    client: Client;
+export default class ModalHandler {
     list: Collection<string | { startsWith: string } | { endsWith: string } | { includes: string }, Modal>;
 
-    constructor(client: Client) {
-        this.client = client;
+    constructor() {
         this.list = new Collection();
     }
 
@@ -20,9 +18,8 @@ export default class CommandHandler {
         const files = await readdir(join(__dirname, "../../../interactions/modals"));
 
         for (const file of files) {
-            // eslint-disable-next-line @typescript-eslint/no-var-requires
-            const modal = require(join(__dirname, "../../../interactions/modals", file)).default;
-            await this.register(new modal(this.client));
+            const modal = (await import(join(__dirname, "../../../interactions/modals", file))).default;
+            await this.register(new modal());
         }
     }
 
@@ -65,9 +62,7 @@ export default class CommandHandler {
         }
 
         try {
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            await modal.execute(interaction, this.client);
+            await modal.execute(interaction);
             console.log(`%s "${modalName}" executed by ${interaction.user.tag} %s`, clc.red("(MODALS)"), clc.blackBright(`("${interaction.guild?.name}" • ${interaction.guildId})`));
         } catch (err) {
             console.log(`Failed to execute modal: ${modal.name}`);

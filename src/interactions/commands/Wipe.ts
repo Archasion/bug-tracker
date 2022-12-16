@@ -4,15 +4,14 @@ import Guild from "../../database/models/Guild.model";
 import {
     ApplicationCommandOptionType,
     ChatInputCommandInteraction,
-    ApplicationCommandType,
-    Client
+    ApplicationCommandType
 } from "discord.js";
 
 import {RestrictionLevel} from "../../utils/RestrictionUtils";
 
 export default class WipeCommand extends Command {
-    constructor(client: Client) {
-        super(client, {
+    constructor() {
+        super({
             name: "wipe",
             description: "Wipe  data from the database",
             restriction: RestrictionLevel.Owner,

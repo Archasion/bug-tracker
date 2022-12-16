@@ -1,11 +1,11 @@
 import Command from "../../modules/interactions/commands/Command";
 
-import {ChatInputCommandInteraction, ApplicationCommandType, Client} from "discord.js";
+import {ChatInputCommandInteraction, ApplicationCommandType} from "discord.js";
 import {RestrictionLevel} from "../../utils/RestrictionUtils";
 
 export default class ReportCommand extends Command {
-    constructor(client: Client) {
-        super(client, {
+    constructor() {
+        super({
             name: "report",
             description: "`DEPRECATED`",
             restriction: RestrictionLevel.Public,

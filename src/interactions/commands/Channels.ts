@@ -12,8 +12,7 @@ import {
     EmbedBuilder,
     NewsChannel,
     TextChannel,
-    Channel,
-    Client
+    Channel
 } from "discord.js";
 
 import PermissionUtils, {ReplyType, SubmissionChannelPermissions} from "../../utils/PermissionUtils";
@@ -57,8 +56,8 @@ const selectChannelType: ApplicationCommandStringOptionData = {
 };
 
 export default class ChannelsCommand extends Command {
-    constructor(client: Client) {
-        super(client, {
+    constructor() {
+        super({
             name: "channels",
             description: "Manage the channels configured for the bot.",
             restriction: RestrictionLevel.Administrator,

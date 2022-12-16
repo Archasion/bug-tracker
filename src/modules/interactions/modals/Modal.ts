@@ -1,13 +1,13 @@
 import {RestrictionLevel} from "../../../utils/RestrictionUtils";
-import {Client} from "discord.js";
+import {ModalSubmitInteraction} from "discord.js";
 
-export default class Modal {
-    client: Client;
+export default abstract class Modal {
     restriction: RestrictionLevel;
     name: string | { startsWith: string } | { endsWith: string } | { includes: string };
 
-    constructor(client: Client, data: { restriction: RestrictionLevel; name: string | { startsWith: string; } | { endsWith: string; } | { includes: string; } }) {
-        this.client = client;
+    abstract execute(interaction: ModalSubmitInteraction): Promise<void>;
+
+    protected constructor(data: { restriction: RestrictionLevel; name: string | { startsWith: string; } | { endsWith: string; } | { includes: string; } }) {
         this.restriction = data.restriction;
         this.name = data.name;
     }

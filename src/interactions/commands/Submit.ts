@@ -7,15 +7,14 @@ import {
     StringSelectMenuBuilder,
     ApplicationCommandType,
     ActionRowBuilder,
-    ActionRowData,
-    Client
+    ActionRowData
 } from "discord.js";
 
 import {RestrictionLevel} from "../../utils/RestrictionUtils";
 
 export default class SubmitCommand extends Command {
-    constructor(client: Client) {
-        super(client, {
+    constructor() {
+        super({
             name: "submit",
             description: "Create a submission (bug report, player report or suggestion)",
             restriction: RestrictionLevel.Public,

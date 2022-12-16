@@ -1,5 +1,6 @@
 import Command from "../../modules/interactions/commands/Command";
 import Properties from "../../data/Properties";
+import ClientManager from "../../Client";
 
 import {
     ChatInputCommandInteraction,
@@ -7,15 +8,14 @@ import {
     ActionRowBuilder,
     ButtonBuilder,
     EmbedBuilder,
-    ButtonStyle,
-    Client
+    ButtonStyle
 } from "discord.js";
 
 import {RestrictionLevel} from "../../utils/RestrictionUtils";
 
 export default class InviteCommand extends Command {
-    constructor(client: Client) {
-        super(client, {
+    constructor() {
+        super({
             name: "invite",
             description: "Invite the bot to your server!",
             restriction: RestrictionLevel.Public,
@@ -31,7 +31,7 @@ export default class InviteCommand extends Command {
     async execute(interaction: ChatInputCommandInteraction): Promise<void> {
         const embed = new EmbedBuilder()
             .setColor(Properties.colors.default)
-            .setAuthor({name: "Invite", iconURL: this.client.user?.displayAvatarURL()})
+            .setAuthor({name: "Invite", iconURL: ClientManager.client.user?.displayAvatarURL()})
             .setDescription("Want to invite this bot to your server or a server you manage? Click the button below!");
 
         const scopes = ["bot", "applications.commands"].join("%20");
@@ -39,7 +39,7 @@ export default class InviteCommand extends Command {
         const inviteUrl = new ButtonBuilder()
             .setLabel("Invite")
             .setStyle(ButtonStyle.Link)
-            .setURL(`https://discord.com/oauth2/authorize?client_id=${this.client.user?.id}&scope=${scopes}&permissions=${Properties.invitePermissions}`);
+            .setURL(`https://discord.com/oauth2/authorize?client_id=${ClientManager.client.user?.id}&scope=${scopes}&permissions=${Properties.invitePermissions}`);
 
         const actionRow = new ActionRowBuilder().setComponents(inviteUrl);
 

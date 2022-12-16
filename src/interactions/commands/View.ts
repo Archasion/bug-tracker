@@ -1,6 +1,7 @@
 import Command from "../../modules/interactions/commands/Command";
 import Guild from "../../database/models/Guild.model";
 import Properties from "../../data/Properties";
+import ClientManager from "../../Client";
 import Media from "../../data/Media";
 
 import {
@@ -13,8 +14,7 @@ import {
     ActionRowData,
     ButtonBuilder,
     EmbedBuilder,
-    ButtonStyle,
-    Client
+    ButtonStyle
 } from "discord.js";
 
 import {RestrictionLevel} from "../../utils/RestrictionUtils";
@@ -30,8 +30,8 @@ const submissionIdInput: ApplicationCommandNumericOptionData[] = [
 ];
 
 export default class ViewCommand extends Command {
-    constructor(client: Client) {
-        super(client, {
+    constructor() {
+        super({
             name: "view",
             description: "View a submission.",
             restriction: RestrictionLevel.Public,
@@ -137,7 +137,7 @@ export default class ViewCommand extends Command {
             }
 
             case "playerReports": {
-                const submissionAuthor = await this.client.users.fetch(submission.authorId);
+                const submissionAuthor = await ClientManager.client.users.fetch(submission.authorId);
                 embed.setThumbnail(submissionAuthor.displayAvatarURL());
                 embed.setFields([
                     {
@@ -153,7 +153,7 @@ export default class ViewCommand extends Command {
             }
 
             case "suggestions": {
-                const submissionAuthor = await this.client.users.fetch(submission.authorId);
+                const submissionAuthor = await ClientManager.client.users.fetch(submission.authorId);
 
                 embed.setTitle("Suggestion");
                 embed.setThumbnail(submissionAuthor.displayAvatarURL());
@@ -168,8 +168,8 @@ export default class ViewCommand extends Command {
             .setURL(`https://discord.com/channels/${interaction.guildId}/${submissionChannelId}/${submission.messageId}`);
 
         const actionRow = new ActionRowBuilder()
-        .setComponents(jumpToSubmission)
-        .toJSON() as ActionRowData<MessageActionRowComponentData>;
+            .setComponents(jumpToSubmission)
+            .toJSON() as ActionRowData<MessageActionRowComponentData>;
 
         await interaction.editReply({
             content: `<@${submission.authorId}> (\`${submission.authorId}\`)`,

@@ -1,13 +1,14 @@
 import Modal from "../../modules/interactions/modals/Modal";
 import Properties from "../../data/Properties";
+import ClientManager from "../../Client";
 
-import {ModalSubmitInteraction, TextChannel, NewsChannel, EmbedBuilder, Client} from "discord.js";
+import {ModalSubmitInteraction, TextChannel, NewsChannel, EmbedBuilder} from "discord.js";
 import {RestrictionLevel} from "../../utils/RestrictionUtils";
 import {ContactEnquiry} from "../../data/Types";
 
 export default class ContactModal extends Modal {
-    constructor(client: Client) {
-        super(client, {
+    constructor() {
+        super({
             name: {startsWith: "contact"},
             restriction: RestrictionLevel.Public
         });
@@ -21,8 +22,7 @@ export default class ContactModal extends Modal {
         const description = interaction.fields.getTextInputValue("description");
         const enquiry = interaction.customId.split("-")[1] as ContactEnquiry;
         const channelId = Properties.channels.contact[enquiry];
-
-        const channel = await this.client.channels.fetch(channelId) as TextChannel | NewsChannel;
+        const channel = await ClientManager.client.channels.fetch(channelId) as TextChannel | NewsChannel;
 
         const embed = new EmbedBuilder()
             .setColor(Properties.colors.default)

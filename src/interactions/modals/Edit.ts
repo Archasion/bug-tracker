@@ -8,16 +8,15 @@ import {
     APIEmbedField,
     EmbedBuilder,
     TextChannel,
-    NewsChannel,
-    Client
+    NewsChannel
 } from "discord.js";
 
 import PermissionUtils, {ReplyType} from "../../utils/PermissionUtils";
 import {RestrictionLevel} from "../../utils/RestrictionUtils";
 
 export default class EditModal extends Modal {
-    constructor(client: Client) {
-        super(client, {
+    constructor() {
+        super({
             name: {startsWith: "edit"},
             restriction: RestrictionLevel.Public
         });

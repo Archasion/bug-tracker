@@ -15,16 +15,15 @@ import {
     TextChannel,
     NewsChannel,
     ButtonStyle,
-    ActionRow,
-    Client
+    ActionRow
 } from "discord.js";
 
 import {RestrictionLevel} from "../../utils/RestrictionUtils";
 import {SubmissionType} from "../../data/Types";
 
 export default class DiscussionThreadButton extends Button {
-    constructor(client: Client) {
-        super(client, {
+    constructor() {
+        super({
             name: "discussion-thread",
             restriction: RestrictionLevel.Public,
             defer: true

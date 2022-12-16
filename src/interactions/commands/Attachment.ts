@@ -11,8 +11,7 @@ import {
     GuildMember,
     TextChannel,
     NewsChannel,
-    Attachment,
-    Client
+    Attachment
 } from "discord.js";
 
 import RestrictionUtils, {RestrictionLevel} from "../../utils/RestrictionUtils";
@@ -48,8 +47,8 @@ const submissionValidationOptions: (ApplicationCommandStringOptionData | Applica
 ]
 
 export default class AttachmentCommand extends Command {
-    constructor(client: Client) {
-        super(client, {
+    constructor() {
+        super({
             name: "attachment",
             description: "Send announcement to all configured guilds.",
             restriction: RestrictionLevel.Public,

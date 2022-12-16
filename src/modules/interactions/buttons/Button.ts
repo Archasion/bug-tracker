@@ -1,14 +1,14 @@
 import {RestrictionLevel} from "../../../utils/RestrictionUtils";
-import {Client} from "discord.js";
+import {ButtonInteraction} from "discord.js";
 
-export default class Button {
-    client: Client;
+export default abstract class Button {
     restriction: RestrictionLevel;
-    defer?: boolean;
+    defer: boolean;
     name: string | { startsWith: string } | { endsWith: string } | { includes: string };
 
-    constructor(client: Client, data: { restriction: RestrictionLevel; defer?: boolean; name: string | { startsWith: string; } | { endsWith: string; } | { includes: string; } }) {
-        this.client = client;
+    abstract execute(interaction: ButtonInteraction): Promise<void>;
+
+    protected constructor(data: { restriction: RestrictionLevel; defer: boolean; name: string | { startsWith: string; } | { endsWith: string; } | { includes: string; } }) {
         this.restriction = data.restriction;
         this.defer = data.defer ?? false;
         this.name = data.name;

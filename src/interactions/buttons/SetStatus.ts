@@ -7,8 +7,7 @@ import {
     ButtonInteraction,
     ActionRowBuilder,
     ButtonBuilder,
-    ButtonStyle,
-    Client
+    ButtonStyle
 } from "discord.js";
 
 import {BugStatus, SuggestionStatus, PlayerReportStatus, SubmissionStatus} from "../../data/Types";
@@ -110,8 +109,8 @@ const playerReportStatuses: { label: string, value: PlayerReportStatus, emoji: C
 
 
 export default class SetStatusButton extends Button {
-    constructor(client: Client) {
-        super(client, {
+    constructor() {
+        super({
             name: "set-status",
             restriction: RestrictionLevel.Reviewer,
             defer: true

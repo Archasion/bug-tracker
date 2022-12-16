@@ -1,16 +1,16 @@
 import {RestrictionLevel} from "../../../utils/RestrictionUtils";
-import {Client} from "discord.js";
+import {SelectMenuInteraction} from "discord.js";
 
-export default class SelectMenu {
-    client: Client;
+export default abstract class SelectMenu {
     restriction: RestrictionLevel;
-    defer?: boolean;
+    defer: boolean;
     name: string | { startsWith: string } | { endsWith: string } | { includes: string };
 
-    constructor(client: Client, data: { restriction: RestrictionLevel; defer?: boolean; name: string | { startsWith: string; } | { endsWith: string; } | { includes: string; } }) {
-        this.client = client;
+    abstract execute(interaction: SelectMenuInteraction): Promise<void>;
+
+    protected constructor(data: { restriction: RestrictionLevel; defer: boolean; name: string | { startsWith: string; } | { endsWith: string; } | { includes: string; } }) {
         this.restriction = data.restriction;
-        this.defer = data.defer ?? false;
+        this.defer = data.defer;
         this.name = data.name;
     }
 }

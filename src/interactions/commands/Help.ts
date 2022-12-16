@@ -1,5 +1,6 @@
 import Command from "../../modules/interactions/commands/Command";
 import Properties from "../../data/Properties";
+import ClientManager from "../../Client";
 
 import {
     MessageActionRowComponentData,
@@ -12,16 +13,14 @@ import {
     ButtonBuilder,
     EmbedBuilder,
     GuildMember,
-    ButtonStyle,
-    Client
+    ButtonStyle
 } from "discord.js";
 
 import RestrictionUtils, {RestrictionLevel} from "../../utils/RestrictionUtils";
-import {CommandManager} from "../../Client";
 
 export default class HelpCommand extends Command {
-    constructor(client: Client) {
-        super(client, {
+    constructor() {
+        super({
             name: "help",
             description: "List all commands available to you.",
             restriction: RestrictionLevel.Public,
@@ -36,9 +35,9 @@ export default class HelpCommand extends Command {
      */
     async execute(interaction: ChatInputCommandInteraction): Promise<void> {
         const restrictionLevel = await RestrictionUtils.getRestrictionLevel(interaction.member as GuildMember);
-        const fetchedCommands = await this.client.application?.commands.fetch();
+        const fetchedCommands = await ClientManager.client.application?.commands.fetch();
 
-        const allowedCommands = CommandManager.list.filter(command => command.restriction <= restrictionLevel).map(command => {
+        const allowedCommands = ClientManager.commands.list.filter(command => command.restriction <= restrictionLevel).map(command => {
             return {
                 name: command.name,
                 description: command.description,
@@ -103,7 +102,7 @@ export default class HelpCommand extends Command {
         const inviteUrl = new ButtonBuilder()
             .setLabel("Invite")
             .setStyle(ButtonStyle.Link)
-            .setURL(`https://discord.com/oauth2/authorize?client_id=${this.client.user?.id}&scope=${scopes}&permissions=${Properties.invitePermissions}`);
+            .setURL(`https://discord.com/oauth2/authorize?client_id=${ClientManager.client.user?.id}&scope=${scopes}&permissions=${Properties.invitePermissions}`);
 
         const supportServer = new ButtonBuilder()
             .setLabel("Support")

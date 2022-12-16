@@ -14,7 +14,6 @@ import {
     TextChannel,
     NewsChannel,
     Channel,
-    Client,
     Role
 } from "discord.js";
 
@@ -42,8 +41,8 @@ const actionOptions: ApplicationCommandStringOptionData = {
 };
 
 export default class SettingsCommand extends Command {
-    constructor(client: Client) {
-        super(client, {
+    constructor() {
+        super({
             name: "settings",
             description: "Update server configuration.",
             restriction: RestrictionLevel.Administrator,

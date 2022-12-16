@@ -9,34 +9,18 @@ import {
     ButtonBuilder,
     EmbedBuilder,
     ButtonStyle,
-    ActionRow,
-    Client
+    ActionRow
 } from "discord.js";
 
 import {SubmissionStatus, SubmissionType, BugPriority} from "../../data/Types";
 import {RestrictionLevel} from "../../utils/RestrictionUtils";
 
 import Properties from "../../data/Properties";
-
-const priorityImage = {
-    High: new AttachmentBuilder("assets/priority/High.png", {name: "High.png"}),
-    Medium: new AttachmentBuilder("assets/priority/Medium.png", {name: "Medium.png"}),
-    Low: new AttachmentBuilder("assets/priority/Low.png", {name: "Low.png"}),
-    None: new AttachmentBuilder("assets/priority/None.png", {name: "None.png"})
-};
-
-const statusImage = {
-    Considered: new AttachmentBuilder("assets/status/Considered.png", {name: "Considered.png"}),
-    Approved: new AttachmentBuilder("assets/status/Approved.png", {name: "Approved.png"}),
-    Rejected: new AttachmentBuilder("assets/status/Rejected.png", {name: "Rejected.png"}),
-    Known: new AttachmentBuilder("assets/status/Rejected.png", {name: "Known.png"}),
-    NAB: new AttachmentBuilder("assets/status/Rejected.png", {name: "NAB.png"}),
-    Fixed: new AttachmentBuilder("assets/status/Fixed.png", {name: "Fixed.png"})
-};
+import Media from "../../data/Media";
 
 export default class SetStatusSelectMenu extends SelectMenu {
-    constructor(client: Client) {
-        super(client, {
+    constructor() {
+        super({
             name: {startsWith: "set-status"},
             restriction: RestrictionLevel.Reviewer,
             defer: false
@@ -111,9 +95,8 @@ export default class SetStatusSelectMenu extends SelectMenu {
             embed.thumbnail!.url = `attachment://${priority}.png`;
             embed.color = Properties.colors.priority[priority];
 
-            thumbnailFile.push(priorityImage[priority]);
+            thumbnailFile.push(Media.priority[priority]);
         }
-
 
         const hasReasonField = embed.fields?.some(field => field.name === "Reason");
         if (hasReasonField) embed.fields?.pop();
@@ -125,9 +108,7 @@ export default class SetStatusSelectMenu extends SelectMenu {
             if (type === "bugReports") {
                 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                 embed.thumbnail!.url = `attachment://${status}.png`;
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                thumbnailFile.push(statusImage[status]);
+                thumbnailFile.push(Media.status[status as Exclude<SubmissionStatus, "Implemented" | "None">]);
             }
         } else {
             if (type !== "bugReports") {

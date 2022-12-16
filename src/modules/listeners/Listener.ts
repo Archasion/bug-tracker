@@ -1,13 +1,9 @@
-import {Client} from "discord.js";
-
-export default class EventListener {
-    client: Client;
+export default abstract class EventListener {
     name: string;
-    once?: boolean;
+    once: boolean;
 
-    constructor(client: Client, data: { name: string; once?: boolean; }) {
-        this.client = client;
+    protected constructor(data: { name: string; once: boolean; }) {
         this.name = data.name;
-        this.once = data.once ?? false;
+        this.once = data.once;
     }
 }

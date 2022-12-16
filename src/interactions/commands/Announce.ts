@@ -6,15 +6,14 @@ import {
     TextInputBuilder,
     ActionRowBuilder,
     TextInputStyle,
-    ModalBuilder,
-    Client
+    ModalBuilder
 } from "discord.js";
 
 import {RestrictionLevel} from "../../utils/RestrictionUtils";
 
 export default class AnnounceCommand extends Command {
-    constructor(client: Client) {
-        super(client, {
+    constructor() {
+        super({
             name: "announce",
             description: "Send announcement to all configured guilds.",
             restriction: RestrictionLevel.Developer,

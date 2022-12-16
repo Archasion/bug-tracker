@@ -5,15 +5,14 @@ import {
     ActionRowBuilder,
     TextInputBuilder,
     TextInputStyle,
-    ModalBuilder,
-    Client
+    ModalBuilder
 } from "discord.js";
 
 import {RestrictionLevel} from "../../utils/RestrictionUtils";
 
 export default class BugPrioritySelectMenu extends SelectMenu {
-    constructor(client: Client) {
-        super(client, {
+    constructor() {
+        super({
             name: "bug-priority",
             restriction: RestrictionLevel.Public,
             defer: false

@@ -1,5 +1,6 @@
 import Command from "../../modules/interactions/commands/Command";
 import Properties from "../../data/Properties";
+import ClientManager from "../../Client";
 
 import {
     ChatInputCommandInteraction,
@@ -7,15 +8,14 @@ import {
     ActionRowBuilder,
     ButtonBuilder,
     EmbedBuilder,
-    ButtonStyle,
-    Client
+    ButtonStyle
 } from "discord.js";
 
 import {RestrictionLevel} from "../../utils/RestrictionUtils";
 
 export default class SupportCommand extends Command {
-    constructor(client: Client) {
-        super(client, {
+    constructor() {
+        super({
             name: "support",
             description: "Need help with the bot? Join the support server",
             restriction: RestrictionLevel.Public,
@@ -25,13 +25,13 @@ export default class SupportCommand extends Command {
     }
 
     /**
-    * @param {ChatInputCommandInteraction} interaction
-    * @returns {Promise<void>}
-    */
+     * @param {ChatInputCommandInteraction} interaction
+     * @returns {Promise<void>}
+     */
     async execute(interaction: ChatInputCommandInteraction): Promise<void> {
         const embed = new EmbedBuilder()
             .setColor(Properties.colors.default)
-            .setAuthor({ name: "Support Server", iconURL: this.client.user?.displayAvatarURL() })
+            .setAuthor({name: "Support Server", iconURL: ClientManager.client.user?.displayAvatarURL()})
             .setDescription("**Need assistance with the bot?** Join the bot's support server for 1 on 1 communication with the developer, by clicking the button below.");
 
         const supportServer = new ButtonBuilder()

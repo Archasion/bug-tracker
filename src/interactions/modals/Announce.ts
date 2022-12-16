@@ -1,21 +1,21 @@
 import Modal from "../../modules/interactions/modals/Modal";
 import Guild from "../../database/models/Guild.model";
 import Properties from "../../data/Properties";
+import ClientManager from "../../Client";
 import clc from "cli-color";
 
 import {
     ModalSubmitInteraction,
     EmbedBuilder,
     TextChannel,
-    NewsChannel,
-    Client
+    NewsChannel
 } from "discord.js";
 
 import {RestrictionLevel} from "../../utils/RestrictionUtils";
 
 export default class AnnounceModal extends Modal {
-    constructor(client: Client) {
-        super(client, {
+    constructor() {
+        super({
             name: "bot-announcement",
             restriction: RestrictionLevel.Developer
         });
@@ -45,7 +45,7 @@ export default class AnnounceModal extends Modal {
         );
 
         for await (const guild of guilds) {
-            const channel = await this.client.channels.fetch(guild?.channels.botUpdates) as TextChannel | NewsChannel;
+            const channel = await ClientManager.client.channels.fetch(guild?.channels.botUpdates) as TextChannel | NewsChannel;
             if (!channel) return;
 
             channel.send({embeds: [embed]})

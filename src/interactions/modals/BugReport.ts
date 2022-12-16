@@ -3,10 +3,10 @@ import Guild from "../../database/models/Guild.model";
 import ErrorMessages from "../../data/ErrorMessages";
 import StringUtils from "../../utils/StringUtils";
 import Properties from "../../data/Properties";
+import Media from "../../data/Media";
 
 import {
     ModalSubmitInteraction,
-    AttachmentBuilder,
     ActionRowBuilder,
     ButtonComponent,
     ButtonBuilder,
@@ -14,24 +14,16 @@ import {
     ButtonStyle,
     TextChannel,
     NewsChannel,
-    ActionRow,
-    Client
+    ActionRow
 } from "discord.js";
 
 import PermissionUtils, {ReplyType, SubmissionChannelPermissions} from "../../utils/PermissionUtils";
 import {RestrictionLevel} from "../../utils/RestrictionUtils";
 import {BugPriority} from "../../data/Types";
 
-const priorityImage = {
-    High: new AttachmentBuilder("assets/priority/High.png", {name: "High.png"}),
-    Medium: new AttachmentBuilder("assets/priority/Medium.png", {name: "Medium.png"}),
-    Low: new AttachmentBuilder("assets/priority/Low.png", {name: "Low.png"}),
-    None: new AttachmentBuilder("assets/priority/None.png", {name: "None.png"})
-};
-
 export default class BugReportModal extends Modal {
-    constructor(client: Client) {
-        super(client, {
+    constructor() {
+        super({
             name: {startsWith: "bug-report"},
             restriction: RestrictionLevel.Public
         });
@@ -46,7 +38,6 @@ export default class BugReportModal extends Modal {
         const description = interaction.fields.getTextInputValue("description");
         const reproductionSteps = interaction.fields.getTextInputValue("reproduction");
         const systemSpecs = interaction.fields.getTextInputValue("specs");
-
         const priority = interaction.customId.split("-")[2] as BugPriority;
 
         const guild = await Guild.findOne(
@@ -142,7 +133,7 @@ export default class BugReportModal extends Modal {
         submissionChannel.send({
             content: `${interaction.user} (\`${interaction.user.id}\`)`,
             embeds: [embed],
-            files: [priorityImage[priority]],
+            files: [Media.priority[priority]],
             components: [actionRow.toJSON() as ActionRow<ButtonComponent>]
         }).then(async (message) => {
             const submissionData = {

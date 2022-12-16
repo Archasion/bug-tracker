@@ -10,15 +10,14 @@ import {
     ButtonBuilder,
     EmbedBuilder,
     GuildMember,
-    ButtonStyle,
-    Client
+    ButtonStyle
 } from "discord.js";
 
 import {RestrictionLevel} from "../../utils/RestrictionUtils";
 
 export default class UserInfoCommand extends Command {
-    constructor(client: Client) {
-        super(client, {
+    constructor() {
+        super({
             name: "user",
             description: "User command.",
             restriction: RestrictionLevel.Public,

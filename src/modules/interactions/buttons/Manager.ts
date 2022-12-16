@@ -1,5 +1,5 @@
 import RestrictionUtils, {RestrictionLevel} from "../../../utils/RestrictionUtils";
-import {Collection, GuildMember, ButtonInteraction, Client} from "discord.js";
+import {Collection, GuildMember, ButtonInteraction} from "discord.js";
 import {readdir} from "node:fs/promises";
 import {join} from "node:path";
 
@@ -7,12 +7,10 @@ import Button from "./Button";
 import clc from "cli-color";
 
 
-export default class CommandHandler {
-    client: Client;
+export default class ButtonHandler {
     list: Collection<string | { startsWith: string } | { endsWith: string } | { includes: string }, Button>;
 
-    constructor(client: Client) {
-        this.client = client;
+    constructor() {
         this.list = new Collection();
     }
 
@@ -20,9 +18,8 @@ export default class CommandHandler {
         const files = await readdir(join(__dirname, "../../../interactions/buttons"));
 
         for (const file of files) {
-            // eslint-disable-next-line @typescript-eslint/no-var-requires
-            const button = require(join(__dirname, "../../../interactions/buttons", file)).default;
-            await this.register(new button(this.client));
+            const button = (await import(join(__dirname, "../../../interactions/buttons", file))).default;
+            await this.register(new button());
         }
     }
 
@@ -65,9 +62,7 @@ export default class CommandHandler {
         }
 
         try {
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            await button.execute(interaction, this.client);
+            await button.execute(interaction);
             console.log(`%s "${buttonName}" executed by ${interaction.user.tag} %s`, clc.magenta("(BUTTONS)"), clc.blackBright(`("${interaction.guild?.name}" • ${interaction.guildId})`));
         } catch (err) {
             console.log(`Failed to execute button: ${buttonName}`);

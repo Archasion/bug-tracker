@@ -18,8 +18,7 @@ import {
     ButtonStyle,
     TextChannel,
     NewsChannel,
-    ActionRow,
-    Client
+    ActionRow
 } from "discord.js";
 
 import {
@@ -67,8 +66,8 @@ const typeAndIdSelection: (ApplicationCommandStringOptionData | ApplicationComma
 ];
 
 export default class StatusCommand extends Command {
-    constructor(client: Client) {
-        super(client, {
+    constructor() {
+        super({
             name: "status",
             description: "Manage the status of a submission.",
             restriction: RestrictionLevel.Reviewer,

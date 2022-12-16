@@ -1,11 +1,11 @@
 import Modal from "../../modules/interactions/modals/Modal";
 
 import {RestrictionLevel} from "../../utils/RestrictionUtils";
-import {ModalSubmitInteraction, Client} from "discord.js";
+import {ModalSubmitInteraction} from "discord.js";
 
 export default class SetReasonModal extends Modal {
-    constructor(client: Client) {
-        super(client, {
+    constructor() {
+        super({
             name: {startsWith: "set-reason"},
             restriction: RestrictionLevel.Reviewer
         });

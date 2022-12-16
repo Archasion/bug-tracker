@@ -11,16 +11,15 @@ import {
     TextInputStyle,
     ModalBuilder,
     TextChannel,
-    NewsChannel,
-    Client
+    NewsChannel
 } from "discord.js";
 
 import {RestrictionLevel} from "../../utils/RestrictionUtils";
 import {SubmissionType} from "../../data/Types";
 
 export default class EditCommand extends Command {
-    constructor(client: Client) {
-        super(client, {
+    constructor() {
+        super({
             name: "edit",
             description: "Edit your submissions.",
             restriction: RestrictionLevel.Public,

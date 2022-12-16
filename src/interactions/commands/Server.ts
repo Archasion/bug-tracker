@@ -6,15 +6,14 @@ import {
     ApplicationCommandOptionType,
     ChatInputCommandInteraction,
     ApplicationCommandType,
-    EmbedBuilder,
-    Client
+    EmbedBuilder
 } from "discord.js";
 
 import {RestrictionLevel} from "../../utils/RestrictionUtils";
 
 export default class ServerCommand extends Command {
-    constructor(client: Client) {
-        super(client, {
+    constructor() {
+        super({
             name: "server",
             description: "View the server's info and configuration.",
             restriction: RestrictionLevel.Public,

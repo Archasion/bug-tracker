@@ -3,12 +3,16 @@ import RestrictionUtils from "../utils/RestrictionUtils";
 import ValidationUtils from "../utils/ValidationUtils";
 import Guild from "../database/models/Guild.model";
 import Properties from "../data/Properties";
+import ClientManager from "../Client";
 
-import {Message, EmbedBuilder, Client} from "discord.js";
+import {Message, EmbedBuilder} from "discord.js";
 
-module.exports = class MessageCreateEventListener extends EventListener {
-    constructor(client: Client) {
-        super(client, {name: "messageCreate"});
+export default class MessageCreateEventListener extends EventListener {
+    constructor() {
+        super({
+            name: "messageCreate",
+            once: false
+        });
     }
 
     public async execute(message: Message) {
@@ -32,10 +36,8 @@ module.exports = class MessageCreateEventListener extends EventListener {
 
             const [referenceEmbed] = reference.embeds;
 
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            const referenceAuthorId = referenceEmbed.footer?.text?.match(/ID: (\d{17,19})/)[1];
-            const referenceAuthor = await this.client.users.fetch(referenceAuthorId as string);
+            const referenceAuthorId = referenceEmbed.footer?.text?.match(/ID: (\d{17,19})/)?.[1];
+            const referenceAuthor = await ClientManager.client.users.fetch(referenceAuthorId as string);
 
             const newEmbed = new EmbedBuilder(referenceEmbed.toJSON());
 

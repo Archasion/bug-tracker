@@ -10,8 +10,7 @@ import {
     EmbedBuilder,
     GuildMember,
     TextChannel,
-    NewsChannel,
-    Client
+    NewsChannel
 } from "discord.js";
 
 import RestrictionUtils, {RestrictionLevel} from "../../utils/RestrictionUtils";
@@ -19,8 +18,8 @@ import PermissionUtils, {ReplyType} from "../../utils/PermissionUtils";
 import {Guide} from "../../data/Types";
 
 export default class GuideCommand extends Command {
-    constructor(client: Client) {
-        super(client, {
+    constructor() {
+        super({
             name: "guide",
             description: "View guides on certain usages of the bot.",
             restriction: RestrictionLevel.Public,

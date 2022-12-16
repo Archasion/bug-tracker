@@ -1,5 +1,5 @@
 import RestrictionUtils, {RestrictionLevel} from "../../../utils/RestrictionUtils";
-import {Collection, GuildMember, SelectMenuInteraction, Client} from "discord.js";
+import {Collection, GuildMember, SelectMenuInteraction} from "discord.js";
 import {readdir} from "node:fs/promises";
 import {join} from "node:path";
 
@@ -7,12 +7,10 @@ import SelectMenu from "./SelectMenu";
 import clc from "cli-color";
 
 
-export default class CommandHandler {
-    client: Client;
+export default class SelectMenuHandler {
     list: Collection<string | { startsWith: string } | { endsWith: string } | { includes: string }, SelectMenu>;
 
-    constructor(client: Client) {
-        this.client = client;
+    constructor() {
         this.list = new Collection();
     }
 
@@ -20,9 +18,8 @@ export default class CommandHandler {
         const files = await readdir(join(__dirname, "../../../interactions/select_menus"));
 
         for (const file of files) {
-            // eslint-disable-next-line @typescript-eslint/no-var-requires
-            const select_menu = require(join(__dirname, "../../../interactions/select_menus", file)).default;
-            await this.register(new select_menu(this.client));
+            const selectMenu = (await import(join(__dirname, "../../../interactions/select_menus", file))).default;
+            await this.register(new selectMenu());
         }
     }
 
@@ -65,9 +62,7 @@ export default class CommandHandler {
         }
 
         try {
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            await select_menu.execute(interaction, this.client);
+            await select_menu.execute(interaction);
             console.log(`%s "${selectMenuName}" executed by ${interaction.user.tag} %s`, clc.yellow("(SELECT MENUS)"), clc.blackBright(`("${interaction.guild?.name}" • ${interaction.guildId})`));
         } catch (err) {
             console.log(`Failed to execute select menu: ${selectMenuName}`);

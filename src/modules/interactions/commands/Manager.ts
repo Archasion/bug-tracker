@@ -5,20 +5,19 @@ import {
     ChatInputCommandInteraction,
     Client
 } from "discord.js";
+
 import RestrictionUtils, {RestrictionLevel} from "../../../utils/RestrictionUtils";
-import {CommandManager} from "../../../Client";
 import {readdir} from "node:fs/promises";
 import {join} from "node:path";
 
+import ClientManager from "../../../Client";
 import Command from "./Command";
 import clc from "cli-color";
 
 export default class CommandHandler {
-    client: Client;
     list: Collection<string, Command>;
 
-    constructor(client: Client) {
-        this.client = client;
+    constructor() {
         this.list = new Collection();
     }
 
@@ -26,9 +25,8 @@ export default class CommandHandler {
         const files = await readdir(join(__dirname, "../../../interactions/commands"));
 
         for (const file of files) {
-            // eslint-disable-next-line @typescript-eslint/no-var-requires
-            const command = require(join(__dirname, "../../../interactions/commands", file)).default;
-            await this.register(new command(this.client));
+            const command = (await import(join(__dirname, "../../../interactions/commands", file))).default;
+            await this.register(new command());
         }
     }
 
@@ -39,12 +37,12 @@ export default class CommandHandler {
 
     public async publish() {
         const commands: ApplicationCommandDataResolvable[] = await Promise.all(
-            CommandManager.list.map(command => command.build())
+            ClientManager.commands.list.map(command => command.build())
         );
 
         try {
-            await this.client.application?.commands.set(commands);
-            console.log(clc.green(`(COMMANDS) Successfully loaded ${CommandManager.list.size} commands!`));
+            await ClientManager.client.application?.commands.set(commands);
+            console.log(clc.green(`(COMMANDS) Successfully loaded ${ClientManager.commands.list.size} commands!`));
         } catch (err) {
             console.error(err);
         }
@@ -66,9 +64,7 @@ export default class CommandHandler {
         }
 
         try {
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            await command.execute(interaction, this.client);
+            await command.execute(interaction);
             console.log(`%s "${command.name}" executed by ${interaction.user.tag} %s`, clc.blue("(COMMANDS)"), clc.blackBright(`("${interaction.guild?.name}" • ${interaction.guildId})`));
         } catch (err) {
             console.log(`Failed to execute command: ${command.name}`);

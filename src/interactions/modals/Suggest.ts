@@ -13,16 +13,15 @@ import {
     ButtonStyle,
     TextChannel,
     NewsChannel,
-    ActionRow,
-    Client
+    ActionRow
 } from "discord.js";
 
 import PermissionUtils, {ReplyType, SubmissionChannelPermissions} from "../../utils/PermissionUtils";
 import {RestrictionLevel} from "../../utils/RestrictionUtils";
 
 export default class SuggestModal extends Modal {
-    constructor(client: Client) {
-        super(client, {
+    constructor() {
+        super({
             name: "suggestion",
             restriction: RestrictionLevel.Public
         });

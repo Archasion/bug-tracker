@@ -8,18 +8,17 @@ import {
     ActionRowBuilder,
     TextInputBuilder,
     TextInputStyle,
-    TextChannel,
-    NewsChannel,
     ModalBuilder,
-    Client
+    TextChannel,
+    NewsChannel
 } from "discord.js";
 
 import {RestrictionLevel} from "../../utils/RestrictionUtils";
 import PermissionUtils, {SubmissionChannelPermissions, ReplyType} from "../../utils/PermissionUtils";
 
 export default class SubmissionTypeSelectMenu extends SelectMenu {
-    constructor(client: Client) {
-        super(client, {
+    constructor() {
+        super({
             name: "submission-type",
             restriction: RestrictionLevel.Public,
             defer: false

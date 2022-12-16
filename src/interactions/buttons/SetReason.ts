@@ -5,15 +5,14 @@ import {
     ActionRowBuilder,
     TextInputBuilder,
     TextInputStyle,
-    ModalBuilder,
-    Client
+    ModalBuilder
 } from "discord.js";
 
 import {RestrictionLevel} from "../../utils/RestrictionUtils";
 
 export default class SetReasonButton extends Button {
-    constructor(client: Client) {
-        super(client, {
+    constructor() {
+        super({
             name: {startsWith: "set-reason"},
             restriction: RestrictionLevel.Reviewer,
             defer: false

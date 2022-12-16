@@ -2,11 +2,14 @@ import EventListener from "../modules/listeners/Listener";
 import Guild from "../database/models/Guild.model";
 import clc from "cli-color";
 
-import {Guild as DiscordGuild, Client} from "discord.js";
+import {Guild as DiscordGuild} from "discord.js";
 
-module.exports = class GuildCreateEventListener extends EventListener {
-    constructor(client: Client) {
-        super(client, {name: "guildCreate"});
+export default class GuildCreateEventListener extends EventListener {
+    constructor() {
+        super({
+            name: "guildCreate",
+            once: false
+        });
     }
 
     public async execute(guild: DiscordGuild) {

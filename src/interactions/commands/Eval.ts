@@ -5,15 +5,14 @@ import {
     ApplicationCommandOptionType,
     ChatInputCommandInteraction,
     ApplicationCommandType,
-    EmbedBuilder,
-    Client
+    EmbedBuilder
 } from "discord.js";
 
 import {RestrictionLevel} from "../../utils/RestrictionUtils";
 
 export default class EvalCommand extends Command {
-    constructor(client: Client) {
-        super(client, {
+    constructor() {
+        super({
             name: "eval",
             description: "Evaluate code.",
             restriction: RestrictionLevel.Developer,

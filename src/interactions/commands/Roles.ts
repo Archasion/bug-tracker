@@ -9,7 +9,6 @@ import {
     ApplicationCommandType,
     EmbedBuilder,
     GuildMember,
-    Client,
     Role
 } from "discord.js";
 
@@ -33,8 +32,8 @@ const rankTypeSelection: ApplicationCommandStringOptionData = {
 };
 
 export default class RolesCommand extends Command {
-    constructor(client: Client) {
-        super(client, {
+    constructor() {
+        super({
             name: "roles",
             description: "Configure roles for the bot's usage.",
             restriction: RestrictionLevel.Public,

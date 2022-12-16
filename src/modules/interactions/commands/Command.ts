@@ -1,24 +1,23 @@
-import {ApplicationCommandOptionData, ChatInputApplicationCommandData} from "discord.js";
+import {ApplicationCommandOptionData, ChatInputApplicationCommandData, ChatInputCommandInteraction} from "discord.js";
 import {RestrictionLevel} from "../../../utils/RestrictionUtils";
-import {Client} from "discord.js";
 
 type CustomApplicationCommandData = ChatInputApplicationCommandData & {
     restriction: RestrictionLevel;
-    defer?: boolean;
+    defer: boolean;
 }
 
-export default class Command {
-    client: Client;
+export default abstract class Command {
     restriction: RestrictionLevel;
     defer: boolean;
     name: string;
     description: string;
-    options?: ApplicationCommandOptionData[];
+    options: ApplicationCommandOptionData[];
 
-    constructor(client: Client, data: CustomApplicationCommandData) {
-        this.client = client;
+    abstract execute(interaction: ChatInputCommandInteraction): Promise<void>;
+
+    protected constructor(data: CustomApplicationCommandData) {
         this.restriction = data.restriction;
-        this.defer = data.defer ?? false;
+        this.defer = data.defer;
         this.name = data.name;
         this.description = data.description;
         this.options = data.options ?? [];
