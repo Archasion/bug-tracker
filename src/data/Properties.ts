@@ -1,6 +1,6 @@
 import {PermissionFlagsBits, PermissionResolvable} from "discord.js";
 import {readFileSync} from "node:fs";
-import {load} from "js-yaml";
+import {parse} from "yaml";
 
 type Properties = {
     invitePermissions: PermissionResolvable
@@ -72,7 +72,7 @@ const invitePermissions = [
     PermissionFlagsBits.EmbedLinks
 ].reduce((a, b) => a + b);
 
-const properties = load(readFileSync("Properties.yaml", "utf8")) as Properties;
+const properties = parse(readFileSync("Properties.yaml", "utf8")) as Properties;
 properties.invitePermissions = invitePermissions;
 
 export default properties;
