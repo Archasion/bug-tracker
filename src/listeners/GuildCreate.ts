@@ -13,11 +13,6 @@ export default class GuildCreateEventListener extends EventListener {
     }
 
     public async execute(guild: DiscordGuild) {
-        if (process.env.BLACKLISTED_GUILDS?.split(" ").includes(guild.id)) {
-            await guild.leave();
-            return;
-        }
-
         const guildData = await Guild.findOne({_id: guild.id});
 
         if (!guildData) {
