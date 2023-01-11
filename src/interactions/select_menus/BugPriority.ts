@@ -39,7 +39,6 @@ export default class BugPrioritySelectMenu extends SelectMenu {
                         .setPlaceholder("Summary...")
                         .setRequired(true)
                         .setStyle(TextInputStyle.Short)
-                        .setValue("")
                 ) as ActionRowBuilder<TextInputBuilder>,
 
                 new ActionRowBuilder().addComponents(
@@ -51,7 +50,6 @@ export default class BugPrioritySelectMenu extends SelectMenu {
                         .setPlaceholder("Description...")
                         .setRequired(true)
                         .setStyle(TextInputStyle.Paragraph)
-                        .setValue("")
                 ) as ActionRowBuilder<TextInputBuilder>,
 
                 new ActionRowBuilder().addComponents(
@@ -63,7 +61,6 @@ export default class BugPrioritySelectMenu extends SelectMenu {
                         .setPlaceholder("- Step 1: ...\n- Step 2: ...\n- Step 3: ...")
                         .setRequired(false)
                         .setStyle(TextInputStyle.Paragraph)
-                        .setValue("")
                 ) as ActionRowBuilder<TextInputBuilder>,
 
                 new ActionRowBuilder().addComponents(
@@ -75,7 +72,6 @@ export default class BugPrioritySelectMenu extends SelectMenu {
                         .setPlaceholder("System Specs...")
                         .setRequired(false)
                         .setStyle(TextInputStyle.Paragraph)
-                        .setValue("")
                 ) as ActionRowBuilder<TextInputBuilder>
             ]);
 

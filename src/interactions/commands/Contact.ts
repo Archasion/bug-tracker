@@ -96,7 +96,6 @@ export default class ContactCommand extends Command {
                     .setPlaceholder(enquiryDetails[enquiry].placeholder)
                     .setMinLength(12)
                     .setRequired(true)
-                    .setValue("")
             ) as ActionRowBuilder<TextInputBuilder>
         ];
 
@@ -111,7 +110,6 @@ export default class ContactCommand extends Command {
                             .setPlaceholder("- Step 1: ...\n- Step 2: ...\n- Step 3: ...")
                             .setMaxLength(1024)
                             .setRequired(false)
-                            .setValue("")
                     ) as ActionRowBuilder<TextInputBuilder>
                 );
                 break;

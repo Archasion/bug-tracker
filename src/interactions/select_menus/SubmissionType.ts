@@ -124,8 +124,7 @@ export default class SubmissionTypeSelectMenu extends SelectMenu {
                 .setMinLength(12)
                 .setMaxLength(1024)
                 .setRequired(true)
-                .setStyle(TextInputStyle.Paragraph)
-                .setValue("");
+                .setStyle(TextInputStyle.Paragraph);
 
             modalComponents.push(new ActionRowBuilder().addComponents(suggestionInput) as ActionRowBuilder<TextInputBuilder>);
         }
@@ -163,7 +162,6 @@ export default class SubmissionTypeSelectMenu extends SelectMenu {
                         .setPlaceholder("e.g. John Doe")
                         .setRequired(true)
                         .setStyle(TextInputStyle.Short)
-                        .setValue("")
                 ) as ActionRowBuilder<TextInputBuilder>,
 
                 new ActionRowBuilder().addComponents(
@@ -175,7 +173,6 @@ export default class SubmissionTypeSelectMenu extends SelectMenu {
                         .setPlaceholder("The reason is...")
                         .setRequired(true)
                         .setStyle(TextInputStyle.Paragraph)
-                        .setValue("")
                 ) as ActionRowBuilder<TextInputBuilder>
             );
         }

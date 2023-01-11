@@ -39,7 +39,6 @@ export default class AnnounceCommand extends Command {
                         .setPlaceholder("Title...")
                         .setRequired(true)
                         .setStyle(TextInputStyle.Short)
-                        .setValue("")
                 ) as ActionRowBuilder<TextInputBuilder>,
 
                 new ActionRowBuilder().addComponents(
@@ -49,7 +48,6 @@ export default class AnnounceCommand extends Command {
                         .setPlaceholder("Description...")
                         .setRequired(true)
                         .setStyle(TextInputStyle.Paragraph)
-                        .setValue("")
                 ) as ActionRowBuilder<TextInputBuilder>
             ]);
 
