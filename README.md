@@ -24,7 +24,8 @@ Install the dependencies
 npm i
 ```
 
-Follow the instructions in [`example.env`](.env.example), once you've added values to the environmental variables, rename `example.env` to `.env`.
+Follow the instructions in [`.env.example`](.env.example), once you've added values to the environmental variables, rename `.env.example` to `.env`.
+
 ```shell
 # DATABASE (MongoDB)
 
