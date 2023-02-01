@@ -48,5 +48,5 @@ NODE_ENV='PRODUCTION or DEVELOPMENT (determines which token will be used)'
 
 Finally, build and run the code:
 ```shell
-npm run start
+npm run build; npm run start
 ```
