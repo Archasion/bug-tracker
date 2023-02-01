@@ -93,6 +93,7 @@ export default class SetStatusSelectMenu extends SelectMenu {
             embed.author = {name: `Priority: ${priority}`};
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             embed.thumbnail!.url = `attachment://${priority}.png`;
+            // @ts-ignore
             embed.color = Properties.colors.priority[priority];
 
             thumbnailFile.push(Media.priority[priority]);
@@ -103,6 +104,7 @@ export default class SetStatusSelectMenu extends SelectMenu {
 
         if (status !== "None") {
             embed.author = {name: `Status: ${status} (By ${interaction.user.tag})`};
+            // @ts-ignore
             embed.color = Properties.colors.status[status as SubmissionStatus];
 
             if (type === "bugReports") {
@@ -113,6 +115,7 @@ export default class SetStatusSelectMenu extends SelectMenu {
         } else {
             if (type !== "bugReports") {
                 delete embed.author;
+                // @ts-ignore
                 embed.color = Properties.colors.default;
             }
         }

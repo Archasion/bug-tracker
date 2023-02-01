@@ -211,11 +211,13 @@ export default class StatusCommand extends Command {
 
             if (submissionType !== "bugReports") {
                 delete embed.author;
+                // @ts-ignore
                 embed.color = Properties.colors.default;
             } else {
                 const submissionPriority = submissionData.priority as BugPriority;
 
                 embed.author = {name: `Priority: ${submissionPriority.toUpperCase()}`};
+                // @ts-ignore
                 embed.color = Properties.colors.priority[submissionPriority];
 
                 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -283,6 +285,7 @@ export default class StatusCommand extends Command {
             attachmentFiles.push(Media.status[status as BugStatus]);
         }
 
+        // @ts-ignore
         embed.color = Properties.colors.status[status];
         embed.author = {name: `Status: ${status} (By ${interaction.user.tag})`};
 
